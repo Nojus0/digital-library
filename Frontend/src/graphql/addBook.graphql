@@ -1,0 +1,5 @@
+mutation addBook($name: String!, $imageUrl: String!, $description: String!) {
+  addBook(name: $name, imageUrl: $imageUrl, description: $description) {
+    id
+  }
+}

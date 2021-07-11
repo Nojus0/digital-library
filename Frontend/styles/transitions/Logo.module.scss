@@ -1,0 +1,18 @@
+$transition-time: 250ms;
+
+.exitActive {
+    transition: all $transition-time ease;
+    opacity: 0;
+    width:  0em;
+}
+
+.enter {
+    opacity: 0;
+    width:  0em;
+}
+
+.enterActive {
+    transition: all $transition-time ease;
+    opacity: 1;
+    width:  7em;
+}

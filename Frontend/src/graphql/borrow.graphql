@@ -1,0 +1,5 @@
+mutation borrow($id: Int!) {
+  borrow(id: $id) {
+    id
+  }
+}

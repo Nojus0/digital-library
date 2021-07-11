@@ -1,0 +1,32 @@
+.maintext {
+    margin: 1.5rem;
+    font-size: clamp(2rem, 1rem + 6.5vw, 4.5rem);
+    font-weight: 500;
+    text-align: center;
+}
+
+.logo {
+    height: 45vh;
+}
+
+.actionContainer {
+    margin-top: clamp(1rem, 1vw + 1.25rem, 3.5rem);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 22.5rem;
+
+    button {
+        margin: 0 0.25rem 0 0.25rem;
+        padding: 1rem;
+        flex: 1 0 40%;
+        flex-grow: 1;
+        user-select: none;
+        cursor: pointer;
+        font-weight: 600;
+    }
+}
+

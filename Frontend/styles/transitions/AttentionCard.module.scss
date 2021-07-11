@@ -1,0 +1,33 @@
+$transition-time: 250ms;
+
+.enter { // setup
+    padding: 0 !important;
+    opacity: 0;
+    height: 0;
+    margin-top: 0 !important;
+}
+
+
+.enterActive { // Entering
+    transition: all $transition-time ease;
+    opacity: 1;
+    padding: 1.5rem !important;
+    height: 4rem;
+    margin-top: .75rem !important;
+}
+
+.exit {
+    transition: all $transition-time ease;
+    opacity: 0;
+    padding: 0 !important;
+    height: 0;
+    margin-top: 0 !important;
+}
+
+.enterDone { // Finished enter animation
+    transition: all $transition-time ease;
+    opacity: 1;
+    padding: 1.5rem !important;
+    height: 4rem;
+    margin-top: .75rem !important;
+}

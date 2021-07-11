@@ -1,0 +1,8 @@
+query books($page: Int, $limit: Int) {
+  books(page: $page, limit: $limit) {
+    id
+    name
+    imageUrl
+    description
+  }
+}

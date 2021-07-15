@@ -2,6 +2,37 @@ import styled from "@emotion/styled";
 import React from "react";
 import styles from "../../styles/container.module.scss";
 
+export function Container({
+    max,
+    min,
+    value,
+    children,
+    classes,
+    InsideWrapperStyle,
+    stretch = true,
+    WrapperStyle,
+    container,
+    wrapper,
+}: IContainer) {
+    return (
+        <ContainerWrapper {...wrapper} style={WrapperStyle}>
+            <div
+                {...container}
+                className={`${stretch ? styles.stretch : ""} ${classes ? classes : ""}`}
+                style={{
+                    width: `clamp(${min},${value}, ${max})`, ...InsideWrapperStyle
+                }}
+            >
+                {children}
+            </div>
+        </ContainerWrapper>
+    );
+}
+
+export default Container;
+
+
+
 export interface IContainer {
     min: string;
     value: string;
@@ -56,32 +87,3 @@ const ContainerWrapper = styled.div({
         alignItems: "center",
     },
 });
-
-export function Container({
-    max,
-    min,
-    value,
-    children,
-    classes,
-    InsideWrapperStyle,
-    stretch = true,
-    WrapperStyle,
-    container,
-    wrapper,
-}: IContainer) {
-    return (
-        <ContainerWrapper {...wrapper} style={WrapperStyle}>
-            <div
-                {...container}
-                className={`${stretch ? styles.stretch : ""} ${classes ? classes : ""}`}
-                style={{
-                    width: `clamp(${min},${value}, ${max})`, ...InsideWrapperStyle
-                }}
-            >
-                {children}
-            </div>
-        </ContainerWrapper>
-    );
-}
-
-export default Container;

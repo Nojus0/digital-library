@@ -18,7 +18,7 @@ export default function Home() {
 
       <Container WrapperStyle={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
 
-        <Logo onClick={e => { }} height="45vh" />
+        <Logo height="45vh" />
         <h1 className={styles.maintext}>Digital Library</h1>
 
         <div className={styles.actionContainer}>

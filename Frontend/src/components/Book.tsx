@@ -4,6 +4,29 @@ import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
 
+function Book({ imageUrl, name, id, returnDays }: IBook) {
+    const [imgError, setImgError] = useState(false);
+
+    return (
+        <CardBackground>
+            {
+                imgError ? <BookNotFound /> : <img onError={e => setImgError(true)} src={imageUrl} />
+            }
+
+            <h1>{name}</h1>
+
+            {
+                returnDays != null ?
+                    <Button style={{ cursor: "default" }}>{returnDays} d</Button>
+                    :
+                    <Link href={`/books/${id}`}><Button>View</Button></Link>
+            }
+
+        </CardBackground>
+    )
+}
+export default Book
+
 const CardBackground = styled.div({
     display: "flex",
     width: "100%",
@@ -49,26 +72,3 @@ export interface IBook {
     id: number
     returnDays?: number // change to date in future so it can live countdown
 }
-
-function Book({ imageUrl, name, id, returnDays }: IBook) {
-    const [imgError, setImgError] = useState(false);
-
-    return (
-        <CardBackground>
-            {
-                imgError ? <BookNotFound /> : <img onError={e => setImgError(true)} src={imageUrl} />
-            }
-
-            <h1>{name}</h1>
-
-            {
-                returnDays != null ?
-                    <Button style={{ cursor: "default" }}>{returnDays} d</Button>
-                    :
-                    <Link href={`/books/${id}`}><Button>View</Button></Link>
-            }
-
-        </CardBackground>
-    )
-}
-export default Book

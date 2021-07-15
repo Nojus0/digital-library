@@ -1,16 +1,64 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import useOnclickOutside from 'react-cool-onclickoutside';
 import SvgLogo from '../svg/Logo';
 import Seperator from './Seperator'
-import { Role, useSignOutMutation, useUsernameQuery } from "../generated/graphql";
+import { useSignOutMutation, } from "../generated/graphql";
 import SearchSvg from '../svg/SearchSvg';
 import Dropdown, { DropdownItem } from './Dropdown';
-import fadeTransition from "../../styles/transitions/Fade.module.scss";
-import { CSSTransition } from 'react-transition-group';
 import { ProfileSvg } from '../svg/ProfileSvg';
 import Link from 'next/link';
+
+export function Header() {
+    const [isDrop, setDrop] = useState(false);
+    const [, RequestSignOut] = useSignOutMutation();
+    const dropdownRef = useOnclickOutside(() => setDrop(false));
+
+    async function SignOut() {
+    }
+
+    function gotoProfile() {
+    }
+
+    return (
+        <Nav>
+
+            <SideInfo>
+                <Link href="/books">
+                    <SvgLogo height="100%" />
+                </Link>
+            </SideInfo>
+
+            <Search>
+                <SearchSvg fill="grey" />
+                <input placeholder="Search by Book Name"></input>
+            </Search>
+
+            <ProfileContainer ref={dropdownRef}>
+                <div onClick={e => setDrop(prev => !prev)}>
+                    <h1>?</h1>
+                </div>
+
+                <Dropdown on={isDrop}>
+
+                    <Link href={`/profile${"nojus"}`}>
+                        <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
+                    </Link>
+
+                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
+
+                    <Link href="/addbook">
+                        <DropdownItem Icon={ProfileSvg} text="Add a Book" />
+                    </Link>
+                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
+
+                    <DropdownItem Icon={ProfileSvg} onClick={SignOut} text="Sign out" />
+                </Dropdown>
+            </ProfileContainer>
+        </Nav>
+    )
+}
+
 
 const Nav = styled.nav({
     position: "sticky",
@@ -80,60 +128,3 @@ const Search = styled.div({
         border: "none",
     }
 })
-
-// interface IHeaderProps {
-//     username?: string
-// }
-
-export function Header() {
-    const Router = useRouter();
-    const [isDrop, setDrop] = useState(false);
-    const [, RequestSignOut] = useSignOutMutation();
-    const dropdownRef = useOnclickOutside(() => setDrop(false));
-
-    async function SignOut() {
-    }
-
-    function gotoProfile() {
-    }
-
-    return (
-        <Nav>
-
-            <SideInfo>
-                <Link href="/books">
-                    <SvgLogo height="100%" />
-                </Link>
-            </SideInfo>
-
-            <Search>
-                <SearchSvg fill="grey" />
-                <input placeholder="Search by Book Name"></input>
-            </Search>
-
-            <ProfileContainer ref={dropdownRef}>
-                <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>?</h1>
-                </div>
-
-                <Dropdown on={isDrop}>
-
-                    <Link href={`/profile${"nojus"}`}>
-                        <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
-                    </Link>
-
-                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
-
-                    <Link href="/addbook">
-                        <DropdownItem Icon={ProfileSvg} onClick={e => Router.push("/addbook")} text="Add a Book" />
-                    </Link>
-                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
-
-                    <DropdownItem Icon={ProfileSvg} onClick={SignOut} text="Sign out" />
-                </Dropdown>
-            </ProfileContainer>
-        </Nav>
-    )
-}
-
-

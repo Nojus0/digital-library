@@ -2,6 +2,33 @@ import styled from '@emotion/styled'
 import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 import transition from "../../styles/transitions/Fade.module.scss";
+
+function Dropdown({ on, children }: IDropdown) {
+    return (
+        <CSSTransition in={on} timeout={150} unmountOnExit classNames={transition}>
+            <Background>
+                {children}
+            </Background>
+        </CSSTransition>
+    )
+}
+
+
+export function DropdownItem(attr: IDropdownItem) {
+    return (
+        <>
+            <BgItem {...attr}>
+                <div>
+                    <attr.Icon />
+                    <h1>{attr.text}</h1>
+                </div>
+            </BgItem>
+        </>
+    )
+}
+export default Dropdown
+
+
 const Background = styled.div({
     position: "absolute",
     display: "flex",
@@ -52,28 +79,3 @@ export interface IDropdownItem extends React.DetailedHTMLProps<React.HTMLAttribu
     text: string,
     Icon: any
 }
-
-function Dropdown({ on, children }: IDropdown) {
-    return (
-        <CSSTransition in={on} timeout={150} unmountOnExit classNames={transition}>
-            <Background>
-                {children}
-            </Background>
-        </CSSTransition>
-    )
-}
-
-
-export function DropdownItem(attr: IDropdownItem) {
-    return (
-        <>
-            <BgItem {...attr}>
-                <div>
-                    <attr.Icon />
-                    <h1>{attr.text}</h1>
-                </div>
-            </BgItem>
-        </>
-    )
-}
-export default Dropdown

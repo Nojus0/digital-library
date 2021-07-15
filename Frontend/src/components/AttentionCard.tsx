@@ -6,6 +6,18 @@ export interface IAttentionCardProps {
     children?: any
 }
 
+
+
+function AttentionCard({children, color}: IAttentionCardProps) {
+    return (
+        <PaperCard style={{background: color}}>
+            {children}
+        </PaperCard>
+    )
+}
+
+export default AttentionCard
+
 const PaperCard = styled.div({
     color: "white",
     display: "flex",
@@ -21,13 +33,3 @@ const PaperCard = styled.div({
     borderRadius: ".4rem",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)"
 })
-
-function AttentionCard({children, color}: IAttentionCardProps) {
-    return (
-        <PaperCard style={{background: color}}>
-            {children}
-        </PaperCard>
-    )
-}
-
-export default AttentionCard

@@ -14,7 +14,6 @@ function home() {
                 WrapperStyle={{ marginTop: "2rem" }}>
                 <h1>books</h1>
             </Container>
-
         </>
     )
 }

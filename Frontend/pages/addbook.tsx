@@ -5,52 +5,18 @@ import styled from '@emotion/styled'
 import { Button, TextArea, TextBox } from '../src/styled/Components'
 import Seperator from '../src/components/Seperator'
 import { AddPhotoButton } from '../src/svg/AddPhotoSvg'
-import { useAddBookMutation } from '../src/generated/graphql'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-const AddBookPaper = styled.div({
-    display: "grid",
-    gridTemplateColumns: "0.6fr 1.4fr",
-    gridTemplateRows: "1fr",
-    background: "#F3F3F3",
-    borderRadius: ".4rem",
-})
-
-const AddBookForm = styled.div({
-    padding: "1rem 2rem",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1rem",
-    alignItems: "center",
-
-    "input, div, textarea": {
-        width: "100%"
-    },
-    button: {
-        padding: ".85rem 2rem",
-        alignSelf: "flex-end"
-    }
-})
-
-const ImgContainer = styled.div({
-    background: "#C4C4C4",
-    borderRadius: ".4rem 0rem 0rem .4rem",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-})
 
 function AddBook() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [{ data, error }, requestAddBook] = useAddBookMutation()
     const router = useRouter();
     const fileRef = useRef<HTMLInputElement>();
     const [imgFile, setImgFile] = useState<File>(null);
 
     async function submitAdd() {
-        await requestAddBook({ name, description, imageUrl: "" });
         router.push("/books");
     }
 
@@ -90,3 +56,36 @@ function AddBook() {
 }
 
 export default AddBook;
+
+
+const AddBookPaper = styled.div({
+    display: "grid",
+    gridTemplateColumns: "0.6fr 1.4fr",
+    gridTemplateRows: "1fr",
+    background: "#F3F3F3",
+    borderRadius: ".4rem",
+})
+
+const AddBookForm = styled.div({
+    padding: "1rem 2rem",
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    alignItems: "center",
+
+    "input, div, textarea": {
+        width: "100%"
+    },
+    button: {
+        padding: ".85rem 2rem",
+        alignSelf: "flex-end"
+    }
+})
+
+const ImgContainer = styled.div({
+    background: "#C4C4C4",
+    borderRadius: ".4rem 0rem 0rem .4rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+})

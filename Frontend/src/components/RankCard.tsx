@@ -1,6 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
 
+export function RankCard(props: IRankCardProps) {
+    return (
+        <Background {...props}>
+            <h1>{props.rank}</h1>
+        </Background>
+    )
+}
+
 const Background = styled.div({
     userSelect: "none",
     background: "#3D3D3D",
@@ -17,12 +25,3 @@ const Background = styled.div({
 interface IRankCardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
     rank: string
 }
-
-export function RankCard(props: IRankCardProps) {
-    return (
-        <Background {...props}>
-            <h1>{props.rank}</h1>
-        </Background>
-    )
-}
-

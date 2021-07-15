@@ -1,9 +1,7 @@
 import styled from '@emotion/styled'
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import { CSSTransition } from 'react-transition-group'
 import transition from "../../styles/transitions/Fade.module.scss";
-import useOnclickOutside from "react-cool-onclickoutside";
-import { ProfileSvg } from "../svg/ProfileSvg"
 const Background = styled.div({
     position: "absolute",
     display: "flex",
@@ -71,7 +69,7 @@ export function DropdownItem(attr: IDropdownItem) {
         <>
             <BgItem {...attr}>
                 <div>
-                    <attr.Icon/>
+                    <attr.Icon />
                     <h1>{attr.text}</h1>
                 </div>
             </BgItem>

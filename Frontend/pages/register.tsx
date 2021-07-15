@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
@@ -98,7 +99,9 @@ function register() {
 
                 <p>
                     Already have an account?
-                    <span onClick={() => Router.push("/login")}>Log In</span>
+                    <Link href="/login">
+                        <span>Log In</span>
+                    </Link>
                 </p>
             </Container>
         </>

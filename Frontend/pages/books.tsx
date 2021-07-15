@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import Book, { IBook } from '../src/components/Book'
 import { Header } from '../src/components/Header';
 import { useBooksQuery } from "../src/generated/graphql"
@@ -17,12 +17,6 @@ function home() {
     function transformResponse() {
         return data?.books?.map(bk => ({ ...bk }) as IBook) || [];
     }
-
-    // function handleScroll(e: React.UIEvent<HTMLDivElement, UIEvent>) {
-
-    //     const bottom = e.currentTarget.scrollHeight - e.currentTarget.scrollTop === e.currentTarget.clientHeight;
-    //     console.log(bottom)
-    // }
 
 
     return (

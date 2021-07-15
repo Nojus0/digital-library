@@ -10,6 +10,7 @@ import Dropdown, { DropdownItem } from './Dropdown';
 import fadeTransition from "../../styles/transitions/Fade.module.scss";
 import { CSSTransition } from 'react-transition-group';
 import { ProfileSvg } from '../svg/ProfileSvg';
+import Link from 'next/link';
 
 const Nav = styled.nav({
     position: "sticky",
@@ -89,24 +90,20 @@ export function Header() {
     const [isDrop, setDrop] = useState(false);
     const [, RequestSignOut] = useSignOutMutation();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
-    const [{ data, error }] = useUsernameQuery({ requestPolicy: "cache-and-network" });
 
     async function SignOut() {
-        const { data, error } = await RequestSignOut();
-        if (data?.signOut)
-            Router.push("/")
     }
 
     function gotoProfile() {
-        if (window.location.pathname != `/profile/${data?.currentUser?.username}`)
-            Router.push(`/profile/${data?.currentUser?.username}`)
     }
 
     return (
         <Nav>
 
             <SideInfo>
-                <SvgLogo onClick={e => Router.push("/books")} height="100%" />
+                <Link href="/books">
+                    <SvgLogo height="100%" />
+                </Link>
             </SideInfo>
 
             <Search>
@@ -116,18 +113,21 @@ export function Header() {
 
             <ProfileContainer ref={dropdownRef}>
                 <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>{data?.currentUser?.username?.substring(0, 1)?.toUpperCase()}</h1>
+                    <h1>?</h1>
                 </div>
 
                 <Dropdown on={isDrop}>
-                    <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
+
+                    <Link href={`/profile${"nojus"}`}>
+                        <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
+                    </Link>
+
                     <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
-                    {
-                        data?.currentUser?.role == Role.Administrator && <>
-                            <DropdownItem Icon={ProfileSvg} onClick={e => Router.push("/addbook")} text="Add a Book" />
-                            <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
-                        </>
-                    }
+
+                    <Link href="/addbook">
+                        <DropdownItem Icon={ProfileSvg} onClick={e => Router.push("/addbook")} text="Add a Book" />
+                    </Link>
+                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
 
                     <DropdownItem Icon={ProfileSvg} onClick={SignOut} text="Sign out" />
                 </Dropdown>

@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { CSSTransition } from "react-transition-group";
@@ -62,7 +63,9 @@ function login(props) {
 
         <p>
           Don't have an account?
-          <span onClick={() => Router.push("/register")}>Register</span>
+          <Link href="/register">
+            <span>Register</span>
+          </Link>
         </p>
       </Container>
     </>

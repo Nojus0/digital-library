@@ -4,9 +4,9 @@ import Logo from "../src/svg/Logo";
 import { Button } from '../src/styled/Components';
 import { Container } from '../src/components/Container';
 import { useRouter } from "next/router"
+import Link from 'next/link';
 
 export default function Home() {
-  const Router = useRouter();
   return (
     <>
       <Head>
@@ -23,8 +23,12 @@ export default function Home() {
         <h1 className={styles.maintext}>Digital Library</h1>
 
         <div className={styles.actionContainer}>
-          <Button onClick={() => Router.push("/register")}>Register</Button>
-          <Button style={{ background: "transparent", color: "black" }} onClick={() => Router.push("/login")}>Log In</Button>
+          <Link href="/register">
+            <Button>Register</Button>
+          </Link>
+          <Link href="/login">
+            <Button style={{ background: "transparent", color: "black" }} >Log In</Button>
+          </Link>
         </div>
 
       </Container>

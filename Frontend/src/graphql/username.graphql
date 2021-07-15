@@ -1,6 +1,0 @@
-query username {
-  currentUser {
-    username
-    role
-  }
-}

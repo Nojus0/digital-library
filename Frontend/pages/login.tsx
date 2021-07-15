@@ -19,10 +19,6 @@ function login(props) {
   const [password, setPass] = useState("");
   const [, RequestLogin] = useLoginMutation();
 
-  useEffect(() => {
-  }, [])
-
-
   async function SubmitLogin() {
     setError("");
     if (email.length < 3) return setError("Email address too short.");

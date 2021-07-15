@@ -3,7 +3,6 @@ import styles from "../styles/main.module.scss";
 import Logo from "../src/svg/Logo";
 import { Button } from '../src/styled/Components';
 import { Container } from '../src/components/Container';
-import { useRouter } from "next/router"
 import Link from 'next/link';
 
 export default function Home() {

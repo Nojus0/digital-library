@@ -1,24 +1,9 @@
-import React, { useState } from 'react'
-import Book, { IBook } from '../src/components/Book'
+import React from 'react'
 import { Header } from '../src/components/Header';
-import { useBooksQuery } from "../src/generated/graphql"
 import Container from '../src/components/Container'
 import Head from 'next/head'
 
-
 function home() {
-    const [books, setBooks] = useState<IBook[]>([]);
-    const limit = 50;
-
-    let page = 0 * limit;
-    const [{ data, error }] = useBooksQuery({ variables: { page, limit }, requestPolicy: "cache-and-network" });
-
-
-    function transformResponse() {
-        return data?.books?.map(bk => ({ ...bk }) as IBook) || [];
-    }
-
-
     return (
         <>
             <Head>
@@ -27,9 +12,7 @@ function home() {
             <Header />
             <Container min="1px" value="100%" max="45rem"
                 WrapperStyle={{ marginTop: "2rem" }}>
-                {
-                    transformResponse().map((book, index) => <Book key={index} {...book} />)
-                }
+                <h1>books</h1>
             </Container>
 
         </>

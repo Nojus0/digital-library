@@ -54,7 +54,10 @@ export class BookResolver {
 
     }
 
-
+    @Query(type => Book, { nullable: true })
+    async book(@Args() { id }: IntArg) {
+        return Book.findOne({ where: { id } });
+    }
 
     @UseMiddleware(isAuthRole(Role.Consumer, true))
     @Mutation(type => Book, { nullable: true })

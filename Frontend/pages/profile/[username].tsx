@@ -1,13 +1,15 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Book, { IBook } from "../../src/components/Book";
-import Container from "../../src/components/Container";
-import { Header } from "../../src/components/Header";
-import { RankCard } from "../../src/components/RankCard";
-import Seperator from "../../src/components/Seperator";
-import { Role } from "../../src/generated/graphql";
-
+import Book, { IBook } from "Frontend/src/components/Book";
+import Container from "Frontend/src/components/Container";
+import { Header } from "Frontend/src/components/Header";
+import { RankCard } from "Frontend/src/components/RankCard";
+import Seperator from "Frontend/src/components/Seperator";
+import { client } from "Frontend/src/next/graphql"
+import { userProfileQuery } from "Frontend/src/graphql/userProfile";
+import { User } from "Server/src/entity/User"
+import { notFound } from "Frontend/src/utils/next";
 
 interface ProfileProps {
     username: string;
@@ -15,7 +17,7 @@ interface ProfileProps {
     borowing: IBook[];
 }
 
-function id({ username = "", borowing = [], role = Role.Consumer }: ProfileProps) {
+function id({ username = "", borowing = [], role = "" }: ProfileProps) {
     return (
         <>
             <Head>
@@ -32,13 +34,27 @@ function id({ username = "", borowing = [], role = Role.Consumer }: ProfileProps
                 <RankCard rank={role} />
                 <Seperator />
                 <BorowedBrowser>
-                    {borowing.map((book, index) => (
-                        <Book key={index} {...book} />
-                    ))}
+                    {borowing.map(book => <Book key={book.name} {...book} />)}
                 </BorowedBrowser>
             </Container>
         </>
     );
+}
+
+export async function getServerSideProps(ctx) {
+
+    const { data, error } = await client.query<{ userProfile: User }>(
+        userProfileQuery,
+        { username: ctx.params.username }
+    ).toPromise();
+
+    if (data?.userProfile == null || error != null) return notFound;
+
+    return {
+        props: {
+            ...data?.userProfile
+        }
+    }
 }
 
 export default id;
@@ -54,6 +70,7 @@ const NameLogo = styled.div({
         fontWeight: 500,
     },
 });
+
 const ProfileLogo = styled.div({
     display: "flex",
     margin: "1rem",
@@ -71,6 +88,7 @@ const ProfileLogo = styled.div({
         color: "white",
     },
 });
+
 const BorowedBrowser = styled.div({
     margin: "1rem 0",
     display: "flex",

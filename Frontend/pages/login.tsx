@@ -1,24 +1,24 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import AttentionCard from "../src/components/AttentionCard";
-import Container from "../src/components/Container";
-import Seperator from "../src/components/Seperator";
-import { useLoginMutation } from "../src/generated/graphql";
-import { Button, TextBox } from "../src/styled/Components";
-import SvgLogo from "../src/svg/Logo";
-import css from "../styles/loginRegister.module.scss";
-import transition from "../styles/transitions/AttentionCard.module.scss";
+import AttentionCard from "Frontend/src/components/AttentionCard";
+import Container from "Frontend/src/components/Container";
+import Seperator from "Frontend/src/components/Seperator";
+import { Button, TextBox } from "Frontend/src/styled/Components";
+import SvgLogo from "Frontend/src/svg/Logo";
+import css from "Frontend/styles/loginRegister.module.scss";
+import transition from "Frontend/styles/transitions/AttentionCard.module.scss";
+import { useMutation } from "urql";
+import { loginMutation } from "Frontend/src/graphql/login";
 
 function login(props) {
   const Router = useRouter();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
-  const [, RequestLogin] = useLoginMutation();
-
+  const [, RequestLogin] = useMutation(loginMutation);
   async function SubmitLogin() {
     setError("");
     if (email.length < 3) return setError("Email address too short.");

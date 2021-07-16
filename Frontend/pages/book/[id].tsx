@@ -1,15 +1,19 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { IBook } from '../../src/components/Book'
-import Container from '../../src/components/Container'
-import { Header } from '../../src/components/Header'
-import Seperator from '../../src/components/Seperator'
-import { Button } from '../../src/styled/Components'
+import { IBook } from 'Frontend/src/components/Book'
+import Container from 'Frontend/src/components/Container'
+import { Header } from 'Frontend/src/components/Header'
+import Seperator from 'Frontend/src/components/Seperator'
+import { Button } from 'Frontend/src/styled/Components'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { BookNotFound } from '../../src/svg/BookNotFound'
+import { BookNotFound } from 'Frontend/src/svg/BookNotFound'
+import { client } from 'Frontend/src/next/graphql'
+import { bookQuery } from 'Frontend/src/graphql/book'
+import { Book } from 'Server/src/entity/Book'
+import { notFound } from 'Frontend/src/utils/next'
 
-function id({ id, description = "", name = "", imageUrl }: IBook) {
+export default function id({ id, description = "", name = "", imageUrl }: IBook) {
     const [imgError, setImgError] = useState(false);
     const Router = useRouter()
     async function submitBorrow() {
@@ -48,7 +52,18 @@ function id({ id, description = "", name = "", imageUrl }: IBook) {
     )
 }
 
-export default id
+
+export async function getServerSideProps(ctx) {
+    const { data, error } = await client.query<{ book: Book }>(bookQuery, { id: parseInt(ctx.params.id) }).toPromise();
+
+    if(data?.book == null || error != null) return notFound;
+
+    return {
+        props: {
+            ...data?.book
+        }
+    }
+}
 
 
 const Card = styled.div({
@@ -71,10 +86,12 @@ const Card = styled.div({
         height: "100%",
     },
 })
+
 const ButtonWrapper = styled.div({
     display: "flex",
     justifyContent: "flex-end"
 })
+
 const InfoContainer = styled.div({
     margin: "1rem 1rem",
     h1: {

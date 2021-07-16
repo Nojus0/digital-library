@@ -10,7 +10,7 @@
       "outDir": "./build",
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "baseUrl": ".",
+      "baseUrl": "../",
       "sourceMap": true,
       "esModuleInterop": true
    }

@@ -26,6 +26,11 @@ export class UserResolver {
         return User.findOne({ where: { username }, relations: ["borowing"] });
     }
 
+    @Query(type => User, { nullable: true })
+    async userProfile(@Arg("username") username: string) {
+        return User.findOne({ where: { username }, relations: ["borowing"] });
+    }
+
     @Mutation(() => UserResponse, { nullable: true })
     async register(
         @Arg("username") username: string,

@@ -1,5 +1,0 @@
-mutation register($username: String!, $password: String!, $email: String!) {
-  register(username: $username, email: $email, password: $password) {
-    error
-  }
-}

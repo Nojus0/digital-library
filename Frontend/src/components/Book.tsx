@@ -4,6 +4,14 @@ import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
 
+export interface IBook {
+    imageUrl: string,
+    name: string,
+    description: string
+    id: number
+    returnDays?: number // change to date in future so it can live countdown
+}
+
 function Book({ imageUrl, name, id, returnDays }: IBook) {
     const [imgError, setImgError] = useState(false);
 
@@ -65,10 +73,3 @@ const CardBackground = styled.div({
     }
 })
 
-export interface IBook {
-    imageUrl: string,
-    name: string,
-    description: string
-    id: number
-    returnDays?: number // change to date in future so it can live countdown
-}

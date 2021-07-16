@@ -3,15 +3,18 @@ import React, { useState } from 'react'
 import useOnclickOutside from 'react-cool-onclickoutside';
 import SvgLogo from '../svg/Logo';
 import Seperator from './Seperator'
-import { useSignOutMutation, } from "../generated/graphql";
 import SearchSvg from '../svg/SearchSvg';
 import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from '../svg/ProfileSvg';
 import Link from 'next/link';
 
+
+// export interface IHeaderProps {
+//     username: string
+// }
+
 export function Header() {
     const [isDrop, setDrop] = useState(false);
-    const [, RequestSignOut] = useSignOutMutation();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
 
     async function SignOut() {
@@ -41,7 +44,7 @@ export function Header() {
 
                 <Dropdown on={isDrop}>
 
-                    <Link href={`/profile${"nojus"}`}>
+                    <Link href={`/profile/nojus`}>
                         <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
                     </Link>
 

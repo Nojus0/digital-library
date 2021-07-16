@@ -10,8 +10,6 @@ import { UserResolver } from "./resolvers/UserResolver";
 import cookieParser from "cookie-parser";
 import { BookResolver } from "./resolvers/BookResolver";
 import { config } from "./typeorm.config";
-import { NextBookResolver } from "./resolvers/NextJs/NextBookResolver";
-import { NextUserResolver } from "./resolvers/NextJs/NextUserResolver";
 import { ImageResolver } from "./resolvers/ImageResolver";
 
 const port = process.env.PORT || 4000;
@@ -24,7 +22,7 @@ if (process.env.SECRET == null) throw new Error("Secret not found");
 
   const GRAPHQL_SERVER = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, BookResolver, NextBookResolver, NextUserResolver, ImageResolver],
+      resolvers: [UserResolver, BookResolver, ImageResolver],
     }),
     context: ({ req, res }) => ({ req, res })
   });

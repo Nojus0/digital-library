@@ -9,7 +9,7 @@ import { ProfileSvg } from '../svg/ProfileSvg';
 import Link from 'next/link';
 import { useUser } from '../state/UserContext';
 import { useRouter } from 'next/router';
-import { useSignOutMutation } from '../graphql/signout';
+import { useSignOutMutation } from '../graphql/user/signout';
 import { CSSTransition } from 'react-transition-group';
 import fadeCss from "Frontend/styles/transitions/Fade.module.scss";
 export function Header() {

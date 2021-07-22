@@ -1,4 +1,4 @@
-import { useRegisterMutation } from "Frontend/src/graphql/register";
+import { useRegisterMutation } from "Frontend/src/graphql/user/register";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";

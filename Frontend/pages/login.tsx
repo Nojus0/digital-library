@@ -10,7 +10,7 @@ import { Button, TextBox } from "Frontend/src/styled/Components";
 import SvgLogo from "Frontend/src/svg/Logo";
 import css from "Frontend/styles/loginRegister.module.scss";
 import transition from "Frontend/styles/transitions/AttentionCard.module.scss";
-import { useLoginMutation } from "Frontend/src/graphql/login";
+import { useLoginMutation } from "Frontend/src/graphql/user/login";
 import { useUser } from "Frontend/src/state/UserContext";
 
 function login(props) {

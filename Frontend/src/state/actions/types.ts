@@ -1,9 +1,10 @@
+import { Role } from "Server/src/entity/User";
 
 export interface LoginAction {
     type: "CHANGE_USER",
     payload: {
         username: string,
-        role: string
+        role: Role
     }
 }
 

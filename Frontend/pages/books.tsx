@@ -3,7 +3,7 @@ import { Header } from 'Frontend/src/components/Header';
 import Container from 'Frontend/src/components/Container'
 import Head from 'next/head'
 import { useQuery } from 'urql';
-import { booksQuery } from 'Frontend/src/graphql/books';
+import { booksQuery } from 'Frontend/src/graphql/books/books';
 import Book from "Frontend/src/components/Book"
 function home() {
     const [page, setPage] = useState(0);

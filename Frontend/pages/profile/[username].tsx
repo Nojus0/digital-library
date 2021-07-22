@@ -7,7 +7,7 @@ import { Header } from "Frontend/src/components/Header";
 import { RankCard } from "Frontend/src/components/RankCard";
 import Seperator from "Frontend/src/components/Seperator";
 import { client } from "Frontend/src/next/graphql"
-import { userProfileQuery } from "Frontend/src/graphql/userProfile";
+import { userProfileQuery } from "Frontend/src/graphql/user/userProfile";
 import { User } from "Server/src/entity/User"
 import { notFound } from "Frontend/src/next/next";
 
@@ -49,7 +49,6 @@ export async function getServerSideProps(ctx) {
     ).toPromise();
 
     if (data?.userProfile == null || error != null) return notFound;
-
     return {
         props: {
             ...data?.userProfile

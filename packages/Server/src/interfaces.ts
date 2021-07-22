@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Stream } from "stream";
-import { Role } from "./entity/User";
+import { Role } from "@dl/shared";
 
 export interface IJwtToken {
     username: string

@@ -1,11 +1,7 @@
 import { Actions } from "./actions/types";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useCurrentUserQuery } from "../graphql/user/currentUser";
-
-export enum Role {
-    Consumer = 0,
-    Administrator = 1,
-}
+import { Role } from "@dl/shared";
 
 interface IUser {
     username: string

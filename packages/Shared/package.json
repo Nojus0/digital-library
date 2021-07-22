@@ -1,0 +1,15 @@
+{
+  "name": "@dl/shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/src/index.js",
+  "typings": "./dist/src/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

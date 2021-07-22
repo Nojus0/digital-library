@@ -2,6 +2,10 @@ import { Actions } from "./actions/types";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useCurrentUserQuery } from "../graphql/user/currentUser";
 
+export enum Role {
+    Consumer = 0,
+    Administrator = 1,
+}
 
 interface IUser {
     username: string
@@ -43,7 +47,7 @@ export function UserContextProvider({ children }) {
     useEffect(() => {
         dispatch({ type: "SET_LOADING", payload: { value: fetching } });
 
-        if (fetching) return;
+        if (fetching || data?.currentUser == null) return;
 
         dispatch({
             type: "CHANGE_USER", payload: {

@@ -1,15 +1,14 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Book, { IBook } from "Frontend/src/components/Book";
-import Container from "Frontend/src/components/Container";
-import { Header } from "Frontend/src/components/Header";
-import { RankCard } from "Frontend/src/components/RankCard";
-import Seperator from "Frontend/src/components/Seperator";
-import { client } from "Frontend/src/next/graphql"
-import { userProfileQuery } from "Frontend/src/graphql/user/userProfile";
-import { User } from "Server/src/entity/User"
-import { notFound } from "Frontend/src/next/next";
+import Book, { IBook } from "src/components/Book";
+import Container from "src/components/Container";
+import { Header } from "src/components/Header";
+import { RankCard } from "src/components/RankCard";
+import Seperator from "src/components/Seperator";
+import { client } from "src/next/graphql"
+import { userProfileQuery } from "src/graphql/user/userProfile";
+import { notFound } from "src/next/next";
 
 interface ProfileProps {
     username: string;

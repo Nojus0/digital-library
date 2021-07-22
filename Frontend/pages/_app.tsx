@@ -1,10 +1,12 @@
 import { Provider } from "urql";
 import { client } from "../src/next/graphql";
-import { Provider as StoreProvider } from "react-redux"
 import "../styles/globals.scss";
-import { UserContextProvider } from "Frontend/src/state/UserContext";
-
+import { UserContextProvider } from "src/state/UserContext";
+import { TestNum } from "../../shared/interfaces"
 function MyApp({ Component, pageProps }) {
+  
+  const a: TestNum = TestNum.no;
+  console.log(a);
   return (
     <Provider value={client}>
       <UserContextProvider>

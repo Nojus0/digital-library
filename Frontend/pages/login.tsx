@@ -3,15 +3,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import AttentionCard from "Frontend/src/components/AttentionCard";
-import Container from "Frontend/src/components/Container";
-import Seperator from "Frontend/src/components/Seperator";
-import { Button, TextBox } from "Frontend/src/styled/Components";
-import SvgLogo from "Frontend/src/svg/Logo";
-import css from "Frontend/styles/loginRegister.module.scss";
-import transition from "Frontend/styles/transitions/AttentionCard.module.scss";
-import { useLoginMutation } from "Frontend/src/graphql/user/login";
-import { useUser } from "Frontend/src/state/UserContext";
+import AttentionCard from "src/components/AttentionCard";
+import Container from "src/components/Container";
+import Seperator from "src/components/Seperator";
+import { Button, TextBox } from "src/styled/Components";
+import SvgLogo from "src/svg/Logo";
+import css from "styles/loginRegister.module.scss";
+import transition from "styles/transitions/AttentionCard.module.scss";
+import { useLoginMutation } from "src/graphql/user/login";
+import { useUser } from "src/state/UserContext";
 
 function login(props) {
   const Router = useRouter();

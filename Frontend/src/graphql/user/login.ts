@@ -1,4 +1,3 @@
-import { Role } from "Server/src/entity/User";
 import { gql, useMutation } from "urql";
 
 

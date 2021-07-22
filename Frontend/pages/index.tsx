@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import styles from "Frontend/styles/main.module.scss";
-import Logo from "Frontend/src/svg/Logo";
-import { Button } from 'Frontend/src/styled/Components';
-import { Container } from 'Frontend/src/components/Container';
+import styles from "styles/main.module.scss";
+import Logo from "src/svg/Logo";
+import { Button } from 'src/styled/Components';
+import { Container } from 'src/components/Container';
 import Link from 'next/link';
 
 export default function Home() {

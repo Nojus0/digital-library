@@ -9,6 +9,7 @@
     "export": "next export",
     "gen": "graphql-codegen --config codegen.yml"
   },
+  
   "dependencies": {
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",

@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
-import { Header } from 'Frontend/src/components/Header'
-import { Container } from "Frontend/src/components/Container"
+import { Header } from 'src/components/Header'
+import { Container } from "src/components/Container"
 import styled from '@emotion/styled'
-import { Button, TextArea, TextBox } from 'Frontend/src/styled/Components'
-import Seperator from 'Frontend/src/components/Seperator'
-import { AddPhotoButton } from 'Frontend/src/svg/AddPhotoSvg'
+import { Button, TextArea, TextBox } from 'src/styled/Components'
+import Seperator from 'src/components/Seperator'
+import { AddPhotoButton } from 'src/svg/AddPhotoSvg'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 

@@ -1,15 +1,15 @@
-import { useRegisterMutation } from "Frontend/src/graphql/user/register";
+import { useRegisterMutation } from "src/graphql/user/register";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import AttentionCard from "../src/components/AttentionCard";
-import Container from "../src/components/Container";
-import Seperator from "../src/components/Seperator";
-import { Button, TextBox } from "../src/styled/Components";
-import SvgLogo from "../src/svg/Logo";
-import css from "../styles/loginRegister.module.scss";
+import AttentionCard from "src/components/AttentionCard";
+import Container from "src/components/Container";
+import Seperator from "src/components/Seperator";
+import { Button, TextBox } from "src/styled/Components";
+import SvgLogo from "src/svg/Logo";
+import css from "src/styles/loginRegister.module.scss";
 import transition from "../styles/transitions/AttentionCard.module.scss";
 import logoTransition from "../styles/transitions/Logo.module.scss";
 

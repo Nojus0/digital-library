@@ -1,7 +1,7 @@
 import { Actions } from "./actions/types";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useCurrentUserQuery } from "../graphql/user/currentUser";
-import { Role } from "Server/src/entity/User";
+
 
 interface IUser {
     username: string
@@ -43,15 +43,15 @@ export function UserContextProvider({ children }) {
     useEffect(() => {
         dispatch({ type: "SET_LOADING", payload: { value: fetching } });
 
-        if (!fetching) {
-            const role: string = "Administrator";
-        }
+        if (fetching) return;
+
         dispatch({
             type: "CHANGE_USER", payload: {
                 username: data.currentUser.username,
                 role: Role[data.currentUser.role]
             }
         });
+
 
     }, [fetching])
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Header } from 'Frontend/src/components/Header';
-import Container from 'Frontend/src/components/Container'
+import { Header } from 'src/components/Header';
+import Container from 'src/components/Container'
 import Head from 'next/head'
 import { useQuery } from 'urql';
-import { booksQuery } from 'Frontend/src/graphql/books/books';
-import Book from "Frontend/src/components/Book"
+import { booksQuery } from 'src/graphql/books/books';
+import Book from "src/components/Book"
 function home() {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(50);

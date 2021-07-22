@@ -10,15 +10,17 @@ import Link from 'next/link';
 import { useUser } from '../state/UserContext';
 import { useRouter } from 'next/router';
 import { useSignOutMutation } from '../graphql/signout';
-
+import { CSSTransition } from 'react-transition-group';
+import fadeCss from "Frontend/styles/transitions/Fade.module.scss";
 export function Header() {
     const [isDrop, setDrop] = useState(false);
     const Router = useRouter();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
-    const [{ username, role }, dispatch] = useUser();
+    const [{ username, role, fetching }, dispatch] = useUser();
     const [{ }, signOut] = useSignOutMutation();
     async function SignOut() {
         await signOut();
+        dispatch({ type: "SIGNOUT" });
         Router.push("/");
     }
 

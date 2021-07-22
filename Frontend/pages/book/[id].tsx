@@ -13,6 +13,8 @@ import { bookQuery } from 'Frontend/src/graphql/book'
 import { Book } from 'Server/src/entity/Book'
 import { notFound } from 'Frontend/src/next/next'
 import { useUser } from 'Frontend/src/state/UserContext'
+import { CSSTransition } from 'react-transition-group'
+import fadeCss from "Frontend/styles/transitions/Fade.module.scss";
 
 export interface IBooksProps extends IBook {
     showBorrow: boolean
@@ -21,7 +23,7 @@ export interface IBooksProps extends IBook {
 export default function id({ id, description = "", name = "", imageUrl, showBorrow }: IBooksProps) {
     const [imgError, setImgError] = useState(false);
     const Router = useRouter()
-    const [{ role }] = useUser()
+    const [{ role, fetching }] = useUser()
     async function submitBorrow() {
         Router.push("/books");
     }
@@ -47,12 +49,16 @@ export default function id({ id, description = "", name = "", imageUrl, showBorr
                         <h1>{name}</h1>
                         <Seperator margin="0" />
                         <p>{description}</p>
+                        {
 
+                        }
                         <ButtonWrapper>
                             {
-                                role == "Administrator" && <Button onClick={submitBorrow}>Borrow</Button>
+                                role == "Administrator" &&
+                                <Button onClick={submitBorrow}>Borrow</Button>
                             }
                         </ButtonWrapper>
+
                     </InfoContainer>
                 </Card>
             </Container>
@@ -97,7 +103,14 @@ const Card = styled.div({
 
 const ButtonWrapper = styled.div({
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
+    button: {
+        padding: "1rem 2rem",
+        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        background: "white",
+        color: "black",
+        margin: "1rem"
+    },
 })
 
 const InfoContainer = styled.div({
@@ -107,14 +120,8 @@ const InfoContainer = styled.div({
         marginBottom: "1rem",
         wordBreak: "break-all",
     },
-    button: {
-        padding: "1rem 2rem",
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-        background: "white",
-        color: "black",
-        margin: "1rem"
-    },
     display: "flex",
+    minHeight: "12.5rem",
     flexDirection: "column",
     p: {
         flexGrow: 1,

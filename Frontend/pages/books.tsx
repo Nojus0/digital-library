@@ -18,7 +18,7 @@ function home() {
             <Container min="1px" value="100%" max="45rem"
                 WrapperStyle={{ marginTop: "2rem" }}>
                 {
-                    data?.books?.map(book => <Book key={book.name}{...book} />)
+                    data?.books?.map((book, index) => <Book key={book.name}{...book} />)
                 }
             </Container>
         </>

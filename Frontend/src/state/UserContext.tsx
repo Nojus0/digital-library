@@ -22,9 +22,8 @@ const useProvideUser = () => {
         switch (action.type) {
             case "CHANGE_USER":
                 return { ...state, ...action.payload };
-
             case "SIGNOUT":
-                return { ...initialState }
+                return { ...initialState, fetching: false}
             case "SET_LOADING":
                 return { ...state, fetching: action.payload.value }
             default:

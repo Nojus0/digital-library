@@ -4,16 +4,11 @@ import Container from 'Frontend/src/components/Container'
 import Head from 'next/head'
 import { useQuery } from 'urql';
 import { booksQuery } from 'Frontend/src/graphql/books';
-import { Book as ServerBook } from 'Server/src/entity/Book';
 import Book from "Frontend/src/components/Book"
-import { CSSTransition } from 'react-transition-group';
-import fadeAnim from "Frontend/styles/transitions/Fade.module.scss";
 function home() {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(50);
-
-    const [{ data, error, fetching }] = useQuery<{ books: ServerBook[] }>({ query: booksQuery, variables: { page, limit } })
-
+    const [{ data, error, fetching }] = useQuery({ query: booksQuery, variables: { page, limit } })
     return (
         <>
             <Head>

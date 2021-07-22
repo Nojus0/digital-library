@@ -14,7 +14,6 @@ export interface IBook {
 
 function Book({ imageUrl, name, id, returnDays }: IBook) {
     const [imgError, setImgError] = useState(false);
-
     return (
         <CardBackground>
             {
@@ -27,13 +26,13 @@ function Book({ imageUrl, name, id, returnDays }: IBook) {
                 returnDays != null ?
                     <Button style={{ cursor: "default" }}>{returnDays} d</Button>
                     :
-                    <Link href={`/books/${id}`}><Button>View</Button></Link>
+                    <Link href={`/book/${id}`}><Button>View</Button></Link>
             }
 
         </CardBackground>
     )
 }
-export default Book
+export default Book;
 
 const CardBackground = styled.div({
     display: "flex",

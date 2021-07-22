@@ -80,7 +80,6 @@ export class UserResolver {
         const valid = await argon.verify(user.password, password);
         if (!valid) return { error: "Invalid password." };
 
-
         res.cookie("auth", CreateJwtToken(user), {
             httpOnly: true,
             secure: IsProd,

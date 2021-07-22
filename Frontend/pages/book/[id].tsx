@@ -11,11 +11,17 @@ import { BookNotFound } from 'Frontend/src/svg/BookNotFound'
 import { client } from 'Frontend/src/next/graphql'
 import { bookQuery } from 'Frontend/src/graphql/book'
 import { Book } from 'Server/src/entity/Book'
-import { notFound } from 'Frontend/src/utils/next'
+import { notFound } from 'Frontend/src/next/next'
+import { useUser } from 'Frontend/src/state/UserContext'
 
-export default function id({ id, description = "", name = "", imageUrl }: IBook) {
+export interface IBooksProps extends IBook {
+    showBorrow: boolean
+}
+
+export default function id({ id, description = "", name = "", imageUrl, showBorrow }: IBooksProps) {
     const [imgError, setImgError] = useState(false);
     const Router = useRouter()
+    const [{ role }] = useUser()
     async function submitBorrow() {
         Router.push("/books");
     }
@@ -43,7 +49,9 @@ export default function id({ id, description = "", name = "", imageUrl }: IBook)
                         <p>{description}</p>
 
                         <ButtonWrapper>
-                            <Button onClick={submitBorrow}>Borrow</Button>
+                            {
+                                role == "Administrator" && <Button onClick={submitBorrow}>Borrow</Button>
+                            }
                         </ButtonWrapper>
                     </InfoContainer>
                 </Card>
@@ -56,11 +64,11 @@ export default function id({ id, description = "", name = "", imageUrl }: IBook)
 export async function getServerSideProps(ctx) {
     const { data, error } = await client.query<{ book: Book }>(bookQuery, { id: parseInt(ctx.params.id) }).toPromise();
 
-    if(data?.book == null || error != null) return notFound;
+    if (data?.book == null || error != null) return notFound;
 
     return {
         props: {
-            ...data?.book
+            ...data?.book,
         }
     }
 }

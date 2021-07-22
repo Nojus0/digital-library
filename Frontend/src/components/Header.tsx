@@ -7,25 +7,23 @@ import SearchSvg from '../svg/SearchSvg';
 import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from '../svg/ProfileSvg';
 import Link from 'next/link';
-
-
-// export interface IHeaderProps {
-//     username: string
-// }
+import { useUser } from '../state/UserContext';
+import { useRouter } from 'next/router';
+import { useSignOutMutation } from '../graphql/signout';
 
 export function Header() {
     const [isDrop, setDrop] = useState(false);
+    const Router = useRouter();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
-
+    const [{ username, role }, dispatch] = useUser();
+    const [{ }, signOut] = useSignOutMutation();
     async function SignOut() {
-    }
-
-    function gotoProfile() {
+        await signOut();
+        Router.push("/");
     }
 
     return (
         <Nav>
-
             <SideInfo>
                 <Link href="/books">
                     <SvgLogo height="100%" />
@@ -39,13 +37,13 @@ export function Header() {
 
             <ProfileContainer ref={dropdownRef}>
                 <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>?</h1>
+                    <h1>{username?.substring(0, 1).toUpperCase()}</h1>
                 </div>
 
                 <Dropdown on={isDrop}>
 
-                    <Link href={`/profile/nojus`}>
-                        <DropdownItem Icon={ProfileSvg} onClick={gotoProfile} text="Profile" />
+                    <Link href={`/profile/${username}`}>
+                        <DropdownItem Icon={ProfileSvg} text="Profile" />
                     </Link>
 
                     <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />

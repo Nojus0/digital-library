@@ -15,7 +15,7 @@ declare module "*.graphql";
 
 declare namespace NodeJS {
     export interface ProcessEnv {
-        DB_NOPAGINATION_SECRET: string,
+        SECRET: string
         NODE_ENV: string
         NEXT_PUBLIC_API_URL: string
     }

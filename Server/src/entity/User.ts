@@ -3,11 +3,12 @@ import { Field, Int, ObjectType } from "type-graphql";
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, Unique, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany, JoinColumn, OneToOne, ManyToMany, JoinTable } from "typeorm";
 import { Book } from "./Book";
 
-
 export enum Role {
     Consumer = 0,
     Administrator = 1,
 }
+// * duplicate code fix this the above is used how to value roles
+
 
 @ObjectType()
 @Entity("users")

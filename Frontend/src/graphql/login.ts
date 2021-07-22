@@ -1,8 +1,32 @@
-import { gql } from "urql";
+import { Role } from "Server/src/entity/User";
+import { gql, useMutation } from "urql";
+
+
+export function useLoginMutation() {
+    return useMutation<ILogin, ILoginVariables>(loginMutation);
+}
+
+export interface ILogin {
+    login: {
+        user: {
+            username: string,
+            role: string
+        },
+        error: string
+    }
+}
+export interface ILoginVariables {
+    email: string,
+    password: string
+}
 
 export const loginMutation = gql`
     mutation login($email: String!, $password: String!) {
         login(email: $email, password: $password) {
+            user {
+                username
+                role
+            }
             error
         }
     }

@@ -1,6 +1,6 @@
 import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange } from "urql";
 
-const isServerSide = typeof window === "undefined";
+export const isServerSide = typeof window === "undefined";
 
 export const ssrCache = ssrExchange({ isClient: !isServerSide })
 

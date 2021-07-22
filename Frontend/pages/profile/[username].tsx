@@ -9,7 +9,7 @@ import Seperator from "Frontend/src/components/Seperator";
 import { client } from "Frontend/src/next/graphql"
 import { userProfileQuery } from "Frontend/src/graphql/userProfile";
 import { User } from "Server/src/entity/User"
-import { notFound } from "Frontend/src/utils/next";
+import { notFound } from "Frontend/src/next/next";
 
 interface ProfileProps {
     username: string;

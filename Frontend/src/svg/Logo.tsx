@@ -1,8 +1,6 @@
-import { useRouter } from "next/router";
 import React from "react";
 
 function SvgLogo(props: React.SVGProps<SVGSVGElement>) {
-  const Router = useRouter();
   return (
     <svg
       cursor="pointer"

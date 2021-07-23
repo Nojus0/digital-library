@@ -1,5 +1,5 @@
 import { Arg, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver, UseMiddleware } from "type-graphql";
-import { Role, User } from "../entity/User";
+import { User } from "../entity/User";
 import jwt from "jsonwebtoken";
 import argon, { argon2id } from "argon2";
 import { IAuthContext, IJwtToken } from "../interfaces";
@@ -7,6 +7,7 @@ import { IApolloContext } from "../interfaces";
 import { CreateJwtToken } from "../JwtTokens";
 import { IsProd } from "../typeorm.config";
 import { isAuthRole } from "../middleware/isAuth";
+import { Role } from "@dl/shared";
 
 @ObjectType()
 export class UserResponse {

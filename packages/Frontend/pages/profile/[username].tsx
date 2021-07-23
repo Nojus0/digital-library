@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Book, { IBook } from "src/components/Book";
+import Book, { IBookProps } from "src/components/Book";
 import Container from "src/components/Container";
 import { Header } from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
@@ -9,11 +9,11 @@ import Seperator from "src/components/Seperator";
 import { client } from "src/next/graphql"
 import { userProfileQuery } from "src/graphql/user/userProfile";
 import { notFound } from "src/next/next";
-
+import { IUser } from "@dl/shared"
 interface ProfileProps {
     username: string;
     role: string;
-    borowing: IBook[];
+    borowing: IBookProps[];
 }
 
 function id({ username = "", borowing = [], role = "" }: ProfileProps) {
@@ -42,7 +42,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
 
 export async function getServerSideProps(ctx) {
 
-    const { data, error } = await client.query<{ userProfile: User }>(
+    const { data, error } = await client.query<{ userProfile: IUser }>(
         userProfileQuery,
         { username: ctx.params.username }
     ).toPromise();

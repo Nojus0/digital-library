@@ -2,8 +2,8 @@
   "name": "@dl/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "./dist/src/index.js",
-  "typings": "./dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",

@@ -1,6 +1,7 @@
 import { Arg, Args, ArgsType, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver, UseMiddleware } from "type-graphql";
 import { Book } from "../entity/Book";
-import { Role, User } from "../entity/User";
+import { User } from "../entity/User";
+import { Role } from "@dl/shared"
 import { IAuthContext, IAuthRoleContext } from "../interfaces";
 import { isAuthRole, NextJsRoute } from "../middleware/isAuth";
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { IBook } from 'src/components/Book'
+import { IBookProps } from 'src/components/Book'
 import Container from 'src/components/Container'
 import { Header } from 'src/components/Header'
 import Seperator from 'src/components/Seperator'
@@ -12,8 +12,9 @@ import { client } from 'src/next/graphql'
 import { bookQuery } from 'src/graphql/books/book'
 import { notFound } from 'src/next/next'
 import { useUser } from 'src/state/UserContext'
+import { Role } from "@dl/shared"
 
-export interface IBooksProps extends IBook {
+export interface IBooksProps extends IBookProps {
     showBorrow: boolean
 }
 
@@ -65,7 +66,7 @@ export default function id({ id, description = "", name = "", imageUrl, showBorr
 
 
 export async function getServerSideProps(ctx) {
-    const { data, error } = await client.query<{ book: Book }>(bookQuery, { id: parseInt(ctx.params.id) }).toPromise();
+    const { data, error } = await client.query<{ book: IBookProps }>(bookQuery, { id: parseInt(ctx.params.id) }).toPromise();
 
     if (data?.book == null || error != null) return notFound;
 

@@ -4,7 +4,7 @@ import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
 
-export interface IBook {
+export interface IBookProps {
     imageUrl: string,
     name: string,
     description: string
@@ -12,7 +12,7 @@ export interface IBook {
     returnDays?: number // change to date in future so it can live countdown
 }
 
-function Book({ imageUrl, name, id, returnDays }: IBook) {
+function Book({ imageUrl, name, id, returnDays }: IBookProps) {
     const [imgError, setImgError] = useState(false);
     return (
         <CardBackground>

@@ -1,4 +1,4 @@
 import { registerEnumType } from "type-graphql";
-import { Role } from "../entity/User";
+import { Role } from "@dl/shared";
 
 registerEnumType(Role, { name: "Role" });

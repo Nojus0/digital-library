@@ -1,5 +1,6 @@
 import { MiddlewareFn } from "type-graphql";
-import { Role, User } from "../entity/User";
+import { User } from "../entity/User";
+import { Role } from "@dl/shared"
 import { IApolloContext, IAuthRoleContext } from "../interfaces";
 import { VerifyToken } from "../JwtTokens";
 import { IsProd } from "../typeorm.config";

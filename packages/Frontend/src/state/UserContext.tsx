@@ -2,7 +2,6 @@ import { Actions } from "./actions/types";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useCurrentUserQuery } from "../graphql/user/currentUser";
 import { Role } from "@dl/shared";
-
 interface IUser {
     username: string
     role: Role

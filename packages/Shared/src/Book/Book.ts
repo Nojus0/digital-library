@@ -1,4 +1,4 @@
-import { IUser } from "../User/entity";
+import { IUser } from "../User/User";
 
 export interface IBook {
     id: number

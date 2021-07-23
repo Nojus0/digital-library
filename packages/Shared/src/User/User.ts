@@ -1,4 +1,4 @@
-import { IBook } from "../Book/entity";
+import { IBook } from "../Book/Book";
 import { Role } from "./interfaces"
 
 export interface IUser {

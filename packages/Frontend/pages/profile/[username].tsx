@@ -10,6 +10,7 @@ import { client } from "src/next/graphql"
 import { userProfileQuery } from "src/graphql/user/userProfile";
 import { notFound } from "src/next/next";
 import { IUser } from "@dl/shared"
+
 interface ProfileProps {
     username: string;
     role: string;

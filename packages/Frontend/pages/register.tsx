@@ -9,9 +9,9 @@ import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
-import css from "src/styles/loginRegister.module.scss";
 import transition from "../styles/transitions/AttentionCard.module.scss";
 import logoTransition from "../styles/transitions/Logo.module.scss";
+import { Form } from "src/components/Form";
 
 function register() {
     const Router = useRouter();
@@ -50,59 +50,61 @@ function register() {
                 <title>Digital Library - Register</title>
             </Head>
 
-            <Container min="1px" value="100%" max="25em" classes={css.container}>
-                <CSSTransition
-                    in={error == ""}
-                    timeout={250}
-                    unmountOnExit
-                    classNames={logoTransition}
-                >
-                    <SvgLogo width="7em" />
-                </CSSTransition>
-                <h1>Register</h1>
+            <Container min="1px" value="100%" max="25em">
+                <Form>
+                    <CSSTransition
+                        in={error == ""}
+                        timeout={250}
+                        unmountOnExit
+                        classNames={logoTransition}
+                    >
+                        <SvgLogo width="7em" />
+                    </CSSTransition>
+                    <h1>Register</h1>
 
-                <CSSTransition
-                    in={error !== ""}
-                    timeout={250}
-                    unmountOnExit
-                    classNames={transition}
-                >
-                    <AttentionCard color="#FF3636">
-                        <h5>{error}</h5>
-                    </AttentionCard>
-                </CSSTransition>
+                    <CSSTransition
+                        in={error !== ""}
+                        timeout={250}
+                        unmountOnExit
+                        classNames={transition}
+                    >
+                        <AttentionCard color="#FF3636">
+                            <h5>{error}</h5>
+                        </AttentionCard>
+                    </CSSTransition>
 
-                <TextBox
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
-                />
-                <TextBox
-                    value={username}
-                    onChange={(e) => setUser(e.target.value)}
-                    placeholder="Username"
-                />
-                <TextBox
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPass(e.target.value)}
-                />
-                <TextBox
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirm}
-                    onChange={(e) => setConfirm(e.target.value)}
-                />
-                <Button onClick={SubmitRegister}>Register</Button>
-                <Seperator />
+                    <TextBox
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Email"
+                    />
+                    <TextBox
+                        value={username}
+                        onChange={(e) => setUser(e.target.value)}
+                        placeholder="Username"
+                    />
+                    <TextBox
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPass(e.target.value)}
+                    />
+                    <TextBox
+                        type="password"
+                        placeholder="Confirm Password"
+                        value={confirm}
+                        onChange={(e) => setConfirm(e.target.value)}
+                    />
+                    <Button onClick={SubmitRegister}>Register</Button>
+                    <Seperator />
 
-                <p>
-                    Already have an account?
-                    <Link href="/login">
-                        <span>Log In</span>
-                    </Link>
-                </p>
+                    <p>
+                        Already have an account?
+                        <Link href="/login">
+                            <span>Log In</span>
+                        </Link>
+                    </p>
+                </Form>
             </Container>
         </>
     );

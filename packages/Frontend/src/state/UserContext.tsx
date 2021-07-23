@@ -2,6 +2,7 @@ import { Actions } from "./actions/types";
 import { createContext, useContext, useEffect, useReducer } from "react";
 import { useCurrentUserQuery } from "../graphql/user/currentUser";
 import { Role } from "@dl/shared";
+
 interface IUser {
     username: string
     role: Role
@@ -26,6 +27,7 @@ const useProvideUser = () => {
                 return { ...initialState, fetching: false }
             case "SET_LOADING":
                 return { ...state, fetching: action.payload.value }
+
             default:
                 return state;
         }

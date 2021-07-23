@@ -2,5 +2,11 @@
   "private": true,
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "scripts": {
+    "server": "cd packages/Server/ && npm run dev",
+    "frontend": "cd packages/Frontend/ && npm run dev",
+    "shared": "cd packages/Shared/ && npm run dev",
+    "dev": "yarn server & yarn frontend & yarn shared"
+  }
 }

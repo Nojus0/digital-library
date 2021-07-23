@@ -8,10 +8,10 @@ import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
-import css from "styles/loginRegister.module.scss";
 import transition from "styles/transitions/AttentionCard.module.scss";
 import { useLoginMutation } from "src/graphql/user/login";
 import { useUser } from "src/state/UserContext";
+import { Form } from "src/components/Form";
 
 function login(props) {
   const Router = useRouter();
@@ -22,7 +22,8 @@ function login(props) {
   const [{ fetching }, LoginGQL] = useLoginMutation();
   if (user.username != null) Router.push("/books");
 
-  async function SubmitLogin() {
+  async function SubmitLogin(e: React.MouseEvent) {
+    e.preventDefault();
     setError("");
 
     const ERROR = findErrors();
@@ -52,34 +53,42 @@ function login(props) {
       <Head>
         <title>Digital Library - Log In</title>
       </Head>
-      <Container min="1px" value="100%" max="25em" classes={css.container}>
-        <SvgLogo width="7em" />
-        <h1>Log In</h1>
-        <CSSTransition
-          in={error !== ""}
-          timeout={250}
-          unmountOnExit
-          classNames={transition}
-        >
-          <AttentionCard color="#FF3636">
-            <h5>{error}</h5>
-          </AttentionCard>
-        </CSSTransition>
+      <Container min="1px" value="100%" max="25em" >
+        <Form>
+          <SvgLogo width="7em" />
+          <h1>Log In</h1>
+          <CSSTransition
+            in={error !== ""}
+            timeout={250}
+            unmountOnExit
+            classNames={transition}
+          >
+            <AttentionCard color="#FF3636">
+              <h5>{error}</h5>
+            </AttentionCard>
+          </CSSTransition>
 
-        <TextBox onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
-        <TextBox onChange={e => setPass(e.target.value)} value={password} type="password" placeholder="Password" />
-        <Button onClick={SubmitLogin}>Log In</Button>
-        <Seperator />
+          <form action="">
+            <TextBox type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
+            <TextBox type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
+            <Button type="submit" onClick={SubmitLogin}>Log In</Button>
+          </form>
 
-        <p>
-          Don't have an account?
-          <Link href="/register">
-            <span>Register</span>
-          </Link>
-        </p>
+          <Seperator />
+
+          <p>
+            Don't have an account?
+            <Link href="/register">
+              <span>Register</span>
+            </Link>
+          </p>
+        </Form>
       </Container>
     </>
   );
 }
+
+
+
 
 export default login;

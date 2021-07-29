@@ -32,7 +32,7 @@ export class User extends BaseEntity {
     @OneToMany(type => Book, book => book.creator)
     createdBooks: Book[]
 
-    @ManyToMany(type => Book)
+    @ManyToMany(type => Book, { onDelete: "CASCADE", onUpdate: "CASCADE", nullable: true })
     @JoinTable({ name: "borowing" })
     @Field(type => [Book], { nullable: true })
     borowing: Book[]

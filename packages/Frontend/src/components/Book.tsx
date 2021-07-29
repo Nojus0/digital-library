@@ -1,18 +1,17 @@
 import styled from '@emotion/styled'
-import React, { useState } from 'react'
+import React, { forwardRef, useState } from 'react'
 import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
+import { motion } from 'framer-motion'
 
 export interface IBookProps {
     imageUrl: string,
     name: string,
-    description: string
     id: number
-    returnDays?: number // change to date in future so it can live countdown
 }
 
-function Book({ imageUrl, name, id, returnDays }: IBookProps) {
+function Book({ id, imageUrl, name }: IBookProps) {
     const [imgError, setImgError] = useState(false);
     return (
         <CardBackground>
@@ -22,19 +21,18 @@ function Book({ imageUrl, name, id, returnDays }: IBookProps) {
 
             <h1>{name}</h1>
 
-            {
-                returnDays != null ?
-                    <Button style={{ cursor: "default" }}>{returnDays} d</Button>
-                    :
-                    <Link href={`/book/${id}`}><Button>View</Button></Link>
-            }
+            <Link href={`/book/${id}`} passHref>
+                <a>
+                    <Button>View</Button>
+                </a>
+            </Link>
 
         </CardBackground>
     )
 }
-export default Book;
+export default Book
 
-const CardBackground = styled.div({
+const CardBackground = styled(motion.div)({
     display: "flex",
     width: "100%",
     height: "7rem",

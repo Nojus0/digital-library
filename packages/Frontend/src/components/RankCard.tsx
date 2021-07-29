@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { HTMLMotionProps, motion } from 'framer-motion'
 import React from 'react'
 
 export function RankCard(props: IRankCardProps) {
@@ -9,7 +10,7 @@ export function RankCard(props: IRankCardProps) {
     )
 }
 
-const Background = styled.div({
+const Background = styled(motion.div)({
     userSelect: "none",
     background: "#3D3D3D",
     borderRadius: ".6rem",
@@ -22,6 +23,6 @@ const Background = styled.div({
     }
 })
 
-interface IRankCardProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+interface IRankCardProps extends HTMLMotionProps<"div"> {
     rank: string
 }

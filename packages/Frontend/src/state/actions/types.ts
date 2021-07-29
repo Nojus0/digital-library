@@ -1,22 +1,22 @@
-import { Role } from "Server/src/entity/User";
+import { Role } from "@dl/shared";
 
-export interface LoginAction {
+export interface ChangeUserAction {
     type: "CHANGE_USER",
     payload: {
         username: string,
-        role: Role
+        role: Role,
     }
 }
 
-export interface LogoutAction {
+export interface SignoutAction {
     type: "SIGNOUT"
 }
 
-export interface LoadingAction {
+export interface setLoadingAction {
     type: "SET_LOADING"
     payload: {
         value: boolean
     }
 }
 
-export type Actions = LoginAction | LogoutAction | LoadingAction
+export type Actions = ChangeUserAction | SignoutAction | setLoadingAction

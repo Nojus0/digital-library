@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
+import { motion } from 'framer-motion'
 
-export const Button = styled.button({
+export const Button = styled(motion.button)({
     fontWeight: 500,
     outline: "none",
     cursor: "pointer",
@@ -28,7 +29,6 @@ export const TextBox = styled.input({
     padding: "1.25rem",
     border: "2.5px solid black"
 })
-
 
 export const TextArea = styled.textarea({
     background: "white",

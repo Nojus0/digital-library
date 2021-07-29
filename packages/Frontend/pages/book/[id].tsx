@@ -13,17 +13,26 @@ import { bookQuery } from 'src/graphql/books/book'
 import { notFound } from 'src/next/next'
 import { useUser } from 'src/state/UserContext'
 import { Role } from "@dl/shared"
+import { ManageUser } from 'src/components/ManageUser'
+import { motion } from 'framer-motion'
 
 export interface IBooksProps extends IBookProps {
     showBorrow: boolean
+}
+
+const item = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1 }
 }
 
 export default function id({ id, description = "", name = "", imageUrl, showBorrow }: IBooksProps) {
     const [imgError, setImgError] = useState(false);
     const Router = useRouter()
     const [{ role, fetching }] = useUser()
-    async function submitBorrow() {
-        Router.push("/books");
+    const [isManage, setManage] = useState(false);
+
+    async function Manage() {
+        setManage(true)
     }
 
     function imageError() {
@@ -32,12 +41,13 @@ export default function id({ id, description = "", name = "", imageUrl, showBorr
 
     return (
         <>
+            <ManageUser setShow={setManage} show={isManage} />
             <Head>
                 <title>Digital Library - {name}</title>
             </Head>
             <Header />
             <Container stretch WrapperStyle={{ margin: "1.5rem 0" }} max="65rem" min="1px" value="100%">
-                <Card>
+                <Card variants={item} animate="show" initial="hidden">
                     <div>
                         {
                             imgError ? <BookNotFound /> : <img onError={imageError} src={imageUrl} />
@@ -51,10 +61,8 @@ export default function id({ id, description = "", name = "", imageUrl, showBorr
 
                         }
                         <ButtonWrapper>
-                            {
-                                role == Role.Administrator &&
-                                <Button onClick={submitBorrow}>Borrow</Button>
-                            }
+
+                            <Button style={{ visibility: role == Role.Administrator ? "visible" : "hidden" }} onClick={Manage}>Manage</Button>
                         </ButtonWrapper>
 
                     </InfoContainer>
@@ -78,7 +86,7 @@ export async function getServerSideProps(ctx) {
 }
 
 
-const Card = styled.div({
+const Card = styled(motion.div)({
     background: "#F3F3F3",
     borderRadius: ".4rem",
     display: "grid",

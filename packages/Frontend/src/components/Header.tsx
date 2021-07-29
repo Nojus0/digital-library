@@ -1,40 +1,48 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useOnclickOutside from 'react-cool-onclickoutside';
 import SvgLogo from 'src/svg/Logo';
 import Seperator from './Seperator'
-import SearchSvg from 'src/svg/SearchSvg';
 import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from 'src/svg/ProfileSvg';
 import Link from 'next/link';
 import { useUser } from '../state/UserContext';
 import { useRouter } from 'next/router';
 import { useSignOutMutation } from '../graphql/user/signout';
-import { CSSTransition } from 'react-transition-group';
+import { Role } from "@dl/shared";
+import { SearchBar } from './SearchBar';
 export function Header() {
+
+    const [search, setSearch] = useState("");
     const [isDrop, setDrop] = useState(false);
     const Router = useRouter();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
     const [{ username, role, fetching }, dispatch] = useUser();
-    const [{ }, signOut] = useSignOutMutation();
+    const [{ }, signOutGQL] = useSignOutMutation();
+
+    useEffect(() => {
+        document.body.style.overflowY = "scroll";
+
+        return () => { document.body.style.overflowY = "" }
+    }, [])
+
     async function SignOut() {
-        await signOut();
+        await signOutGQL();
+        await Router.push("/");
         dispatch({ type: "SIGNOUT" });
-        Router.push("/");
     }
 
     return (
         <Nav>
             <SideInfo>
-                <Link href="/books">
-                    <SvgLogo height="100%" />
+                <Link href="/books" passHref>
+                    <a>
+                        <SvgLogo height="100%" />
+                    </a>
                 </Link>
             </SideInfo>
 
-            <Search>
-                <SearchSvg fill="grey" />
-                <input placeholder="Search by Book Name"></input>
-            </Search>
+            <SearchBar state={[search, setSearch]} />
 
             <ProfileContainer ref={dropdownRef}>
                 <div onClick={e => setDrop(prev => !prev)}>
@@ -43,16 +51,22 @@ export function Header() {
 
                 <Dropdown on={isDrop}>
 
-                    <Link href={`/profile/${username}`}>
-                        <DropdownItem Icon={ProfileSvg} text="Profile" />
+                    <Link href={`/profile/${username}`} passHref>
+                        <a><DropdownItem Icon={ProfileSvg} text="Profile" /></a>
                     </Link>
 
                     <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
 
-                    <Link href="/addbook">
-                        <DropdownItem Icon={ProfileSvg} text="Add a Book" />
-                    </Link>
-                    <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
+                    {
+                        role == Role.Administrator &&
+                        <>
+                            <Link href="/addbook" passHref>
+                                <a ><DropdownItem Icon={ProfileSvg} text="Add a Book" /></a>
+                            </Link>
+                            <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
+                        </>
+                    }
+
 
                     <DropdownItem Icon={ProfileSvg} onClick={SignOut} text="Sign out" />
                 </Dropdown>
@@ -64,6 +78,7 @@ export function Header() {
 
 const Nav = styled.nav({
     position: "sticky",
+    zIndex: 2,
     top: "0",
     padding: "0 .75rem",
     gap: "1rem",
@@ -110,23 +125,3 @@ const ProfileContainer = styled.div({
 
 })
 
-const Search = styled.div({
-    display: 'flex',
-    background: "#EFEFEF",
-    borderRadius: ".4rem",
-    alignItems: "center",
-    alignSelf: "center",
-    justifySelf: "center",
-    width: "clamp(1px, 100%, 45rem)",
-    "svg": {
-        padding: "0 0 0 .75rem",
-    },
-    "input": {
-        fontSize: "0.75rem",
-        width: "100%",
-        margin: "1rem 1rem 1rem .20rem",
-        background: "transparent",
-        outline: "none",
-        border: "none",
-    }
-})

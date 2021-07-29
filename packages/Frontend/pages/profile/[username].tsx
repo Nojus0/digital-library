@@ -10,11 +10,41 @@ import { client } from "src/next/graphql"
 import { userProfileQuery } from "src/graphql/user/userProfile";
 import { notFound } from "src/next/next";
 import { IUser } from "@dl/shared"
+import { motion } from "framer-motion";
 
 interface ProfileProps {
     username: string;
     role: string;
     borowing: IBookProps[];
+}
+
+const variants = {
+    hidden: {
+        opacity: 0,
+    },
+    show: {
+        opacity: 1,
+    }
+}
+
+const container = {
+    show: {
+        transition: {
+            staggerChildren: 0.1,
+        }
+    }
+}
+
+const bookVariant = {
+    hidden: {
+        opacity: 0,
+    },
+    show: {
+        opacity: 1,
+        transition: {
+            delay: 0.3
+        },
+    }
 }
 
 function id({ username = "", borowing = [], role = "" }: ProfileProps) {
@@ -24,17 +54,24 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 <title>{username}'s Profile - Digital Library</title>
             </Head>
             <Header />
-            <Container min="1px" value="100%" max="45rem" stretch>
-                <NameLogo>
+            <Container container={{ variants: container, animate: "show", initial: "hidden" }} min="1px" value="100%" max="45rem" stretch>
+
+                <NameLogo variants={variants}>
                     <ProfileLogo>
                         <h1>{username?.substring(0, 1)?.toUpperCase()}</h1>
                     </ProfileLogo>
                     <h1>{username}</h1>
                 </NameLogo>
-                <RankCard rank={role} />
-                <Seperator />
-                <BorowedBrowser>
-                    {borowing.map(book => <Book key={book.name} {...book} />)}
+
+                <RankCard variants={variants} rank={role} />
+                <Seperator variants={variants} />
+                <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
+                    {
+                        borowing.map(book =>
+                            <motion.div variants={bookVariant}>
+                                <Book {...book} key={book.name} />
+                            </motion.div>)
+                    }
                 </BorowedBrowser>
             </Container>
         </>
@@ -58,7 +95,7 @@ export async function getServerSideProps(ctx) {
 
 export default id;
 
-const NameLogo = styled.div({
+const NameLogo = styled(motion.div)({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
@@ -70,7 +107,7 @@ const NameLogo = styled.div({
     },
 });
 
-const ProfileLogo = styled.div({
+const ProfileLogo = styled(motion.div)({
     display: "flex",
     margin: "1rem",
     userSelect: "none",
@@ -88,7 +125,7 @@ const ProfileLogo = styled.div({
     },
 });
 
-const BorowedBrowser = styled.div({
+const BorowedBrowser = styled(motion.div)({
     margin: "1rem 0",
     display: "flex",
     flexDirection: "column",

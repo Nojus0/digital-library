@@ -4,6 +4,26 @@ import Logo from "src/svg/Logo";
 import { Button } from 'src/styled/Components';
 import { Container } from 'src/components/Container';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
+
+
+const variants = {
+  show: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+const item = {
+  show: {
+    y: 0,
+    opacity: 1
+  },
+  hidden: {
+    y: -100,
+    opacity: 0
+  }
+}
 
 export default function Home() {
   return (
@@ -16,17 +36,17 @@ export default function Home() {
         <meta name="description" content="Digital Library - Home Page" />
       </Head>
 
-      <Container WrapperStyle={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
+      <Container container={{ variants, animate: "show", initial: "hidden" }} WrapperStyle={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
 
-        <Logo height="45vh" />
-        <h1 className={styles.maintext}>Digital Library</h1>
+        <Logo variants={item} height="45vh" />
+        <motion.h1 variants={item} className={styles.maintext}>Digital Library</motion.h1>
 
         <div className={styles.actionContainer}>
           <Link href="/register">
-            <Button>Register</Button>
+            <Button variants={item}>Register</Button>
           </Link>
           <Link href="/login">
-            <Button style={{ background: "transparent", color: "black" }} >Log In</Button>
+            <Button variants={item} style={{ background: "transparent", color: "black" }} >Log In</Button>
           </Link>
         </div>
 

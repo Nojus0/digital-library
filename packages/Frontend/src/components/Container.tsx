@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { HTMLMotionProps, motion } from "framer-motion";
 import React from "react";
-import styles from "../../styles/container.module.scss";
+import styles from "styles/container.module.scss";
 
 export function Container({
     max,
@@ -16,7 +17,7 @@ export function Container({
 }: IContainer) {
     return (
         <ContainerWrapper {...wrapper} style={WrapperStyle}>
-            <div
+            <motion.div
                 {...container}
                 className={`${stretch ? styles.stretch : ""} ${classes ? classes : ""}`}
                 style={{
@@ -24,7 +25,7 @@ export function Container({
                 }}
             >
                 {children}
-            </div>
+            </motion.div>
         </ContainerWrapper>
     );
 }
@@ -56,10 +57,7 @@ export interface IContainer {
     /**
      * Container div attributes
      */
-    container?: React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLDivElement>,
-        HTMLDivElement
-    >;
+    container?: HTMLMotionProps<"div">;
     /**
      * Styles for the wrapper, wrapper[div] -> container[div] -> children
      * If adding margin i recommed adding it to the

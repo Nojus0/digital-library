@@ -1,15 +1,20 @@
 import styled from '@emotion/styled'
+import { AnimatePresence, motion } from 'framer-motion'
 import React from 'react'
-import { CSSTransition } from 'react-transition-group'
-import transition from "../../styles/transitions/Fade.module.scss";
 
 function Dropdown({ on, children }: IDropdown) {
+
     return (
-        <CSSTransition in={on} timeout={150} unmountOnExit classNames={transition}>
-            <Background>
-                {children}
-            </Background>
-        </CSSTransition>
+        <AnimatePresence>
+            {
+                on && (
+                    <Background transition={{ duration: 0.15 }} exit={{ opacity: 0 }} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                        {children}
+                    </Background>
+                )
+            }
+        </AnimatePresence>
+
     )
 }
 
@@ -28,17 +33,19 @@ export function DropdownItem(attr: IDropdownItem) {
 export default Dropdown
 
 
-const Background = styled.div({
+const Background = styled(motion.div)({
     position: "absolute",
     display: "flex",
-    alignItems: "center",
     flexDirection: "column",
     top: "3rem",
     transform: "translate(-42.5%, 12.5%)",
     background: "#EFEFEF",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: ".2rem",
-    width: "15rem"
+    width: "15rem",
+    a: {
+        textDecoration: "none"
+    }
 })
 const BgItem = styled.div({
     display: "flex",

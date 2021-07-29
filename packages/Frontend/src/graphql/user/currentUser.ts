@@ -1,8 +1,8 @@
 import { gql, useQuery, UseQueryArgs } from "urql";
 
-export function useCurrentUserQuery(args?: UseQueryArgs<object, ICurrentUser>) {
-  return useQuery<ICurrentUser>({ query: currentUserQuery, ...args });
-}
+// export function useCurrentUserQuery(args?: UseQueryArgs<object, ICurrentUser>) {
+//   return useQuery<ICurrentUser>({ ...args, query: currentUserQuery, });
+// }
 
 
 export interface ICurrentUser {

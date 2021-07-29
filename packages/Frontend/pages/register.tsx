@@ -3,15 +3,23 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import AttentionCard from "src/components/AttentionCard";
 import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
-import transition from "../styles/transitions/AttentionCard.module.scss";
-import logoTransition from "../styles/transitions/Logo.module.scss";
 import { Form } from "src/components/Form";
+import { AnimatePresence } from "framer-motion";
+
+
+const variants = {
+    normal: {
+        width: "7rem"
+    },
+    collapsed: {
+        width: "2rem"
+    }
+}
 
 function register() {
     const Router = useRouter();
@@ -22,7 +30,8 @@ function register() {
     const [confirm, setConfirm] = useState("");
     const [, register] = useRegisterMutation();
 
-    async function SubmitRegister() {
+    async function SubmitRegister(e: React.MouseEvent) {
+        e.preventDefault();
         if (!IsAcceptable(email)) return setError("Email too short.");
         if (!IsAcceptable(username)) return setError("Username too short.");
         if (!IsAcceptable(password)) return setError("Password too short.");
@@ -52,26 +61,13 @@ function register() {
 
             <Container min="1px" value="100%" max="25em">
                 <Form>
-                    <CSSTransition
-                        in={error == ""}
-                        timeout={250}
-                        unmountOnExit
-                        classNames={logoTransition}
-                    >
-                        <SvgLogo width="7em" />
-                    </CSSTransition>
+                    <SvgLogo variants={variants} animate={error == "" ? "normal" : "collapsed"} width="7em" />
                     <h1>Register</h1>
 
-                    <CSSTransition
-                        in={error !== ""}
-                        timeout={250}
-                        unmountOnExit
-                        classNames={transition}
-                    >
-                        <AttentionCard color="#FF3636">
-                            <h5>{error}</h5>
-                        </AttentionCard>
-                    </CSSTransition>
+
+                    <AttentionCard show={error != ""} color="#FF3636">
+                        <h5>{error}</h5>
+                    </AttentionCard>
 
                     <TextBox
                         value={email}
@@ -95,7 +91,7 @@ function register() {
                         value={confirm}
                         onChange={(e) => setConfirm(e.target.value)}
                     />
-                    <Button onClick={SubmitRegister}>Register</Button>
+                    <Button type="submit" onClick={SubmitRegister}>Register</Button>
                     <Seperator />
 
                     <p>

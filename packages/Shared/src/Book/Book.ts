@@ -8,6 +8,4 @@ export interface IBook {
     imageUrl: string
 
     description: string
-
-    creator: IUser
 }

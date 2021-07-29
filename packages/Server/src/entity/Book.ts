@@ -22,6 +22,6 @@ export class Book extends BaseEntity {
     @Column({ length: 4096 })
     description: string
 
-    @ManyToOne(type => User, user => user.createdBooks, { nullable: false })
+    @ManyToOne(type => User, user => user.createdBooks, { nullable: false, onDelete: "CASCADE", onUpdate: "CASCADE" })
     creator: User
 }

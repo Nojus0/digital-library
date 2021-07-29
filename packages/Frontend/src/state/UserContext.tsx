@@ -1,7 +1,10 @@
 import { Actions } from "./actions/types";
-import { createContext, useContext, useEffect, useReducer } from "react";
-import { useCurrentUserQuery } from "../graphql/user/currentUser";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import { currentUserQuery, ICurrentUser } from "../graphql/user/currentUser";
 import { Role } from "@dl/shared";
+import { useQuery } from "urql";
+import { client, isServerSide } from "src/next/graphql";
+import { ChangeUser, setLoading } from "./actions/actions";
 
 interface IUser {
     username: string
@@ -11,13 +14,13 @@ interface IUser {
 
 const UserContext = createContext<ReturnType<typeof useProvideUser>>(null);
 
-const initialState: IUser = {
-    username: null,
-    role: null,
-    fetching: true
-}
-
 const useProvideUser = () => {
+
+    const initialState: IUser = {
+        username: null,
+        role: null,
+        fetching: true,
+    }
 
     function reducer(state: IUser, action: Actions): IUser {
         switch (action.type) {
@@ -27,7 +30,6 @@ const useProvideUser = () => {
                 return { ...initialState, fetching: false }
             case "SET_LOADING":
                 return { ...state, fetching: action.payload.value }
-
             default:
                 return state;
         }
@@ -38,24 +40,20 @@ const useProvideUser = () => {
 export const useUser = () => useContext(UserContext);
 
 export function UserContextProvider({ children }) {
-    const [{ data, fetching }] = useCurrentUserQuery();
+
     const [state, dispatch] = useProvideUser();
 
-    useEffect(() => {
-        dispatch({ type: "SET_LOADING", payload: { value: fetching } });
+    async function setCurrentUser() {
+        const { data, error } = await client.query<ICurrentUser>(currentUserQuery).toPromise();
 
-        if (fetching || data?.currentUser == null) return;
+        if (error || data.currentUser == null) return dispatch(setLoading(false));
 
-        dispatch({
-            type: "CHANGE_USER", payload: {
-                username: data.currentUser.username,
-                role: Role[data.currentUser.role]
-            }
-        });
+        const { currentUser: { username, role } } = data;
 
+        dispatch(ChangeUser(username, Role[role]))
+    }
 
-    }, [fetching])
-
+    useEffect(() => { setCurrentUser() }, [])
     return (
         <UserContext.Provider value={[state, dispatch]}>
             {children}

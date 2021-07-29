@@ -2,7 +2,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { CSSTransition } from "react-transition-group";
 import AttentionCard from "src/components/AttentionCard";
 import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
@@ -12,6 +11,8 @@ import transition from "styles/transitions/AttentionCard.module.scss";
 import { useLoginMutation } from "src/graphql/user/login";
 import { useUser } from "src/state/UserContext";
 import { Form } from "src/components/Form";
+import { Role } from "@dl/shared";
+import { ChangeUser } from "src/state/actions/actions";
 
 function login(props) {
   const Router = useRouter();
@@ -24,17 +25,17 @@ function login(props) {
 
   async function SubmitLogin(e: React.MouseEvent) {
     e.preventDefault();
-    setError("");
 
     const ERROR = findErrors();
     if (ERROR != null) return setError(ERROR)
 
     const { data, error } = await LoginGQL({ email, password })
 
-    if (data.login.error != null || error != null) // eh
-      return setError(data.login.error || "Cannot connect to server.");
+    if (data.login.user == null) return setError(data.login.error || "Cannot connect to server.");
 
-    dispatch({ type: "CHANGE_USER", payload: { ...data.login.user } })
+    const { login: { user: { role, username } } } = data;
+
+    dispatch(ChangeUser(username, Role[role]));
 
     Router.push("/books");
   }
@@ -46,6 +47,7 @@ function login(props) {
     return null;
   }
 
+  if (user.username != null) Router.push("/books");
   if (user.fetching) return <div></div>
 
   return (
@@ -57,16 +59,11 @@ function login(props) {
         <Form>
           <SvgLogo width="7em" />
           <h1>Log In</h1>
-          <CSSTransition
-            in={error !== ""}
-            timeout={250}
-            unmountOnExit
-            classNames={transition}
-          >
-            <AttentionCard color="#FF3636">
-              <h5>{error}</h5>
-            </AttentionCard>
-          </CSSTransition>
+
+          <AttentionCard show={error != ""} color="#FF3636">
+            <h5>{error}</h5>
+          </AttentionCard>
+
 
           <form action="">
             <TextBox type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />

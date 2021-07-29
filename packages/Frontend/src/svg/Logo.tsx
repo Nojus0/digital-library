@@ -1,12 +1,12 @@
+import { ForwardRefComponent, motion, SVGMotionProps } from "framer-motion";
 import React from "react";
 
-function SvgLogo(props: React.SVGProps<SVGSVGElement>) {
+function SvgLogo(props: SVGMotionProps<SVGSVGElement>) {
   return (
-    <svg
+    <motion.svg
       cursor="pointer"
       viewBox="0 0 239 228"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <path
@@ -21,7 +21,7 @@ function SvgLogo(props: React.SVGProps<SVGSVGElement>) {
         d="M135.377 34.825V15.423l-14.388 2.011v20.073l14.388-2.681zm-16.457 2.682l-14.388-2.681V15.422l14.388 2.011v20.073z"
         fill="#fff"
       />
-    </svg>
+    </motion.svg>
   );
 }
 

@@ -24,7 +24,7 @@ const item = {
     opacity: 0
   }
 }
-
+// TODO removed animations for buttons maybe add fade in effect without stagger?
 export default function Home() {
   return (
     <>
@@ -43,10 +43,10 @@ export default function Home() {
 
         <div className={styles.actionContainer}>
           <Link href="/register">
-            <Button variants={item}>Register</Button>
+            <Button>Register</Button>
           </Link>
           <Link href="/login">
-            <Button variants={item} style={{ background: "transparent", color: "black" }} >Log In</Button>
+            <Button style={{ background: "transparent", color: "black" }} >Log In</Button>
           </Link>
         </div>
 

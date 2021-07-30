@@ -8,7 +8,8 @@ import Book from "src/components/Book";
 import { AnimatePresence, motion } from "framer-motion";
 import { IBook } from "@dl/shared";
 import { client } from "src/next/graphql";
-import { useOnScreen } from "src/components/Hooks/useOnScreen";
+import { useVisibility } from "src/hooks/useVisibility";
+import { useUser } from "src/state/UserContext";
 
 const container = {
     show: {
@@ -26,24 +27,30 @@ const item = {
 function books() {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
+    const [isVisible, ref] = useVisibility<HTMLDivElement>(0, 500)
+    const [hasMore, setHasMore] = useState(true);
     const [books, setBooks] = useState<IBook[]>([]);
-    const lastBookRef = useRef<HTMLDivElement>();
-    const seen = useOnScreen(lastBookRef);
-
+    const [user, dispatch] = useUser();
     async function refetchBooks() {
         const { data, error } = await client
             .query<{ books: IBook[] }>(booksQuery, { page, limit })
             .toPromise();
 
-        if (data?.books == null || error != null) return;
+        if (error) return; // TODO add popup
 
-        setBooks(data.books);
+        if (data.books.length != limit) return setHasMore(false);
+
+        setHasMore(true);
+        setBooks(prev => [...prev, ...data.books]);
     }
-    console.log("render")
     useEffect(() => {
-        refetchBooks();
+        if (hasMore) refetchBooks();
     }, [page, limit]);
-    console.log(lastBookRef)
+
+    useEffect(() => {
+        if (isVisible) setPage(prev => prev + limit);
+    }, [isVisible]);
+
     return (
         <>
             <Head>
@@ -56,23 +63,29 @@ function books() {
                 max="45rem"
                 WrapperStyle={{ marginTop: "1.5rem" }}
             >
-                {books != null && (
-                    <motion.div initial="hidden" animate="show" variants={container}>
-                        
-                        {books.map((book, index) => (
-                            <motion.div ref={lastBookRef} key={book.id} variants={item}>
-                                <Book
-                                    {...book}
-                                />
-                            </motion.div>
-                        ))}
-
-
-                    </motion.div>
-                )}
+                <BooksList ref={ref} books={books} />
             </Container>
         </>
     );
 }
 
+interface IBooksListProps {
+    books: IBook[],
+}
+
+const BooksList = React.forwardRef<HTMLDivElement, IBooksListProps>(({ books }, ref) => {
+    return (
+        <motion.div initial="hidden" animate="show" variants={container}>
+            {
+                books.map((book, index) => (
+                    <motion.div ref={ref} key={book.id} variants={item}>
+                        <Book
+                            {...book}
+                        />
+                    </motion.div>
+                ))
+            }
+        </motion.div>
+    )
+})
 export default books;

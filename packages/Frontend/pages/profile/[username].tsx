@@ -3,14 +3,14 @@ import Head from "next/head";
 import React from "react";
 import Book, { IBookProps } from "src/components/Book";
 import Container from "src/components/Container";
-import { Header } from "src/components/Header";
+import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/Seperator";
 import { client } from "src/next/graphql"
 import { userProfileQuery } from "src/graphql/user/userProfile";
-import { notFound } from "src/next/next";
 import { IUser } from "@dl/shared"
 import { motion } from "framer-motion";
+import { GetServerSideProps } from "next";
 
 interface ProfileProps {
     username: string;
@@ -46,7 +46,7 @@ const bookVariant = {
         },
     }
 }
-
+// TODO change motion div from wrapping book component to book having motion div attributes. 
 function id({ username = "", borowing = [], role = "" }: ProfileProps) {
     return (
         <>
@@ -68,8 +68,8 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
                     {
                         borowing.map(book =>
-                            <motion.div variants={bookVariant}>
-                                <Book {...book} key={book.name} />
+                            <motion.div key={book.id} variants={bookVariant}>
+                                <Book  {...book} />
                             </motion.div>)
                     }
                 </BorowedBrowser>
@@ -78,18 +78,18 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
     );
 }
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+
 
     const { data, error } = await client.query<{ userProfile: IUser }>(
         userProfileQuery,
-        { username: ctx.params.username }
+        { username: params.username }
     ).toPromise();
+        
+    if (!data?.userProfile || error) return { notFound: true }
 
-    if (data?.userProfile == null || error != null) return notFound;
     return {
-        props: {
-            ...data?.userProfile
-        }
+        props: data.userProfile,
     }
 }
 

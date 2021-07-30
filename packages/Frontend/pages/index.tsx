@@ -4,7 +4,7 @@ import Logo from "src/svg/Logo";
 import { Button } from 'src/styled/Components';
 import { Container } from 'src/components/Container';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 
 const variants = {

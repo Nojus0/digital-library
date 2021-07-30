@@ -1,15 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Header } from "src/components/Header";
+import Header from "src/components/Header";
 import Container from "src/components/Container";
 import Head from "next/head";
-import { useQuery } from "urql";
 import { booksQuery } from "src/graphql/books/books";
 import Book from "src/components/Book";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { IBook } from "@dl/shared";
 import { client } from "src/next/graphql";
 import { useVisibility } from "src/hooks/useVisibility";
-import { useUser } from "src/state/UserContext";
 
 const container = {
     show: {
@@ -30,7 +28,7 @@ function books() {
     const [isVisible, ref] = useVisibility<HTMLDivElement>(0, 500)
     const [hasMore, setHasMore] = useState(true);
     const [books, setBooks] = useState<IBook[]>([]);
-    const [user, dispatch] = useUser();
+
     async function refetchBooks() {
         const { data, error } = await client
             .query<{ books: IBook[] }>(booksQuery, { page, limit })
@@ -61,7 +59,7 @@ function books() {
                 min="1px"
                 value="100%"
                 max="45rem"
-                WrapperStyle={{ marginTop: "1.5rem" }}
+                WrapperStyle={{ margin: "1.5rem 0 5rem" }}
             >
                 <BooksList ref={ref} books={books} />
             </Container>

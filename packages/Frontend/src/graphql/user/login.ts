@@ -1,17 +1,12 @@
 import { gql, useMutation } from "urql";
 
-
-export function useLoginMutation() {
-    return useMutation<ILogin, ILoginVariables>(loginMutation);
-}
-
 export interface ILogin {
     login: {
-        user: {
+        user?: {
             username: string,
             role: string
         },
-        error: string
+        error?: string
     }
 }
 export interface ILoginVariables {

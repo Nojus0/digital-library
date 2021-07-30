@@ -1,4 +1,4 @@
-import { useRegisterMutation } from "src/graphql/user/register";
+import { IRegisterVariables, useRegisterMutation } from "src/graphql/user/register";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +10,8 @@ import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
 import { AnimatePresence } from "framer-motion";
-
+import { observer } from "mobx-react";
+import { store } from "src/state/UserStore";
 
 const variants = {
     normal: {
@@ -21,36 +22,28 @@ const variants = {
     }
 }
 
+export interface IRegisterDetails extends IRegisterVariables {
+    confirmPassword: string
+}
+
 function register() {
     const Router = useRouter();
     const [error, setError] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUser] = useState("");
     const [password, setPass] = useState("");
-    const [confirm, setConfirm] = useState("");
-    const [, register] = useRegisterMutation();
+    const [confirmPassword, setConfirm] = useState("");
 
     async function SubmitRegister(e: React.MouseEvent) {
         e.preventDefault();
-        if (!IsAcceptable(email)) return setError("Email too short.");
-        if (!IsAcceptable(username)) return setError("Username too short.");
-        if (!IsAcceptable(password)) return setError("Password too short.");
-        if (!email.includes("@")) return setError("Invalid email address.");
-        if (password !== confirm) return setError("Passwords do not match.");
+        
+        const error = await store.register({
+            email, username, password, confirmPassword
+        });
 
-        const resp = await register({ email, username, password });
-        const { data, error } = resp
+        if (error) return setError(error);
 
-        if (data?.register?.error != null) return setError(data?.register?.error);
-
-        if (error) return setError("Cannot connect to server.");
-        Router.push("/login");
-
-        setError("");
-    }
-
-    function IsAcceptable(str: string) {
-        return str.length > 4
+        await Router.push("/login");
     }
 
     return (
@@ -88,7 +81,7 @@ function register() {
                     <TextBox
                         type="password"
                         placeholder="Confirm Password"
-                        value={confirm}
+                        value={confirmPassword}
                         onChange={(e) => setConfirm(e.target.value)}
                     />
                     <Button type="submit" onClick={SubmitRegister}>Register</Button>
@@ -106,4 +99,4 @@ function register() {
     );
 }
 
-export default register;
+export default observer(register);

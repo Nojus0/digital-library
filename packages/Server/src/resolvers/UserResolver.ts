@@ -70,7 +70,7 @@ export class UserResolver {
         return true;
     }
 
-    @Mutation(() => UserResponse, { nullable: true })
+    @Mutation(() => UserResponse)
     async login(@Arg("email") email: string, @Arg("password") password: string, @Ctx() { req, res }: IApolloContext) {
 
         if (!ValidateInputLogIn(email, password)) return { error: "Invalid credentials format." };

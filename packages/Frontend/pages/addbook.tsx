@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Header } from 'src/components/Header'
+import Header from 'src/components/Header'
 import { Container } from "src/components/Container"
 import styled from '@emotion/styled'
 import { Button, TextArea, TextBox } from 'src/styled/Components'

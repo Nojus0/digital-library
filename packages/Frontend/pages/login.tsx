@@ -7,38 +7,16 @@ import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
-import transition from "styles/transitions/AttentionCard.module.scss";
-import { useLoginMutation } from "src/graphql/user/login";
-import { useUser } from "src/state/UserContext";
 import { Form } from "src/components/Form";
 import { Role } from "@dl/shared";
-import { ChangeUser } from "src/state/actions/actions";
+import { observer } from "mobx-react";
+import { store } from "src/state/UserStore";
 
 function login(props) {
   const Router = useRouter();
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPass] = useState("");
-  const [user, dispatch] = useUser();
-  const [{ fetching }, LoginGQL] = useLoginMutation();
-  if (user.username != null) Router.push("/books");
-
-  async function SubmitLogin(e: React.MouseEvent) {
-    e.preventDefault();
-
-    const ERROR = findErrors();
-    if (ERROR != null) return setError(ERROR)
-
-    const { data, error } = await LoginGQL({ email, password })
-
-    if (data.login.user == null) return setError(data.login.error || "Cannot connect to server.");
-
-    const { login: { user: { role, username } } } = data;
-
-    dispatch(ChangeUser(username, Role[role]));
-
-    Router.push("/books");
-  }
 
   function findErrors() {
     if (email.length < 3 || !email.includes("@")) return "Invalid email address."
@@ -47,8 +25,14 @@ function login(props) {
     return null;
   }
 
-  if (user.username != null) Router.push("/books");
-  if (user.fetching) return <div></div>
+  async function loginSubmit(e: React.MouseEvent) {
+    e.preventDefault();
+    const error = await store.changeUser({ email, password });
+
+    if (error) return setError(error);
+
+    await Router.push("/books");
+  }
 
   return (
     <>
@@ -68,7 +52,7 @@ function login(props) {
           <form action="">
             <TextBox type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
             <TextBox type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
-            <Button type="submit" onClick={SubmitLogin}>Log In</Button>
+            <Button onClick={loginSubmit} type="submit">Log In</Button>
           </form>
 
           <Seperator />
@@ -88,4 +72,4 @@ function login(props) {
 
 
 
-export default login;
+export default observer(login);

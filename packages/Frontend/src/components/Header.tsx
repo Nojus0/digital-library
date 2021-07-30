@@ -6,19 +6,17 @@ import Seperator from './Seperator'
 import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from 'src/svg/ProfileSvg';
 import Link from 'next/link';
-import { useUser } from '../state/UserContext';
 import { useRouter } from 'next/router';
 import { useSignOutMutation } from '../graphql/user/signout';
 import { Role } from "@dl/shared";
 import { SearchBar } from './SearchBar';
-export function Header() {
-
+import { observer } from 'mobx-react';
+import { store } from 'src/state/UserStore';
+function Header() {
     const [search, setSearch] = useState("");
     const [isDrop, setDrop] = useState(false);
     const Router = useRouter();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
-    const [{ username, role, fetching }, dispatch] = useUser();
-    const [{ }, signOutGQL] = useSignOutMutation();
 
     useEffect(() => {
         document.body.style.overflowY = "scroll";
@@ -27,9 +25,8 @@ export function Header() {
     }, [])
 
     async function SignOut() {
-        await signOutGQL();
+        await store.signOut();
         await Router.push("/");
-        dispatch({ type: "SIGNOUT" });
     }
 
     return (
@@ -46,19 +43,19 @@ export function Header() {
 
             <ProfileContainer ref={dropdownRef}>
                 <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>{username?.substring(0, 1).toUpperCase()}</h1>
+                    <h1>{store.user?.username?.substring(0, 1).toUpperCase()}</h1>
                 </div>
 
                 <Dropdown on={isDrop}>
 
-                    <Link href={`/profile/${username}`} passHref>
+                    <Link href={`/profile/${store.user?.username}`} passHref>
                         <a><DropdownItem Icon={ProfileSvg} text="Profile" /></a>
                     </Link>
 
                     <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
 
                     {
-                        role == Role.Administrator &&
+                        store.user?.role == Role.Administrator &&
                         <>
                             <Link href="/addbook" passHref>
                                 <a ><DropdownItem Icon={ProfileSvg} text="Add a Book" /></a>
@@ -75,6 +72,7 @@ export function Header() {
     )
 }
 
+export default observer(Header);
 
 const Nav = styled.nav({
     position: "sticky",

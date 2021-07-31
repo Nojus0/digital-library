@@ -10,30 +10,21 @@ import { useRouter } from "next/router";
 import { BookNotFound } from "src/svg/BookNotFound";
 import { client } from "src/next/graphql";
 import { bookQuery } from "src/graphql/books/book";
-import { Role } from "@dl/shared";
+import { IBook, Role } from "@dl/shared";
 import { ManageUser } from "src/components/ManageUser";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import { store } from "src/state/UserStore";
 import { GetServerSideProps } from "next";
 
-export interface IBooksProps extends IBookProps {
-    showBorrow: boolean;
-    description: string;
-}
-
 const item = {
     hidden: { opacity: 0 },
     show: { opacity: 1 },
 };
 
-function id({
-    id,
-    description = "",
-    name = "",
-    imageUrl,
-    showBorrow,
-}: IBooksProps) {
+
+
+function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
     const Router = useRouter();
     const [isManage, setManage] = useState(false);
@@ -100,8 +91,8 @@ export const getServerSideProps: GetServerSideProps<IBookProps> = async ({ param
         .query<{ book: IBookProps }>(bookQuery, {
             id: parseInt(params.id as string),
         }).toPromise();
-    
-        if (data?.book == null || error != null) return { notFound: true };
+
+    if (data?.book == null || error != null) return { notFound: true };
 
     return {
         props: data.book,

@@ -25,7 +25,7 @@ const item = {
 function books() {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
-    const [isVisible, ref] = useVisibility<HTMLDivElement>(0, 500)
+    const [isVisible, ref] = useVisibility<HTMLDivElement>(0, 300)
     const [hasMore, setHasMore] = useState(true);
     const [books, setBooks] = useState<IBook[]>([]);
 
@@ -76,11 +76,11 @@ const BooksList = React.forwardRef<HTMLDivElement, IBooksListProps>(({ books }, 
         <motion.div initial="hidden" animate="show" variants={container}>
             {
                 books.map((book, index) => (
-                    <motion.div ref={ref} key={book.id} variants={item}>
-                        <Book
-                            {...book}
-                        />
-                    </motion.div>
+                    <Book
+                        ref={ref}
+                        key={book.id} variants={item}
+                        {...book}
+                    />
                 ))
             }
         </motion.div>

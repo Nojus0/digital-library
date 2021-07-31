@@ -69,7 +69,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                     {
                         borowing.map(book =>
                             <motion.div key={book.id} variants={bookVariant}>
-                                <Book  {...book} />
+                                <Book {...book} />
                             </motion.div>)
                     }
                 </BorowedBrowser>
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         userProfileQuery,
         { username: params.username }
     ).toPromise();
-        
+
     if (!data?.userProfile || error) return { notFound: true }
 
     return {

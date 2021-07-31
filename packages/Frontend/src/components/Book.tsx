@@ -1,20 +1,21 @@
-import styled from '@emotion/styled'
+import styled, { StyledComponent } from '@emotion/styled'
 import React, { forwardRef, useState } from 'react'
 import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
-import { motion } from 'framer-motion'
+import { HTMLMotionProps, motion } from 'framer-motion'
 
-export interface IBookProps {
+export interface IBookProps extends Omit<HTMLMotionProps<"div">, 'id'> {
     imageUrl: string,
     name: string,
-    id: number
+    id: number,
 }
 
-function Book({ id, imageUrl, name }: IBookProps) {
+function Book({ id, imageUrl, name, ...props }: IBookProps, ref: React.Ref<HTMLDivElement>) {
     const [imgError, setImgError] = useState(false);
+
     return (
-        <CardBackground>
+        <CardBackground ref={ref} {...props}>
             {
                 imgError ? <BookNotFound /> : <img onError={e => setImgError(true)} src={imageUrl} />
             }
@@ -30,7 +31,8 @@ function Book({ id, imageUrl, name }: IBookProps) {
         </CardBackground>
     )
 }
-export default Book
+
+export default React.forwardRef<HTMLDivElement, IBookProps>(Book);
 
 const CardBackground = styled(motion.div)({
     display: "flex",

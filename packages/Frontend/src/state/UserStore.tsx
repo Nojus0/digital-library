@@ -1,7 +1,7 @@
 import { currentUserQuery, ICurrentUser } from "src/graphql/user/currentUser";
 import { Role } from "@dl/shared";
 import { client } from "src/next/graphql";
-import { makeAutoObservable } from "mobx";
+import { configure, makeAutoObservable } from "mobx";
 import { ISignout, signoutMutation } from "src/graphql/user/signout";
 import { ILogin, ILoginVariables, loginMutation } from "src/graphql/user/login";
 import { IRegister, IRegisterVariables, registerMutation } from "src/graphql/user/register";
@@ -12,6 +12,10 @@ interface IUser {
     role: Role
     signedIn: boolean
 }
+
+configure({
+    enforceActions: "never",
+})
 
 class UserStore {
     user: IUser
@@ -86,4 +90,4 @@ class UserStore {
 
     }
 }
-export const store = new UserStore();
+export const userStore = new UserStore();

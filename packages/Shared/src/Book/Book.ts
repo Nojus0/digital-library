@@ -1,11 +1,7 @@
-import { IUser } from "../User/User";
 
 export interface IBook {
-    id: number
-
+    id?: number
     name: string
-
     imageUrl: string
-
-    description: string
+    description?: string
 }

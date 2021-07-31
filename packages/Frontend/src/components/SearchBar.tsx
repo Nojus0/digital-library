@@ -1,19 +1,23 @@
 import styled from "@emotion/styled";
+import { observer } from "mobx-react";
 import React from "react";
+import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
 
-export interface ISearchBarProps {
-    state: [string, React.Dispatch<React.SetStateAction<string>>]
-}
-
-export function SearchBar({ state: [value, setSearch] }: ISearchBarProps) {
+function SearchBar() {
     return (
         <Search>
             <SearchSvg fill="grey" />
-            <input value={value} onChange={e => setSearch(e.target.value)} placeholder="Search by Book Name"></input>
+            <input value={searchStore.value} onChange={e => searchStore.value = e.target.value} placeholder="Search by Book Name"></input>
         </Search>
     )
 }
+
+export default observer(SearchBar);
+
+const SearchResult = styled.div({
+
+})
 
 const Search = styled.div({
     display: 'flex',

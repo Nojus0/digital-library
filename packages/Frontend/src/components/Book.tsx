@@ -4,12 +4,9 @@ import { Button } from '../styled/Components'
 import Link from "next/link"
 import { BookNotFound } from '../svg/BookNotFound'
 import { HTMLMotionProps, motion } from 'framer-motion'
+import { IBook } from "@dl/shared"
 
-export interface IBookProps extends Omit<HTMLMotionProps<"div">, 'id'> {
-    imageUrl: string,
-    name: string,
-    id: number,
-}
+type IBookProps = IBook & Omit<HTMLMotionProps<"div">, 'id'>;
 
 function Book({ id, imageUrl, name, ...props }: IBookProps, ref: React.Ref<HTMLDivElement>) {
     const [imgError, setImgError] = useState(false);

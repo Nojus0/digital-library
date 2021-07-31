@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AttentionCard from "src/components/AttentionCard";
 import Container from "src/components/Container";
 import Seperator from "src/components/Seperator";
@@ -10,7 +10,7 @@ import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
 import { Role } from "@dl/shared";
 import { observer } from "mobx-react";
-import { store } from "src/state/UserStore";
+import { userStore } from "src/state/UserStore";
 
 function login(props) {
   const Router = useRouter();
@@ -25,9 +25,22 @@ function login(props) {
     return null;
   }
 
+  if (userStore.fetching) {
+    return null;
+  }
+
+  if (userStore.user.signedIn) {
+    Router.push("/books");
+    return null;
+  }
+
   async function loginSubmit(e: React.MouseEvent) {
     e.preventDefault();
-    const error = await store.changeUser({ email, password });
+    
+    const clientErrors = findErrors();
+    if (clientErrors) return setError(clientErrors);
+
+    const error = await userStore.changeUser({ email, password });
 
     if (error) return setError(error);
 

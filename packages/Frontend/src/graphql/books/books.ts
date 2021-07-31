@@ -1,6 +1,14 @@
 import { gql } from "urql";
+import { IBook } from "@dl/shared";
 
+export interface IBooksQuery {
+  books: Array<IBook>
+}
 
+export interface IBooksVariables {
+  page: number
+  limit: number
+}
 
 
 export const booksQuery = gql`

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
-import { IBookProps } from "src/components/Book";
 import Container from "src/components/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/Seperator";
@@ -14,15 +13,13 @@ import { IBook, Role } from "@dl/shared";
 import { ManageUser } from "src/components/ManageUser";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react";
-import { store } from "src/state/UserStore";
+import { userStore } from "src/state/UserStore";
 import { GetServerSideProps } from "next";
 
 const item = {
     hidden: { opacity: 0 },
     show: { opacity: 1 },
 };
-
-
 
 function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
@@ -68,7 +65,7 @@ function id({ name, imageUrl, description }: IBook) {
                             <Button
                                 style={{
                                     visibility:
-                                        store.user.role == Role.Administrator
+                                        userStore.user.role == Role.Administrator
                                             ? "visible"
                                             : "hidden",
                                 }}
@@ -86,9 +83,9 @@ function id({ name, imageUrl, description }: IBook) {
 
 export default observer(id);
 
-export const getServerSideProps: GetServerSideProps<IBookProps> = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<IBook> = async ({ params }) => {
     const { data, error } = await client
-        .query<{ book: IBookProps }>(bookQuery, {
+        .query<{ book: IBook }>(bookQuery, {
             id: parseInt(params.id as string),
         }).toPromise();
 

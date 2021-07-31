@@ -7,11 +7,10 @@ import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from 'src/svg/ProfileSvg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSignOutMutation } from '../graphql/user/signout';
 import { Role } from "@dl/shared";
-import { SearchBar } from './SearchBar';
 import { observer } from 'mobx-react';
-import { store } from 'src/state/UserStore';
+import { userStore } from 'src/state/UserStore';
+import SearchBar from './SearchBar';
 function Header() {
     const [search, setSearch] = useState("");
     const [isDrop, setDrop] = useState(false);
@@ -25,7 +24,7 @@ function Header() {
     }, [])
 
     async function SignOut() {
-        await store.signOut();
+        await userStore.signOut();
         await Router.push("/");
     }
 
@@ -39,23 +38,23 @@ function Header() {
                 </Link>
             </SideInfo>
 
-            <SearchBar state={[search, setSearch]} />
+            <SearchBar />
 
             <ProfileContainer ref={dropdownRef}>
                 <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>{store.user?.username?.substring(0, 1).toUpperCase()}</h1>
+                    <h1>{userStore.user?.username?.substring(0, 1).toUpperCase()}</h1>
                 </div>
 
                 <Dropdown on={isDrop}>
 
-                    <Link href={`/profile/${store.user?.username}`} passHref>
+                    <Link href={`/profile/${userStore.user?.username}`} passHref>
                         <a><DropdownItem Icon={ProfileSvg} text="Profile" /></a>
                     </Link>
 
                     <Seperator width="90%" margin="" color="rgba(0,0,0,0.05)" />
 
                     {
-                        store.user?.role == Role.Administrator &&
+                        userStore.user?.role == Role.Administrator &&
                         <>
                             <Link href="/addbook" passHref>
                                 <a ><DropdownItem Icon={ProfileSvg} text="Add a Book" /></a>

@@ -1,21 +1,21 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Book, { IBookProps } from "src/components/Book";
+import Book from "src/components/Book";
 import Container from "src/components/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/Seperator";
 import { client } from "src/next/graphql"
 import { userProfileQuery } from "src/graphql/user/userProfile";
-import { IUser } from "@dl/shared"
+import { IBook, IUser } from "@dl/shared"
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 
 interface ProfileProps {
     username: string;
     role: string;
-    borowing: IBookProps[];
+    borowing: IBook[];
 }
 
 const variants = {

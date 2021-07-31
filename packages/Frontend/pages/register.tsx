@@ -11,7 +11,7 @@ import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
 import { AnimatePresence } from "framer-motion";
 import { observer } from "mobx-react";
-import { store } from "src/state/UserStore";
+import { userStore } from "src/state/UserStore";
 
 const variants = {
     normal: {
@@ -37,7 +37,7 @@ function register() {
     async function SubmitRegister(e: React.MouseEvent) {
         e.preventDefault();
         
-        const error = await store.register({
+        const error = await userStore.register({
             email, username, password, confirmPassword
         });
 

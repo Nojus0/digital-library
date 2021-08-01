@@ -3,7 +3,6 @@ import { IBook } from "@dl/shared";
 import { client } from "src/next/graphql";
 import { booksQuery, IBooksQuery, IBooksVariables } from "src/graphql/books/books";
 
-
 class BookStore {
     books: Array<IBook>
     page: number

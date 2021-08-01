@@ -5,6 +5,8 @@ import { Button } from 'src/styled/Components';
 import { Container } from 'src/components/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { observer } from 'mobx-react';
+import { userStore } from 'src/state/UserStore';
 
 
 const variants = {
@@ -25,7 +27,7 @@ const item = {
   }
 }
 // TODO removed animations for buttons maybe add fade in effect without stagger?
-export default function Home() {
+function Home() {
   return (
     <>
       <Head>
@@ -54,3 +56,4 @@ export default function Home() {
     </>
   )
 }
+export default Home;

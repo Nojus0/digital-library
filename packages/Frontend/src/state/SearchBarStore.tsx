@@ -14,6 +14,10 @@ class SearchBarStore {
         this.value = "";
         this.results = [];
     }
+    
+    setValue(val: string) {
+        this.value = val;
+    }
 
     setShow(val: boolean) {
         this.show = val;

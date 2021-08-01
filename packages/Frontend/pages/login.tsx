@@ -36,7 +36,7 @@ function login(props) {
 
   async function loginSubmit(e: React.MouseEvent) {
     e.preventDefault();
-    
+
     const clientErrors = findErrors();
     if (clientErrors) return setError(clientErrors);
 

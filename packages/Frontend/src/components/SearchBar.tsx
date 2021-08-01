@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
+import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
 import Book from "./Book";
@@ -40,13 +41,18 @@ const inputVariant = {
 }
 
 function SearchBar() {
+    const outsideRef = useOnclickOutside(() => searchStore.show = false);
+
+    function Clicked(e: React.MouseEvent) {
+
+    }
 
     useEffect(() => {
-        searchStore.setShow(searchStore.value.length > 1)
+        searchStore.setShow(searchStore.value.length >= 3)
     }, [searchStore.value])
 
     return (
-        <Search initial="inactive" animate={searchStore.show ? "active" : "inactive"} variants={searchVariant}>
+        <Search onClick={Clicked} ref={outsideRef} initial="inactive" animate={searchStore.show ? "active" : "inactive"} variants={searchVariant}>
             <SearchSvg
                 initial="inactive"
                 animate={searchStore.show ? "active" : "inactive"}
@@ -72,8 +78,7 @@ const SearchDropdown = observer(() => {
             {
                 searchStore.show && (
                     <SearchResult variants={item} exit="hidden" initial="hidden" animate="show">
-
-                        <Book name="test" imageUrl="" id={105} />
+                        <Book style={{ width: "95%" }} name="test" imageUrl="" id={105} />
                     </SearchResult>
                 )
             }
@@ -90,6 +95,7 @@ const SearchResult = styled(motion.div)({
     top: "100%",
     display: "flex",
     flexDirection: "column",
+    alignItems: "center",
     position: "absolute",
     background: "#EFEFEF",
     borderRadius: "0 0 .4rem .4rem",

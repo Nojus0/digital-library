@@ -39,7 +39,7 @@ const BooksList = observer(props => {
         if (bookStore.books.length < 1)
             bookStore.loadBooks();
     }, [])
-
+    
     useEffect(() => {
         if (!isVisible) return;
 

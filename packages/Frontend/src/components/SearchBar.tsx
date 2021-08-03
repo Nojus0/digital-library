@@ -1,11 +1,12 @@
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
 import Book from "./Book";
+import debounce from "lodash/debounce";
 
 const item = {
     show: {
@@ -42,25 +43,37 @@ const inputVariant = {
 
 function SearchBar() {
     const outsideRef = useOnclickOutside(() => searchStore.setShow(false));
+    const [focused, setFocused] = useState(false);
+
+
+    const throttledFetch = debounce(() => searchStore.fetchSuggestions(), 1000);
 
     function Clicked(e: React.MouseEvent) {
 
+        if (!searchStore.show && searchStore.value.length >= 3) searchStore.setShow(true);
     }
 
     useEffect(() => {
-        searchStore.setShow(searchStore.value.length >= 3)
-    }, [searchStore.value])
+        searchStore.setShow(focused)
+
+        throttledFetch();
+
+    }, [searchStore.value, focused])
+
+
+
+    const animate = searchStore.show && searchStore.results.length > 0 ? "active" : "inactive";
 
     return (
-        <Search onClick={Clicked} ref={outsideRef} initial="inactive" animate={searchStore.show ? "active" : "inactive"} variants={searchVariant}>
+        <Search onBlur={e => setFocused(false)} onFocus={e => setFocused(true)} onClick={Clicked} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
             <SearchSvg
                 initial="inactive"
-                animate={searchStore.show ? "active" : "inactive"}
+                animate={animate}
                 variants={inputVariant}
                 fill="grey" />
             <SearchInput
                 initial="inactive"
-                animate={searchStore.show ? "active" : "inactive"}
+                animate={animate}
                 variants={inputVariant}
                 value={searchStore.value}
                 onChange={e => searchStore.setValue(e.target.value)}
@@ -78,7 +91,9 @@ const SearchDropdown = observer(() => {
             {
                 searchStore.show && (
                     <SearchResult variants={item} exit="hidden" initial="hidden" animate="show">
-                        <Book style={{ width: "95%" }} name="test" imageUrl="" id={105} />
+                        {
+                            searchStore.results.map(book => <Book key={book.id} style={{ width: "95%" }} {...book} />)
+                        }
                     </SearchResult>
                 )
             }

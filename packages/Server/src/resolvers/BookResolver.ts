@@ -4,6 +4,7 @@ import { User } from "../entity/User";
 import { Role } from "@dl/shared"
 import { IAuthContext, IAuthRoleContext } from "../interfaces";
 import { isAuthRole, NextJsRoute } from "../middleware/isAuth";
+import { Like } from "typeorm";
 
 @ArgsType()
 export class BooksPaginationArgs {
@@ -58,6 +59,17 @@ export class BookResolver {
     @Query(type => Book, { nullable: true })
     async book(@Args() { id }: IntArg) {
         return Book.findOne({ where: { id } });
+    }
+
+    @UseMiddleware(isAuthRole(Role.Consumer, true))
+    @Query(type => [Book], { nullable: true })
+    async bookSuggestion(@Arg("search") search: string) {
+        return Book.find({
+            where: {
+                name: Like(`%${search}%`)
+            },
+            take: 5
+        })
     }
 
     @UseMiddleware(isAuthRole(Role.Consumer, true))

@@ -35,13 +35,13 @@ const inputVariant = {
         fill: "#EFEFEF"
     },
     inactive: {
-        color: "black",
-        fill: "grey"
+        color: "#000000",
+        fill: "#808080"
     }
 }
 
 function SearchBar() {
-    const outsideRef = useOnclickOutside(() => searchStore.show = false);
+    const outsideRef = useOnclickOutside(() => searchStore.setShow(false));
 
     function Clicked(e: React.MouseEvent) {
 
@@ -63,7 +63,7 @@ function SearchBar() {
                 animate={searchStore.show ? "active" : "inactive"}
                 variants={inputVariant}
                 value={searchStore.value}
-                onChange={e => searchStore.value = e.target.value}
+                onChange={e => searchStore.setValue(e.target.value)}
                 placeholder="Search by Book Name"
             />
             <SearchDropdown />

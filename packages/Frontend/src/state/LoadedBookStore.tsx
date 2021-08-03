@@ -4,22 +4,17 @@ import { client } from "src/next/graphql";
 import { booksQuery, IBooksQuery, IBooksVariables } from "src/graphql/books/books";
 
 class BookStore {
-    books: Array<IBook>
-    page: number
-    limit: number
-    hasMore: boolean
+    books: Array<IBook> = []
+    page: number = 0;
+    limit: number = 10;
+    hasMore: boolean = true;
 
     constructor() {
         makeAutoObservable(this);
-        this.limit = 10;
-        this.page = 0;
-        this.hasMore = true;
-        this.books = [];
     }
 
     nextPage() {
         this.page += this.limit;
-        this.loadBooks();
     }
 
     async loadBooks() {
@@ -29,13 +24,23 @@ class BookStore {
             page: this.page
         }).toPromise();
 
-        if (error) return; // TODO add popup
+        if (error != null) return; // TODO add popup
 
-        if (data.books.length != this.limit) return this.hasMore = false;
+        if (data.books.length < 1) {
+            this.hasMore = false;
+            return
+        }
 
-        this.books = [...this.books, ...data.books];
+       this.addBooks(data.books);
     }
 
+    setBook(books: IBook[]) {
+        this.books = [...books]
+    }
+
+    addBooks(books: IBook[]){
+        this.books = [...this.books, ...books];
+    }
 }
 
 export const bookStore = new BookStore();

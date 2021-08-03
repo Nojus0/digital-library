@@ -4,15 +4,12 @@ import { IBook } from "@dl/shared";
 
 
 class SearchBarStore {
-    value: string
-    show: boolean
-    results: Array<IBook>
+    value: string = ""
+    show: boolean = false;
+    results: Array<IBook> = []
 
     constructor() {
         makeAutoObservable(this);
-        this.show = false;
-        this.value = "";
-        this.results = [];
     }
     
     setValue(val: string) {

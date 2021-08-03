@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, } from "react";
 import Header from "src/components/Header";
 import Container from "src/components/Container";
 import Head from "next/head";
@@ -37,9 +37,9 @@ const BooksList = observer(props => {
 
     useEffect(() => {
         if (bookStore.books.length < 1)
-            bookStore.loadBooks();
+        bookStore.loadBooks();
     }, [])
-    
+
     useEffect(() => {
         if (!isVisible) return;
 

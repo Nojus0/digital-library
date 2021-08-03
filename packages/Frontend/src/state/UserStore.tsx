@@ -14,17 +14,14 @@ interface IUser {
 }
 
 class UserStore {
-    user: IUser
-    fetching: boolean
+    user: IUser = {
+        role: null,
+        signedIn: false,
+        username: null
+    }
+    fetching: boolean = true;
 
     constructor() {
-        this.fetching = true;
-        this.user = {
-            role: null,
-            signedIn: false,
-            username: null
-        }
-
         makeAutoObservable(this);
         this.fetchCurrentUser();
     }
@@ -40,13 +37,21 @@ class UserStore {
 
         const { username, role } = data.currentUser
 
-        this.fetching = false;
-        this.user = {
+        this.setFetching(false);
+        this.setUser({
             username,
             role: Role[role],
             signedIn: true
-        }
+        })
 
+    }
+
+    setFetching(val: boolean) {
+        this.fetching = val;
+    }
+
+    setUser(user: IUser) {
+        this.user = { ...user };
     }
 
     async changeUser(user: ILoginVariables) {

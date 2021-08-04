@@ -64,12 +64,16 @@ export class BookResolver {
     @UseMiddleware(isAuthRole(Role.Consumer, true))
     @Query(type => [Book], { nullable: true })
     async bookSuggestion(@Arg("search") search: string) {
-        return Book.find({
-            where: {
-                name: Like(`%${search}%`)
-            },
-            take: 5
-        })
+
+        // TODO CACHE WITH REDIS? 
+        return Book.createQueryBuilder().where(`LOWER(name) LIKE LOWER('%' || :search || '%')`, { search }).take(5).getMany();
+
+        // return Book.find({
+        //     where: {
+        //         name: Like(`%${search}%`)
+        //     },
+        //     take: 5
+        // })
     }
 
     @UseMiddleware(isAuthRole(Role.Consumer, true))

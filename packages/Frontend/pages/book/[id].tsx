@@ -23,7 +23,6 @@ const item = {
 
 function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
-    const Router = useRouter();
     const [isManage, setManage] = useState(false);
 
     async function Manage() {

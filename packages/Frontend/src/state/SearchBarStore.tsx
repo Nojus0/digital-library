@@ -18,7 +18,6 @@ class SearchBarStore {
         this.value = val;
     }
 
-
     async fetchSuggestions() {
         const { data } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.value }).toPromise();
         this.results = data.bookSuggestion;

@@ -43,8 +43,6 @@ const inputVariant = {
 
 function SearchBar() {
     const outsideRef = useOnclickOutside(() => searchStore.setShow(false));
-    const [focused, setFocused] = useState(false);
-
 
     const throttledFetch = debounce(() => searchStore.fetchSuggestions(), 1000);
 
@@ -54,18 +52,14 @@ function SearchBar() {
     }
 
     useEffect(() => {
-        searchStore.setShow(focused)
-
         throttledFetch();
-
-    }, [searchStore.value, focused])
-
+    }, [searchStore.value])
 
 
     const animate = searchStore.show && searchStore.results.length > 0 ? "active" : "inactive";
 
     return (
-        <Search onBlur={e => setFocused(false)} onFocus={e => setFocused(true)} onClick={Clicked} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
+        <Search onBlur={e => searchStore.setShow(false)} onFocus={e => searchStore.setShow(true)} onClick={Clicked} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
             <SearchSvg
                 initial="inactive"
                 animate={animate}
@@ -92,7 +86,7 @@ const SearchDropdown = observer(() => {
                 searchStore.show && (
                     <SearchResult variants={item} exit="hidden" initial="hidden" animate="show">
                         {
-                            searchStore.results.map(book => <Book key={book.id} style={{ width: "95%" }} {...book} />)
+                            searchStore.results.map(book => <Book onClick={e => searchStore.setShow(false)} key={book.id} style={{ width: "95%" }} {...book} />)
                         }
                     </SearchResult>
                 )

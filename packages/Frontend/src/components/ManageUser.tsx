@@ -1,5 +1,12 @@
 import styled from "@emotion/styled"
 import { AnimatePresence, motion } from "framer-motion"
+import React from "react"
+import { Button } from "src/styled/Components"
+import Book from "./Book"
+import BookBase from "./BookParts/BookBase"
+import BookButton from "./BookParts/BookButton"
+import BookImage from "./BookParts/BookImage"
+import BookTitle from "./BookParts/BookTitle"
 
 export interface IManageUserProps {
     show: boolean,
@@ -15,17 +22,32 @@ const variants = {
 }
 export function ManageUser({ show, setShow }: IManageUserProps) {
 
+
+    function onBodyClick(e: React.MouseEvent) {
+        if (e.target !== e.currentTarget) return;
+
+        setShow(false);
+    }
+
     return (
         <AnimatePresence>
             {
                 show && (
-                    <Backdrop animate="active" initial="hidden" exit="hidden" transition={{ duration: 0.15, }} variants={variants} onClick={e => setShow(false)}>
+                    <Backdrop animate="active" initial="hidden" exit="hidden" transition={{ duration: 0.15, }} variants={variants} onClick={onBodyClick}>
                         <ManageForm>
                             <SearchSide>
-                                <h1>wow</h1>
+                                <h1>SEARCH</h1>
                             </SearchSide>
                             <BookSide>
-                                <h1>ads</h1>
+                                <UserBooksPaper>
+                                    <BookBase>
+                                        <BookImage style={{ paddingLeft: ".5rem" }} src="dsadsa" />
+                                        <BookTitle>Wow test book</BookTitle>
+                                        <BookButton>Add</BookButton>
+                                    </BookBase>
+                                    <Book name="wwowoowow" imageUrl="none" />
+                                </UserBooksPaper>
+                                <Button style={{ padding: "1rem", alignSelf: "flex-end", marginTop: "1rem", marginRight: "10px" }}>Confirm</Button>
                             </BookSide>
                         </ManageForm>
                     </Backdrop>
@@ -35,6 +57,14 @@ export function ManageUser({ show, setShow }: IManageUserProps) {
 
     )
 }
+
+const UserBooksPaper = styled(motion.div)({
+    backgroundColor: "#FFFFFF",
+    padding: "0 1rem",
+    maxHeight: "50vh",
+    overflowY: "auto",
+    borderRadius: ".4rem",
+})
 
 const SearchSide = styled.div({
     display: "flex",
@@ -50,7 +80,7 @@ const BookSide = styled.div({
 const ManageForm = styled.div({
     backgroundColor: "#EFEFEF",
     borderRadius: ".4rem",
-    padding: "1rem",
+    padding: "1.25rem",
     display: "grid",
     gridTemplateColumns: "1fr 1fr"
 })

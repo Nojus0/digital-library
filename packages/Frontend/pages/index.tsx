@@ -5,8 +5,6 @@ import { Button } from 'src/styled/Components';
 import { Container } from 'src/components/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { observer } from 'mobx-react';
-import { userStore } from 'src/state/UserStore';
 
 
 const variants = {
@@ -38,7 +36,7 @@ function Home() {
         <meta name="description" content="Digital Library - Home Page" />
       </Head>
 
-      <Container container={{ variants, animate: "show", initial: "hidden" }} WrapperStyle={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
+      <Container variants={variants} animate="show" initial="hidden" style={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
 
         <Logo variants={item} height="45vh" />
         <motion.h1 variants={item} className={styles.maintext}>Digital Library</motion.h1>

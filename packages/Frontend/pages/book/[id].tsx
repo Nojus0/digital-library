@@ -1,12 +1,10 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
-import Container from "src/components/Container";
+import { Container } from "src/components/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/Seperator";
 import { Button } from "src/styled/Components";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { BookNotFound } from "src/svg/BookNotFound";
 import { client } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
@@ -15,11 +13,8 @@ import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import { userStore } from "src/state/UserStore";
 import { GetServerSideProps } from "next";
-
-const item = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1 },
-};
+import BookImage from "src/components/BookParts/BookImage"
+import opacity from "src/framer/opacity";
 
 function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
@@ -41,20 +36,13 @@ function id({ name, imageUrl, description }: IBook) {
             </Head>
             <Header />
             <Container
-                stretch
-                WrapperStyle={{ margin: "1.5rem 0" }}
+                style={{ margin: "1.5rem 0 5rem" }}
                 max="65rem"
                 min="1px"
                 value="100%"
             >
-                <Card variants={item} animate="show" initial="hidden">
-                    <div>
-                        {imgError ? (
-                            <BookNotFound />
-                        ) : (
-                            <img onError={imageError} src={imageUrl} />
-                        )}
-                    </div>
+                <Card variants={opacity} animate="show" initial="hidden">
+                    <BookImage src={imageUrl} />
                     <InfoContainer>
                         <h1>{name}</h1>
                         <Seperator margin="0" />
@@ -98,6 +86,7 @@ const Card = styled(motion.div)({
     background: "#F3F3F3",
     borderRadius: ".4rem",
     display: "grid",
+    width: "100%",
     gridTemplateRows: "1fr",
     gridTemplateColumns: "0fr 2fr",
     img: {

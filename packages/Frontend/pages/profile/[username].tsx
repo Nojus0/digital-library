@@ -1,13 +1,13 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Container from "src/components/Container";
+import { Container } from "src/components/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/Seperator";
 import { client } from "src/graphql/client"
 import { userProfileQuery } from "src/graphql/user/userProfile";
-import { IBook, IUser } from "@dl/shared"
+import { IBook, IUser, Role } from "@dl/shared"
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Book from "src/components/BookParts/Book";
@@ -51,11 +51,10 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
     return (
         <>
             <Head>
-                <title>{username}'s Profile - Digital Library</title>
+                <title>{username} Profile - Digital Library</title>
             </Head>
             <Header />
-            <Container container={{ variants: container, animate: "show", initial: "hidden" }} min="1px" value="100%" max="45rem" stretch>
-
+            <Container variants={container} animate="show" initial="hidden" min="1px" value="100%" max="45rem">
                 <NameLogo variants={variants}>
                     <ProfileLogo>
                         <h1>{username?.substring(0, 1)?.toUpperCase()}</h1>
@@ -64,7 +63,8 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 </NameLogo>
 
                 <RankCard variants={variants} rank={role} />
-                <Seperator variants={variants} />
+
+                <Seperator margin="1rem 0" variants={variants} />
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
                     {
                         borowing.map(book =>

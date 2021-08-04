@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import AttentionCard from "src/components/AttentionCard";
-import Container from "src/components/Container";
+import { Container } from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
@@ -36,7 +36,7 @@ function register() {
 
     async function SubmitRegister(e: React.MouseEvent) {
         e.preventDefault();
-        
+
         const error = await userStore.register({
             email, username, password, confirmPassword
         });

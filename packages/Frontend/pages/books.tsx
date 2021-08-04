@@ -1,6 +1,6 @@
 import React, { useEffect, } from "react";
 import Header from "src/components/Header";
-import Container from "src/components/Container";
+import { Container } from "src/components/Container";
 import Head from "next/head";
 import { useVisibility } from "src/hooks/useVisibility";
 import { observer } from "mobx-react";
@@ -19,7 +19,7 @@ export default function books() {
                 min="1px"
                 value="100%"
                 max="45rem"
-                WrapperStyle={{ margin: "1.5rem 0 5rem" }}
+                style={{ margin: "1.5rem 0 5rem" }}
             >
                 <BooksList />
             </Container>

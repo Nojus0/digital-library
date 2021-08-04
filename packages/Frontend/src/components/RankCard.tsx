@@ -4,23 +4,23 @@ import React from 'react'
 
 export function RankCard(props: IRankCardProps) {
     return (
-        <Background {...props}>
-            <h1>{props.rank}</h1>
-        </Background>
+        <RankPaper {...props}>
+            <RankCardName>{props.rank}</RankCardName>
+        </RankPaper>
     )
 }
 
-const Background = styled(motion.div)({
+const RankPaper = styled(motion.div)({
     userSelect: "none",
     background: "#3D3D3D",
     borderRadius: ".6rem",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-    width: "auto!important",
-    h1: {
-        color: "white",
-        padding: ".85rem 1.10rem",
-        fontSize: ".80rem"
-    }
+})
+
+const RankCardName = styled(motion.h1)({
+    color: "white",
+    padding: ".85rem 1.10rem",
+    fontSize: ".80rem"
 })
 
 interface IRankCardProps extends HTMLMotionProps<"div"> {

@@ -1,14 +1,13 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AttentionCard from "src/components/AttentionCard";
-import Container from "src/components/Container";
+import { Container } from "src/components/Container";
 import Seperator from "src/components/Seperator";
 import { Button, TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
-import { Role } from "@dl/shared";
 import { observer } from "mobx-react";
 import { userStore } from "src/state/UserStore";
 

@@ -2,12 +2,13 @@ import React, { useEffect, } from "react";
 import Header from "src/components/Header";
 import Container from "src/components/Container";
 import Head from "next/head";
-import Book from "src/components/Book";
 import { useVisibility } from "src/hooks/useVisibility";
 import { observer } from "mobx-react";
 import { bookStore } from "src/state/LoadedBookStore";
+import Book from "src/components/BookParts/Book";
+import styled from "@emotion/styled";
 
-function books() {
+export default function books() {
     return (
         <>
             <Head>
@@ -37,7 +38,7 @@ const BooksList = observer(props => {
 
     useEffect(() => {
         if (bookStore.books.length < 1)
-        bookStore.loadBooks();
+            bookStore.loadBooks();
     }, [])
 
     useEffect(() => {
@@ -50,7 +51,7 @@ const BooksList = observer(props => {
         <>
             {
                 bookStore.books.map((book, index) => (
-                    <Book
+                    <BookListItem
                         ref={bookStore.books.length - 1 == index ? ref : undefined}
                         key={book.id}
                         initial="hidden"
@@ -64,4 +65,7 @@ const BooksList = observer(props => {
     )
 })
 
-export default books;
+const BookListItem = styled(Book)({ // Extend
+    marginBottom: "1.25rem"
+})
+

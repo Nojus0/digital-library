@@ -1,6 +1,6 @@
 import { currentUserQuery, ICurrentUser } from "src/graphql/user/currentUser";
 import { Role } from "@dl/shared";
-import { client } from "src/next/graphql";
+import { client } from "src/graphql/client";
 import { makeAutoObservable } from "mobx";
 import { ISignout, signoutMutation } from "src/graphql/user/signout";
 import { ILogin, ILoginVariables, loginMutation } from "src/graphql/user/login";

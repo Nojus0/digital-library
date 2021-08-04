@@ -1,10 +1,8 @@
 import styled from "@emotion/styled"
 import { AnimatePresence, motion } from "framer-motion"
 import React from "react"
-import { Button } from "src/styled/Components"
-import Book from "./Book"
+import { BaseButton } from "src/styled/Buttons"
 import BookBase from "./BookParts/BookBase"
-import BookButton from "./BookParts/BookButton"
 import BookImage from "./BookParts/BookImage"
 import BookTitle from "./BookParts/BookTitle"
 
@@ -43,11 +41,10 @@ export function ManageUser({ show, setShow }: IManageUserProps) {
                                     <BookBase>
                                         <BookImage style={{ paddingLeft: ".5rem" }} src="dsadsa" />
                                         <BookTitle>Wow test book</BookTitle>
-                                        <BookButton>Add</BookButton>
+                                        <BaseButton variant="light" size=".75rem 1.5rem">Remove</BaseButton>
                                     </BookBase>
-                                    <Book name="wwowoowow" imageUrl="none" />
                                 </UserBooksPaper>
-                                <Button style={{ padding: "1rem", alignSelf: "flex-end", marginTop: "1rem", marginRight: "10px" }}>Confirm</Button>
+                                <BaseButton variant="light" margin="1rem 10px 0 0" size="1rem" style={{ alignSelf: "flex-end" }}>Confirm</BaseButton>
                             </BookSide>
                         </ManageForm>
                     </Backdrop>

@@ -1,5 +1,5 @@
 import { Provider } from "urql";
-import { client } from "../src/next/graphql";
+import { client } from "../src/graphql/client";
 import "../styles/globals.scss";
 
 function MyApp({ Component, pageProps }) {

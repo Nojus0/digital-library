@@ -5,8 +5,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
-import Book from "./Book";
 import debounce from "lodash/debounce";
+import Book from "./BookParts/Book";
 
 const item = {
     show: {
@@ -82,19 +82,31 @@ const SearchDropdown = observer(() => {
 
     return (
         <AnimatePresence>
-            {
-                searchStore.show && (
-                    <SearchResult variants={item} exit="hidden" initial="hidden" animate="show">
-                        {
-                            searchStore.results.map(book => <Book onClick={e => searchStore.setShow(false)} key={book.id} style={{ width: "95%" }} {...book} />)
-                        }
-                    </SearchResult>
-                )
-            }
-
+            {searchStore.show && (
+                <SearchResult
+                    variants={item}
+                    exit="hidden"
+                    initial="hidden"
+                    animate="show"
+                >
+                    {searchStore.results.map((book) => (
+                        <SearchBarBook
+                            onClick={(e) => searchStore.setShow(false)}
+                            key={book.id}
+                            {...book}
+                        />
+                    ))}
+                </SearchResult>
+            )}
         </AnimatePresence>
-    )
+    );
 })
+
+const SearchBarBook = styled(Book)({
+    width: "95%",
+    marginBottom: "1.25rem"
+})
+
 
 export default observer(SearchBar);
 

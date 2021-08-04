@@ -10,7 +10,7 @@ function BookTitle(props: HTMLMotionProps<"h1">, ref: React.Ref<HTMLDivElement>)
     )
 }
 
-export default React.forwardRef<HTMLHeadingElement, HTMLMotionProps<"h1">>(BookTitle);
+export default React.forwardRef<HTMLHeadingElement, Parameters<typeof BookTitle>[0]>(BookTitle);
 
 const StyledBookTitle = styled(motion.h1)({
     flexGrow: 1,

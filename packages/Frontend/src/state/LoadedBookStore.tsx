@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IBook } from "@dl/shared";
-import { client } from "src/next/graphql";
+import { client } from "src/graphql/client";
 import { booksQuery, IBooksQuery, IBooksVariables } from "src/graphql/books/books";
 
 class BookStore {

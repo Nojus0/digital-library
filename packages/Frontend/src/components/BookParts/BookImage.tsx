@@ -14,7 +14,7 @@ function BookImage(props: HTMLMotionProps<"img">, ref: React.Ref<HTMLImageElemen
     )
 }
 
-export default React.forwardRef<HTMLImageElement, HTMLMotionProps<"img">>(BookImage);
+export default React.forwardRef<HTMLImageElement, Parameters<typeof BookImage>[0]>(BookImage);
 
 const StyledError = styled(BookNotFound)({
     minWidth: "5rem",

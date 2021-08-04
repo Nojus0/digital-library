@@ -1,16 +1,16 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import Book from "src/components/Book";
 import Container from "src/components/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/Seperator";
-import { client } from "src/next/graphql"
+import { client } from "src/graphql/client"
 import { userProfileQuery } from "src/graphql/user/userProfile";
 import { IBook, IUser } from "@dl/shared"
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
+import Book from "src/components/BookParts/Book";
 
 interface ProfileProps {
     username: string;

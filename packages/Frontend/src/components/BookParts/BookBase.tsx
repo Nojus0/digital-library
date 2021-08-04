@@ -1,5 +1,5 @@
-import styled, { StyledComponent } from '@emotion/styled'
-import React, { forwardRef, useState } from 'react'
+import styled from '@emotion/styled'
+import React from 'react'
 import { HTMLMotionProps, motion } from 'framer-motion'
 
 
@@ -11,15 +11,14 @@ function BookBase(props: HTMLMotionProps<"div">, ref: React.Ref<HTMLDivElement>)
     )
 }
 
-export default React.forwardRef<HTMLDivElement, HTMLMotionProps<"div">>(BookBase);
+export default React.forwardRef<HTMLDivElement, Parameters<typeof BookBase>[0]>(BookBase);
 
-const StyledBookBase = styled(motion.div)({
+const StyledBookBase = styled(motion.div)(props => ({
     display: "flex",
     width: "100%",
     height: "7rem",
     background: "#EFEFEF",
-    marginBottom: "1.25rem",
     borderRadius: ".4rem",
     alignItems: "center",
-})
+}))
 

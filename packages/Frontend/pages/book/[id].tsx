@@ -7,7 +7,7 @@ import { Button } from "src/styled/Components";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { BookNotFound } from "src/svg/BookNotFound";
-import { client } from "src/next/graphql";
+import { client } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
 import { ManageUser } from "src/components/ManageUser";
@@ -59,7 +59,6 @@ function id({ name, imageUrl, description }: IBook) {
                         <h1>{name}</h1>
                         <Seperator margin="0" />
                         <p>{description}</p>
-                        { }
                         <ButtonWrapper>
                             <Button
                                 style={{

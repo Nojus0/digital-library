@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react'
 import useOnclickOutside from 'react-cool-onclickoutside';
 import SvgLogo from 'src/svg/Logo';
-import Seperator from './Seperator'
+import Seperator from './utils/Seperator'
 import Dropdown, { DropdownItem } from './Dropdown';
 import { ProfileSvg } from 'src/svg/ProfileSvg';
 import Link from 'next/link';

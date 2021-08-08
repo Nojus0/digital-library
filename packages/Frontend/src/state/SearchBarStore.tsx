@@ -3,8 +3,6 @@ import { IBook } from "@dl/shared";
 import { client } from "src/graphql/client";
 import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/bookSuggestion";
 
-
-
 class SearchBarStore {
     value: string = ""
     show: boolean = false;

@@ -1,28 +1,24 @@
 import styled from "@emotion/styled";
 import React, { useState } from "react";
-import { Container } from "src/components/Container";
+import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
-import Seperator from "src/components/Seperator";
+import Seperator from "src/components/utils/Seperator";
 import { Button } from "src/styled/Components";
 import Head from "next/head";
 import { client } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
-import { ManageUser } from "src/components/ManageUser";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import { userStore } from "src/state/UserStore";
 import { GetServerSideProps } from "next";
 import BookImage from "src/components/BookParts/BookImage"
 import opacity from "src/framer/opacity";
+import { manageStore } from "src/state/ManageBookStore";
+import ManageUser from "src/components/Manage/ManageUser";
 
 function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
-    const [isManage, setManage] = useState(false);
-
-    async function Manage() {
-        setManage(true);
-    }
 
     function imageError() {
         setImgError(true);
@@ -30,7 +26,7 @@ function id({ name, imageUrl, description }: IBook) {
 
     return (
         <>
-            <ManageUser setShow={setManage} show={isManage} />
+            <ManageUser />
             <Head>
                 <title>Digital Library - {name}</title>
             </Head>
@@ -44,9 +40,9 @@ function id({ name, imageUrl, description }: IBook) {
                 <Card variants={opacity} animate="show" initial="hidden">
                     <BookImage src={imageUrl} />
                     <InfoContainer>
-                        <h1>{name}</h1>
+                        <CardHeader>{name}</CardHeader>
                         <Seperator margin="0" />
-                        <p>{description}</p>
+                        <CardDescription>{description}</CardDescription>
                         <ButtonWrapper>
                             <Button
                                 style={{
@@ -55,7 +51,7 @@ function id({ name, imageUrl, description }: IBook) {
                                             ? "visible"
                                             : "hidden",
                                 }}
-                                onClick={Manage}
+                                onClick={e => manageStore.open()}
                             >
                                 Manage
                             </Button>
@@ -81,6 +77,17 @@ export const getServerSideProps: GetServerSideProps<IBook> = async ({ params }) 
         props: data.book,
     };
 };
+
+const CardHeader = styled(motion.h1)({
+    fontSize: "clamp(1.25rem, 5vw, 2.5rem)",
+    marginBottom: "1rem",
+    wordBreak: "break-all",
+})
+
+const CardDescription = styled(motion.p)({
+    flexGrow: 1,
+    wordBreak: "break-all",
+})
 
 const Card = styled(motion.div)({
     background: "#F3F3F3",
@@ -117,17 +124,8 @@ const ButtonWrapper = styled.div({
 });
 
 const InfoContainer = styled.div({
-    margin: "1rem 1rem",
-    h1: {
-        fontSize: "clamp(1.25rem, 5vw, 2.5rem)",
-        marginBottom: "1rem",
-        wordBreak: "break-all",
-    },
+    margin: "1rem 1.5rem",
     display: "flex",
     minHeight: "12.5rem",
-    flexDirection: "column",
-    p: {
-        flexGrow: 1,
-        wordBreak: "break-all",
-    },
+    flexDirection: "column"
 });

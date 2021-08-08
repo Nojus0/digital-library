@@ -66,7 +66,7 @@ export class BookResolver {
     async bookSuggestion(@Arg("search") search: string) {
 
         // TODO CACHE WITH REDIS? 
-        return Book.createQueryBuilder().where(`LOWER(name) LIKE LOWER('%' || :search || '%')`, { search }).take(5).getMany();
+        return Book.createQueryBuilder().where(`LOWER(name) LIKE LOWER('%' || :search || '%')`, { search }).orderBy("id", "DESC").take(5).getMany();
 
         // return Book.find({
         //     where: {

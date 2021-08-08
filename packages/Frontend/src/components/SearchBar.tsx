@@ -1,12 +1,13 @@
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { observer } from "mobx-react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
 import debounce from "lodash/debounce";
 import Book from "./BookParts/Book";
+import { Search, SearchInput } from "src/styled/SearchBar";
 
 const item = {
     show: {
@@ -46,20 +47,21 @@ function SearchBar() {
 
     const throttledFetch = debounce(() => searchStore.fetchSuggestions(), 1000);
 
-    function Clicked(e: React.MouseEvent) {
-
-        if (!searchStore.show && searchStore.value.length >= 3) searchStore.setShow(true);
-    }
-
     useEffect(() => {
         throttledFetch();
     }, [searchStore.value])
 
+    function clicked(e: React.MouseEvent) {
+
+        if (e.target !== e.currentTarget) return;
+
+        searchStore.setShow(true);
+    }
 
     const animate = searchStore.show && searchStore.results.length > 0 ? "active" : "inactive";
 
     return (
-        <Search onBlur={e => searchStore.setShow(false)} onFocus={e => searchStore.setShow(true)} onClick={Clicked} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
+        <Search shadow={false} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
             <SearchSvg
                 initial="inactive"
                 animate={animate}
@@ -68,6 +70,7 @@ function SearchBar() {
             <SearchInput
                 initial="inactive"
                 animate={animate}
+                onClick={clicked}
                 variants={inputVariant}
                 value={searchStore.value}
                 onChange={e => searchStore.setValue(e.target.value)}
@@ -120,28 +123,4 @@ const SearchResult = styled(motion.div)({
     position: "absolute",
     background: "#EFEFEF",
     borderRadius: "0 0 .4rem .4rem",
-})
-
-const Search = styled(motion.div)({
-    position: "relative",
-    display: 'flex',
-    background: "#EFEFEF",
-    borderRadius: ".4rem",
-    alignItems: "center",
-    alignSelf: "center",
-    justifySelf: "center",
-    width: "clamp(1px, 100%, 45rem)",
-    "svg": {
-        padding: "0 0 0 .75rem",
-    }
-})
-
-const SearchInput = styled(motion.input)({
-    fontSize: "0.75rem",
-    width: "100%",
-    margin: "1rem 1rem 1rem .20rem",
-    background: "transparent",
-    color: "black",
-    outline: "none",
-    border: "none",
 })

@@ -1,6 +1,6 @@
 import React, { useEffect, } from "react";
 import Header from "src/components/Header";
-import { Container } from "src/components/Container";
+import { Container } from "src/components/utils/Container";
 import Head from "next/head";
 import { useVisibility } from "src/hooks/useVisibility";
 import { observer } from "mobx-react";

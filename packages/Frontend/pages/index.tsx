@@ -2,7 +2,7 @@ import Head from 'next/head'
 import styles from "styles/main.module.scss";
 import Logo from "src/svg/Logo";
 import { Button } from 'src/styled/Components';
-import { Container } from 'src/components/Container';
+import { Container } from 'src/components/utils/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 import Head from "next/head";
 import React from "react";
-import { Container } from "src/components/Container";
+import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
-import Seperator from "src/components/Seperator";
+import Seperator from "src/components/utils/Seperator";
 import { client } from "src/graphql/client"
 import { userProfileQuery } from "src/graphql/user/userProfile";
 import { IBook, IUser, Role } from "@dl/shared"

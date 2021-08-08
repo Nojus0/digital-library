@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 import Header from 'src/components/Header'
-import { Container } from "src/components/Container"
+import { Container } from "src/components/utils/Container"
 import styled from '@emotion/styled'
 import { Button, TextArea, TextBox } from 'src/styled/Components'
-import Seperator from 'src/components/Seperator'
+import Seperator from 'src/components/utils/Seperator'
 import { AddPhotoButton } from 'src/svg/AddPhotoSvg'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -17,7 +17,7 @@ function AddBook() {
     const [imgFile, setImgFile] = useState<File>(null);
 
     async function submitAdd() {
-        
+
         router.push("/books");
     }
 
@@ -31,7 +31,7 @@ function AddBook() {
                 <title>Add a Book - Digital Library</title>
             </Head>
             <Header />
-            <Container WrapperStyle={{ marginTop: "1rem" }} value="100%" min="1rem" max="45rem" stretch>
+            <Container style={{ marginTop: "1rem" }} value="100%" min="1rem" max="45rem">
                 <AddBookPaper>
                     <ImgContainer>
                         <AddPhotoButton onClick={e => fileRef.current.click()} />
@@ -40,7 +40,7 @@ function AddBook() {
                             onChange={fileChange}
                             type="file"
                             name="file"
-                            accept="image/png, image/jpeg"
+                            accept="image/*"
                         />
                     </ImgContainer>
                     <AddBookForm>
@@ -60,6 +60,7 @@ export default AddBook;
 
 
 const AddBookPaper = styled.div({
+    width: "100%",
     display: "grid",
     gridTemplateColumns: "0.6fr 1.4fr",
     gridTemplateRows: "1fr",

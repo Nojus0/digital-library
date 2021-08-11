@@ -58,17 +58,17 @@ class ManageBookStore {
 
         // * Check if the user is already borowing the book, no need to send extra data *
         if (this.userBorowing.some(book => book.id == addBook.id))
-            return this.remove = this.remove.filter(book => book.id != book.id);
+            return this.remove = this.remove.filter(book => book.id != addBook.id);
 
         this.add = [...this.add, addBook];
-        this.remove = this.remove.filter(book => book.id != book.id);
+        this.remove = this.remove.filter(book => book.id != addBook.id);
     }
 
     removeBook(removeBook: IBook) {
 
         // * Check if the user is already borowing the book, no need to send extra data *
         if (!this.userBorowing.some(book => book.id == removeBook.id))
-            return this.add = this.add.filter(book => book.id != book.id);
+            return this.add = this.add.filter(book => book.id != removeBook.id);
 
 
         this.remove = [...this.remove, removeBook];

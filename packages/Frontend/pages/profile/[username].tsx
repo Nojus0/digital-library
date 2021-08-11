@@ -6,11 +6,12 @@ import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/utils/Seperator";
 import { client } from "src/graphql/client"
-import { userProfileQuery } from "src/graphql/user/userProfile";
+import { IUserProfileQuery, IUserProfileVariables, userProfileQuery } from "src/graphql/user/userProfile";
 import { IBook, IUser, Role } from "@dl/shared"
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Book from "src/components/BookParts/Book";
+import BookBase from "src/components/BookParts/BookBase";
 
 interface ProfileProps {
     username: string;
@@ -68,9 +69,8 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
                     {
                         borowing.map(book =>
-                            <motion.div key={book.id} variants={bookVariant}>
-                                <Book {...book} />
-                            </motion.div>)
+                            <Book style={{marginBottom: ".85rem"}} key={book.id} variants={bookVariant} {...book} />
+                        )
                     }
                 </BorowedBrowser>
             </Container>
@@ -80,10 +80,9 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
-
-    const { data, error } = await client.query<{ userProfile: IUser }>(
+    const { data, error } = await client.query<IUserProfileQuery, IUserProfileVariables>(
         userProfileQuery,
-        { username: params.username }
+        { username: params.username as string }
     ).toPromise();
 
     if (!data?.userProfile || error) return { notFound: true }
@@ -126,7 +125,7 @@ const ProfileLogo = styled(motion.div)({
 });
 
 const BorowedBrowser = styled(motion.div)({
-    margin: "1rem 0",
     display: "flex",
+    width: "100%",
     flexDirection: "column",
 });

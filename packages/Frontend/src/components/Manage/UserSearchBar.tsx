@@ -14,7 +14,7 @@ function UserSearchBar() {
                 fill="grey" />
             <SearchInput
                 value={manageStore.searchUser}
-                onChange={e => manageStore.setUsername(e.target.value)}
+                onChange={e => manageStore.setUsernameSearch(e.target.value)}
                 initial="inactive"
                 placeholder="Search for a user"
             />

@@ -7,19 +7,22 @@ import SearchSvg from "src/svg/SearchSvg";
 
 function BookSearchBar() {
     return (
-        <Search style={{margin: "0 0 1rem 0"}} initial="inactive">
+        <StyledBookSearch initial="inactive">
             <SearchSvg
                 initial="inactive"
                 fill="grey" />
             <SearchInput
-                value={manageStore.searchBook}
-                onChange={e => manageStore.setBook(e.target.value)}
+                value={manageStore.searchBooks}
+                onChange={e => manageStore.setBookSearch(e.target.value)}
                 initial="inactive"
                 placeholder="Search for a book"
             />
-        </Search>
+        </StyledBookSearch>
     )
 }
 
+const StyledBookSearch = styled(Search)({
+    margin: "0 0 1rem 0"
+})
 
 export default observer(BookSearchBar);

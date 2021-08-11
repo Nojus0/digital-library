@@ -1,7 +1,7 @@
 import { IBook } from "@dl/shared"
 import styled from "@emotion/styled"
 import { AnimatePresence, motion } from "framer-motion"
-import React from "react"
+import React, { useEffect } from "react"
 import { BaseButton } from "src/styled/Buttons"
 import BookBase from "../BookParts/BookBase"
 import BookImage from "../BookParts/BookImage"
@@ -11,57 +11,76 @@ import BookSearchBar from "./BookSearchBar"
 import { manageStore } from "src/state/ManageBookStore"
 import { observer } from "mobx-react-lite"
 import { Backdrop } from "../utils/Backdrop"
-
+import { ManageBook } from "./ManageBook"
+import { debounce } from "lodash"
+import opacity from "src/framer/opacity"
 function ManageUser() {
 
 
     function onBodyClick(e: React.MouseEvent) {
-        if (e.target !== e.currentTarget) return;
-
-        manageStore.close();
+        if (e.target === e.currentTarget) manageStore.close();
     }
 
+    const fetchNewResults = debounce(() => manageStore.loadUser(), 1000);
+    const fetchBooks = debounce(() => manageStore.loadResults(), 1000);
+
+    useEffect(() => {
+        fetchNewResults();
+    }, [manageStore.searchUser]);
+
+    useEffect(() => {
+        fetchBooks();
+    }, [manageStore.searchBooks])
+
+
+    console.log(`render`);
     return (
         <AnimatePresence>
             <Backdrop on={manageStore.isOpen} onClick={onBodyClick}>
                 <ManageForm>
                     <SearchSide>
                         <UserSearchBar />
-                        <BookResults>
-
-                        </BookResults>
                     </SearchSide>
                     <BookSide>
                         <BookSearchBar />
                         <UserBooksPaper>
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                            <ListBookItem imageUrl="ow" name="test" />
-                        </UserBooksPaper >
+                            <AnimatePresence>
+                                {manageStore.results.map((book) => (
+                                    <ManageBook
+                                        variants={opacity}
+                                        transition={{ duration: 0.15 }}
+                                        animate="show"
+                                        key={book.id}
+                                        initial="hidden"
+                                        exit="hidden"
+                                        onAdd={e => manageStore.addBook(book)}
+                                        onRemove={e => manageStore.removeBook(book)}
+                                        {...book}
+                                    ></ManageBook>
+                                ))}
+                            </AnimatePresence>
+                        </UserBooksPaper>
                         <ManageButtonSection>
-                            <CancelButton onClick={e => manageStore.close()} variant="light" size="1rem">Cancel</CancelButton>
-                            <ConfirmButton onClick={e => manageStore.close()} variant="light" size="1rem">Confirm</ConfirmButton>
+                            <CancelButton
+                                onClick={(e) => manageStore.close()}
+                                variant="light"
+                                size="1rem"
+                            >
+                                Cancel
+                            </CancelButton>
+                            <ConfirmButton
+                                onClick={(e) => manageStore.close()}
+                                variant="light"
+                                size="1rem"
+                            >
+                                Confirm
+                            </ConfirmButton>
                         </ManageButtonSection>
                     </BookSide>
                 </ManageForm>
             </Backdrop>
         </AnimatePresence>
-
-    )
-}
-
-function ListBookItem({ imageUrl, name }: IBook) {
-    return (
-        <BookBase style={{ margin: ".5rem 0" }}>
-            <BookImage style={{ paddingLeft: ".5rem" }} src={imageUrl} />
-            <BookTitle>{name}</BookTitle>
-            <BaseButton variant="light" margin="0rem 1rem 0 0" size=".75rem 1.5rem">Remove</BaseButton>
-        </BookBase>
-    )
+    );
 }
 
 export default observer(ManageUser);
@@ -93,6 +112,7 @@ const UserBooksPaper = styled(motion.div)({
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     alignItems: "center",
     padding: "0.5rem 1rem",
+    height: "100%",
     borderRadius: ".4rem",
 })
 
@@ -107,7 +127,8 @@ const BookSide = styled.div({
     display: "flex",
     flexDirection: "column",
     flex: '1 0 45%',
-    maxHeight: "35rem",
+    maxHeight: "75vh",
+    minHeight: "75vh",
     padding: "1rem"
 })
 

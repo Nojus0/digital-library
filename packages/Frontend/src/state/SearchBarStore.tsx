@@ -17,6 +17,9 @@ class SearchBarStore {
     }
 
     async fetchSuggestions() {
+        if (searchStore.value.length < 3) return;
+
+
         const { data } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.value }).toPromise();
         this.results = data.bookSuggestion;
     }

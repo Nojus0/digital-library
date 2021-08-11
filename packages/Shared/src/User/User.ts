@@ -13,7 +13,7 @@ export interface IUser {
 
     createdBooks: IBook[]
 
-    borowing: IBook
+    borowing: IBook[]
 
     password: string
 

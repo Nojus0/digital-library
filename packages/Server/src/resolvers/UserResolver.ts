@@ -27,6 +27,7 @@ export class UserResolver {
         return User.findOne({ where: { username }, relations: ["borowing"] });
     }
 
+    // @UseMiddleware(isAuthRole(Role.Consumer, true))
     @Query(type => User, { nullable: true })
     async userProfile(@Arg("username") username: string) {
         return User.findOne({ where: { username }, relations: ["borowing"] });

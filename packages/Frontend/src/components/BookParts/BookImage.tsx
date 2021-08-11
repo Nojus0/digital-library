@@ -28,5 +28,6 @@ const StyledImage = styled(motion.img)({
     borderRadius: ".4rem 0 0 .4rem",
     height: "100%",
     minWidth: "5rem",
+    width: "5rem"
 })
 

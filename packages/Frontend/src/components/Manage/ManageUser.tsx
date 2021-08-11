@@ -14,6 +14,7 @@ import { Backdrop } from "../utils/Backdrop"
 import { ManageBook } from "./ManageBook"
 import { debounce } from "lodash"
 import opacity from "src/framer/opacity"
+import { RankCard } from "../RankCard"
 function ManageUser() {
 
 
@@ -25,10 +26,14 @@ function ManageUser() {
     const fetchBooks = debounce(() => manageStore.loadResults(), 1000);
 
     useEffect(() => {
+        if (manageStore.searchUser.length < 3) return manageStore.clearUser();
+
         fetchNewResults();
     }, [manageStore.searchUser]);
 
     useEffect(() => {
+        if (manageStore.searchBooks.length < 3) return manageStore.clearResults()
+
         fetchBooks();
     }, [manageStore.searchBooks])
 
@@ -40,6 +45,13 @@ function ManageUser() {
                 <ManageForm>
                     <SearchSide>
                         <UserSearchBar />
+                        <AnimatePresence>
+                            {
+                                manageStore.user.role != null && (
+                                    <RankCard rank={manageStore.user.role} />
+                                )
+                            }
+                        </AnimatePresence>
                     </SearchSide>
                     <BookSide>
                         <BookSearchBar />

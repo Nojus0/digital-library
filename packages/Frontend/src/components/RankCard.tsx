@@ -1,3 +1,4 @@
+import { Role } from '@dl/shared'
 import styled from '@emotion/styled'
 import { HTMLMotionProps, motion } from 'framer-motion'
 import React from 'react'
@@ -20,9 +21,10 @@ const RankPaper = styled(motion.div)({
 const RankCardName = styled(motion.h1)({
     color: "white",
     padding: ".85rem 1.10rem",
-    fontSize: ".80rem"
+    fontSize: ".80rem",
+    fontWeight: "bold"
 })
 
 interface IRankCardProps extends HTMLMotionProps<"div"> {
-    rank: string
+    rank: Role
 }

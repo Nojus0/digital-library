@@ -63,13 +63,13 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                     <h1>{username}</h1>
                 </NameLogo>
 
-                <RankCard variants={variants} rank={role} />
+                <RankCard variants={variants} rank={Role[role]} />
 
                 <Seperator margin="1rem 0" variants={variants} />
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
                     {
                         borowing.map(book =>
-                            <Book style={{marginBottom: ".85rem"}} key={book.id} variants={bookVariant} {...book} />
+                            <Book style={{ marginBottom: ".85rem" }} key={book.id} variants={bookVariant} {...book} />
                         )
                     }
                 </BorowedBrowser>

@@ -1,9 +1,15 @@
 import { makeAutoObservable } from "mobx";
-import { IBook, IUser } from "@dl/shared";
+import { IBook, Role } from "@dl/shared";
 import { client } from "src/graphql/client";
 import { IUserProfileQuery, IUserProfileVariables, userProfileQuery } from "src/graphql/user/userProfile";
 import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/addBook";
 import { IManageBook } from "src/components/Manage/ManageBook";
+
+interface IManageUser {
+    borowing: IBook[]
+    username: string
+    role: Role
+}
 
 class ManageBookStore {
     searchUser: string = ""
@@ -11,8 +17,13 @@ class ManageBookStore {
 
     isOpen: boolean = false;
 
-    userBorowing: IBook[] = []
+    // userBorowing: IBook[] = []
     bookResults: IBook[] = []
+    user: IManageUser = {
+        borowing: [],
+        username: null,
+        role: null
+    }
     add: IBook[] = []
     remove: IBook[] = []
 
@@ -21,16 +32,14 @@ class ManageBookStore {
     }
 
     async loadUser() {
-        if (this.searchUser.length < 3) return this.clearUser();
 
         const { data } = await client.query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, { username: this.searchUser }).toPromise();
         if (data.userProfile == null) return this.clearUser();
 
-        this.setUserBorowing(data.userProfile.borowing);
+        this.setUser(data.userProfile)
     }
 
     async loadResults() {
-        if (this.searchBooks.length < 3) return this.clearResults(); // TODO change in debounce CAUSES extra rerenders
         const { data } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.searchBooks }).toPromise()
 
         if (data.bookSuggestion == null) return this.clearResults();
@@ -42,8 +51,8 @@ class ManageBookStore {
         this.bookResults = books;
     }
 
-    setUserBorowing(books: IBook[]) {
-        this.userBorowing = books;
+    setUser(user: IManageUser) {
+        this.user = user;
     }
 
     clearResults() {
@@ -51,46 +60,56 @@ class ManageBookStore {
     }
 
     clearUser() {
-        this.userBorowing = [];
+        this.user.borowing = [];
     }
 
     addBook(addBook: IBook) {
 
         // * Check if the user is already borowing the book, no need to send extra data *
-        if (this.userBorowing.some(book => book.id == addBook.id))
-            return this.remove = this.remove.filter(book => book.id != addBook.id);
+        if (this.user.borowing.some(book => book.id == addBook.id))
+            return this.removeBookFromRemoveList(addBook);
 
         this.add = [...this.add, addBook];
-        this.remove = this.remove.filter(book => book.id != addBook.id);
+        this.removeBookFromRemoveList(addBook);
+    }
+
+    removeBookFromRemoveList(removeBook: IBook) {
+        this.remove = this.remove.filter(book => book.id != removeBook.id);
+    }
+
+    removeBookFromAddList(addBook: IBook) {
+        return this.add = this.add.filter(book => book.id != addBook.id);
     }
 
     removeBook(removeBook: IBook) {
 
         // * Check if the user is already borowing the book, no need to send extra data *
-        if (!this.userBorowing.some(book => book.id == removeBook.id))
-            return this.add = this.add.filter(book => book.id != removeBook.id);
+        if (!this.user.borowing.some(book => book.id == removeBook.id))
+            return this.removeBookFromAddList(removeBook);
 
 
         this.remove = [...this.remove, removeBook];
-        this.add = this.add.filter(book => book.id != book.id);
+        this.removeBookFromAddList(removeBook);
     }
 
     get results() {
         console.log(JSON.stringify(this.add, null, 2));
         console.log(JSON.stringify(this.remove, null, 2));
 
-        console.log(JSON.stringify(this.userBorowing, null, 2));
+        console.log(JSON.stringify(this.user.borowing, null, 2));
         console.log(JSON.stringify(this.bookResults, null, 2));
+
+        if(this.user.username == null) return [];
 
         const bookResults = this.bookResults.map(bookResult =>
             // * Check if book result is borowed *
-            this.userBorowing.some(borowingBook => borowingBook.id == bookResult.id)
+            this.user.borowing.some(borowingBook => borowingBook.id == bookResult.id)
                 ? { ...bookResult, isBorowing: true }
                 : { ...bookResult, isBorowing: false }
         )
 
         // * Exclude book search results from user borowing books, userBorowing - BookResults *
-        const userBooks = this.userBorowing.filter(book =>
+        const userBooks = this.user.borowing.filter(book =>
             !this.bookResults.some(result => result.id == book.id)
         ).map(
             // * Convert into IManageBook from IBook *
@@ -107,7 +126,7 @@ class ManageBookStore {
                 return book;
         })
 
-       
+
     }
 
     open() {

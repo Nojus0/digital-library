@@ -8,7 +8,7 @@ import SearchSvg from "src/svg/SearchSvg";
 
 function UserSearchBar() {
     return (
-        <Search initial="inactive">
+        <Search style={{ marginBottom: "1rem" }} initial="inactive">
             <SearchSvg
                 initial="inactive"
                 fill="grey" />

@@ -1,11 +1,7 @@
-import { IBook } from "@dl/shared"
 import styled from "@emotion/styled"
 import { AnimatePresence, motion } from "framer-motion"
 import React, { useEffect } from "react"
 import { BaseButton } from "src/styled/Buttons"
-import BookBase from "../BookParts/BookBase"
-import BookImage from "../BookParts/BookImage"
-import BookTitle from "../BookParts/BookTitle"
 import UserSearchBar from "./UserSearchBar"
 import BookSearchBar from "./BookSearchBar"
 import { manageStore } from "src/state/ManageBookStore"
@@ -14,7 +10,6 @@ import { Backdrop } from "../utils/Backdrop"
 import { ManageBook } from "./ManageBook"
 import { debounce } from "lodash"
 import opacity from "src/framer/opacity"
-import { RankCard } from "../RankCard"
 function ManageUser() {
 
 
@@ -26,13 +21,13 @@ function ManageUser() {
     const fetchBooks = debounce(() => manageStore.loadResults(), 1000);
 
     useEffect(() => {
-        if (manageStore.searchUser.length < 3) return manageStore.clearUser();
+        if (manageStore.currentUser.length < 3) return;
 
         fetchNewResults();
-    }, [manageStore.searchUser]);
+    }, [manageStore.currentUser]);
 
     useEffect(() => {
-        if (manageStore.searchBooks.length < 3) return manageStore.clearResults()
+        if (manageStore.searchBooks.length < 3) return;
 
         fetchBooks();
     }, [manageStore.searchBooks])
@@ -45,13 +40,6 @@ function ManageUser() {
                 <ManageForm>
                     <SearchSide>
                         <UserSearchBar />
-                        <AnimatePresence>
-                            {
-                                manageStore.user.role != null && (
-                                    <RankCard rank={manageStore.user.role} />
-                                )
-                            }
-                        </AnimatePresence>
                     </SearchSide>
                     <BookSide>
                         <BookSearchBar />

@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import { BookResolver } from "./resolvers/BookResolver";
 import { config } from "./typeorm.config";
 import { ImageResolver } from "./resolvers/ImageResolver";
+import { ManageResolver } from "./resolvers/ManageResolver";
 
 const port = process.env.PORT || 4000;
 if (process.env.SECRET == null) throw new Error("Secret not found");
@@ -22,7 +23,7 @@ if (process.env.SECRET == null) throw new Error("Secret not found");
 
   const GRAPHQL_SERVER = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver, BookResolver, ImageResolver],
+      resolvers: [UserResolver, BookResolver, ImageResolver, ManageResolver],
     }),
     context: ({ req, res }) => ({ req, res })
   });

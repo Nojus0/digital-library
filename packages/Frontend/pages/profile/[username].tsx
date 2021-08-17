@@ -55,7 +55,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 <title>{username} Profile - Digital Library</title>
             </Head>
             <Header />
-            <Container variants={container} animate="show" initial="hidden" min="1px" value="100%" max="45rem">
+            <Container style={{ marginBottom: "5rem" }} variants={container} animate="show" initial="hidden" min="1px" value="100%" max="45rem">
                 <NameLogo variants={variants}>
                     <ProfileLogo>
                         <h1>{username?.substring(0, 1)?.toUpperCase()}</h1>
@@ -69,7 +69,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">
                     {
                         borowing.map(book =>
-                            <Book style={{ marginBottom: ".85rem" }} key={book.id} variants={bookVariant} {...book} />
+                            <Book style={{ marginBottom: "1.25rem" }} key={book.id} variants={bookVariant} {...book} />
                         )
                     }
                 </BorowedBrowser>

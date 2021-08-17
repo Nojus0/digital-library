@@ -6,7 +6,7 @@ import React from 'react'
 export function RankCard(props: IRankCardProps) {
     return (
         <RankPaper {...props}>
-            <RankCardName>{props.rank}</RankCardName>
+            <RankCardName>{Role[props.rank]}</RankCardName>
         </RankPaper>
     )
 }

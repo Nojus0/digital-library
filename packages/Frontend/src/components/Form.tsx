@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 
 export const Form = styled.div({
     display: "flex",
+    width: "100%",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",

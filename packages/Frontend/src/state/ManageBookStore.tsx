@@ -1,9 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, toJS } from "mobx";
 import { IBook, Role } from "@dl/shared";
 import { client } from "src/graphql/client";
 import { IUserProfileQuery, IUserProfileVariables, userProfileQuery } from "src/graphql/user/userProfile";
 import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/addBook";
 import { IManageBook } from "src/components/Manage/ManageBook";
+import { IManageUsers, IManageUsersVars, manageUser, ManageUsersMutation } from "src/graphql/user/manageUsers";
 
 interface IManageUser {
     username: string
@@ -15,7 +16,7 @@ interface IManageUser {
 }
 
 class ManageBookStore {
-    currentUser: string = ""
+    searchUser: string = ""
     searchBooks: string = ""
 
     isOpen: boolean = false;
@@ -23,7 +24,7 @@ class ManageBookStore {
     bookResults: IBook[] = []
 
     // Username / Modify
-    users: Record<string, IManageUser> = {};
+    users: Map<string, IManageUser> = new Map();
 
     constructor() {
         makeAutoObservable(this);
@@ -31,16 +32,19 @@ class ManageBookStore {
 
     async loadUser() {
 
-        const { data } = await client.query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, { username: this.currentUser }).toPromise();
-        if (data.userProfile == null) return;
+        const { data, error } = await client.query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, { username: this.searchUser }).toPromise();
+        if (data.userProfile == null || error) return;
 
-        this.setUser({ ...data.userProfile, add: [], remove: [] });
+        if (!this.users.has(data.userProfile.username)) {
+            this.users.set(data.userProfile.username, { ...data.userProfile, add: [], remove: [] })
+        }
     }
 
     async loadResults() {
-        const { data } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.searchBooks }).toPromise()
+        const { data, error } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.searchBooks }).toPromise()
 
-        if (data.bookSuggestion == null) return this.clearResults();
+        if (data.bookSuggestion == null || error)
+            return this.clearBookResults();
 
         this.setBookResults(data.bookSuggestion);
     }
@@ -49,60 +53,74 @@ class ManageBookStore {
         this.bookResults = books;
     }
 
-    setUser(props: IManageUser) {
-        if (this.users[props.username] != null) return; // TODO Maybe invalid if changed ...
-
-        this.users[props.username] = props;
+    clearBookResults() {
+        this.bookResults = [];
     }
 
-    clearResults() {
-        this.bookResults = [];
+    set current(val: IManageUser) {
+        this.users.set(val.username, val);
+    }
+
+    get current() {
+        return this.users.get(this.searchUser)
     }
 
     addBook(addBook: IBook) {
 
         // * Check if the user is already borowing the book, no need to send extra data *
-        if (this.users[this.currentUser].borowing.some(book => book.id == addBook.id))
+        if (this.current.borowing.some(book => book.id == addBook.id))
             return this.removeBookFromRemoveList(addBook);
 
-        this.users[this.currentUser].add = [...this.users[this.currentUser].add, addBook];
+        this.current.add = [...this.current.add, addBook];
         this.removeBookFromRemoveList(addBook);
     }
 
     removeBookFromRemoveList(removeBook: IBook) {
-        this.users[this.currentUser].remove = this.users[this.currentUser].remove.filter(book => book.id != removeBook.id);
+        this.current.remove = this.current.remove.filter(book => book.id != removeBook.id);
     }
 
     removeBookFromAddList(addBook: IBook) {
-        return this.users[this.currentUser].add = this.users[this.currentUser].add.filter(book => book.id != addBook.id);
+        return this.current.add = this.current.add.filter(book => book.id != addBook.id);
     }
 
     removeBook(removeBook: IBook) {
 
         // * Check if the user is already borowing the book, no need to send extra data *
-        if (!this.users[this.currentUser].borowing.some(book => book.id == removeBook.id))
+        if (!this.current.borowing.some(book => book.id == removeBook.id))
             return this.removeBookFromAddList(removeBook);
 
 
-        this.users[this.currentUser].remove = [...this.users[this.currentUser].remove, removeBook];
+        this.current.remove = [...this.current.remove, removeBook];
         this.removeBookFromAddList(removeBook);
     }
 
-    
+    async confirm() {
+        const users: manageUser[] = Array.from(this.users.values())
+            .map(({ username, add, remove }) => ({
+                username, add: add.map(add => (add.id)),
+                remove: remove.map(remove => (remove.id))
+            }));
+
+        const { data, error } = await client.mutation<IManageUsers, IManageUsersVars>(ManageUsersMutation, { users }).toPromise()
+
+        if (error || data.manageUsers == null) {
+            // TODO make an error message at the top of the screen and centered.
+        }
+        this.close();
+    }
 
     get results() {
-        if (this.users[this.currentUser] == null) return [];
+        if (this.current == null) return [];
 
-        console.log(JSON.stringify(this.users, null, 2));
         const bookResults = this.bookResults.map(bookResult =>
             // * Check if book result is borowed *
-            this.users[this.currentUser].borowing.some(borowingBook => borowingBook.id == bookResult.id)
+            this.current.borowing.some(borowingBook => borowingBook.id == bookResult.id)
                 ? { ...bookResult, isBorowing: true }
                 : { ...bookResult, isBorowing: false }
         )
 
         // * Exclude book search results from user borowing books, userBorowing - BookResults *
-        const userBooks = this.users[this.currentUser].borowing.filter(book =>
+        const userBooks = this.current.borowing.filter(book =>
             !this.bookResults.some(result => result.id == book.id)
         ).map(
             // * Convert into IManageBook from IBook *
@@ -111,9 +129,9 @@ class ManageBookStore {
 
         return [...bookResults, ...userBooks].map(book => {
 
-            if (this.users[this.currentUser].add.some(addBook => addBook.id == book.id))
+            if (this.current.add.some(addBook => addBook.id == book.id))
                 return ({ ...book, isBorowing: true })
-            else if (this.users[this.currentUser].remove.some(removeBook => removeBook.id == book.id))
+            else if (this.current.remove.some(removeBook => removeBook.id == book.id))
                 return ({ ...book, isBorowing: false })
             else
                 return book;
@@ -135,7 +153,7 @@ class ManageBookStore {
     }
 
     setUsernameSearch(val: string) {
-        this.currentUser = val;
+        this.searchUser = val;
     }
 }
 

@@ -17,17 +17,17 @@ function ManageUser() {
         if (e.target === e.currentTarget) manageStore.close();
     }
 
-    const fetchNewResults = debounce(() => manageStore.loadUser(), 1000);
+    const fetchUser = debounce(() => manageStore.loadUser(), 1000);
     const fetchBooks = debounce(() => manageStore.loadResults(), 1000);
 
     useEffect(() => {
-        if (manageStore.currentUser.length < 3) return;
+        if (manageStore.searchUser.length < 3) return;
 
-        fetchNewResults();
-    }, [manageStore.currentUser]);
+        fetchUser();
+    }, [manageStore.searchUser]);
 
     useEffect(() => {
-        if (manageStore.searchBooks.length < 3) return;
+        // if (manageStore.searchBooks.length < 3) return manageStore.clearBookResults();
 
         fetchBooks();
     }, [manageStore.searchBooks])
@@ -69,7 +69,7 @@ function ManageUser() {
                                 Cancel
                             </CancelButton>
                             <ConfirmButton
-                                onClick={(e) => manageStore.close()}
+                                onClick={(e) => manageStore.confirm()}
                                 variant="light"
                                 size="1rem"
                             >
@@ -136,6 +136,7 @@ const BookSide = styled.div({
 const ManageForm = styled.div({
     backgroundColor: "#EFEFEF",
     borderRadius: ".4rem",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     display: "flex",
     // height: "clamp(1px, 100%, 40rem)",
     width: "clamp(1px, 100%, 80rem)",

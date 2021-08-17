@@ -1,5 +1,3 @@
-import styled from "@emotion/styled";
-import { motion } from "framer-motion";
 import { observer } from "mobx-react";
 import React from "react";
 import { manageStore } from "src/state/ManageBookStore";
@@ -13,7 +11,7 @@ function UserSearchBar() {
                 initial="inactive"
                 fill="grey" />
             <SearchInput
-                value={manageStore.currentUser}
+                value={manageStore.searchUser}
                 onChange={e => manageStore.setUsernameSearch(e.target.value)}
                 initial="inactive"
                 placeholder="Search for a user"

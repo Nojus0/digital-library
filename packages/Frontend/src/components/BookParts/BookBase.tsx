@@ -17,6 +17,7 @@ const StyledBookBase = styled(motion.div)(props => ({
     display: "flex",
     width: "100%",
     height: "7rem",
+    minHeight: "7rem",
     background: "#EFEFEF",
     borderRadius: ".4rem",
     alignItems: "center",

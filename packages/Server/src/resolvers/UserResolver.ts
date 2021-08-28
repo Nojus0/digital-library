@@ -32,7 +32,7 @@ export class UserResolver {
     async userProfile(@Arg("username") username: string) {
         return User.findOne({ where: { username }, relations: ["borowing"] });
     }
-
+    
     @Mutation(() => UserResponse, { nullable: true })
     async register(
         @Arg("username") username: string,

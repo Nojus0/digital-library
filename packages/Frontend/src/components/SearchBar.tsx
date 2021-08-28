@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
@@ -9,45 +9,14 @@ import debounce from "lodash/debounce";
 import Book from "./BookParts/Book";
 import { Search, SearchInput } from "src/styled/SearchBar";
 
-const item = {
-    show: {
-        opacity: 1,
-        background: "#3D3D3D"
-    },
-    hidden: {
-        opacity: 0,
-        background: "#EFEFEF"
-    }
-}
-
-const searchVariant = {
-    active: {
-        background: "#3D3D3D",
-        borderRadius: ".4rem .4rem 0rem 0rem",
-    },
-    inactive: {
-        background: "#EFEFEF",
-        borderRadius: ".4rem .4rem .4rem .4rem",
-    }
-}
-
-const inputVariant = {
-    active: {
-        color: "#EFEFEF",
-        fill: "#EFEFEF"
-    },
-    inactive: {
-        color: "#000000",
-        fill: "#808080"
-    }
-}
-
 function SearchBar() {
     const outsideRef = useOnclickOutside(() => searchStore.setShow(false));
 
     const throttledFetch = debounce(() => searchStore.fetchSuggestions(), 1000);
 
     useEffect(() => {
+        if (searchStore.value.length < 3) return searchStore.clearResults();
+
         throttledFetch();
     }, [searchStore.value])
 
@@ -59,7 +28,6 @@ function SearchBar() {
     }
 
     const animate = searchStore.show && searchStore.results.length > 0 ? "active" : "inactive";
-
     return (
         <Search shadow={false} ref={outsideRef} initial="inactive" animate={animate} variants={searchVariant}>
             <SearchSvg
@@ -124,3 +92,36 @@ const SearchResult = styled(motion.div)({
     background: "#EFEFEF",
     borderRadius: "0 0 .4rem .4rem",
 })
+
+const item = {
+    show: {
+        opacity: 1,
+        background: "#3D3D3D"
+    },
+    hidden: {
+        opacity: 0,
+        background: "#EFEFEF"
+    }
+}
+
+const searchVariant = {
+    active: {
+        background: "#3D3D3D",
+        borderRadius: ".4rem .4rem 0rem 0rem",
+    },
+    inactive: {
+        background: "#EFEFEF",
+        borderRadius: ".4rem .4rem .4rem .4rem",
+    }
+}
+
+const inputVariant = {
+    active: {
+        color: "#EFEFEF",
+        fill: "#EFEFEF"
+    },
+    inactive: {
+        color: "#000000",
+        fill: "#808080"
+    }
+}

@@ -33,7 +33,7 @@ if (process.env.SECRET == null) throw new Error("Secret not found");
     cookieParser(),
     cors({
       credentials: true,
-      origin: "http://localhost:3000",
+      origin: process.env.ORIGIN || "*",
     }),
   ]);
 

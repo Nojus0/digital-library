@@ -11,7 +11,6 @@ import { IBook, IUser, Role } from "@dl/shared"
 import { motion } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Book from "src/components/BookParts/Book";
-import BookBase from "src/components/BookParts/BookBase";
 
 interface ProfileProps {
     username: string;

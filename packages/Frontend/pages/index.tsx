@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import styles from "styles/main.module.scss";
 import Logo from "src/svg/Logo";
-import { Button } from 'src/styled/Components';
 import { Container } from 'src/components/utils/Container';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import styled from '@emotion/styled';
+import { BaseButton } from 'src/styled/Buttons';
 
 
 const variants = {
@@ -39,19 +39,37 @@ function Home() {
       <Container variants={variants} animate="show" initial="hidden" style={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
 
         <Logo variants={item} height="45vh" />
-        <motion.h1 variants={item} className={styles.maintext}>Digital Library</motion.h1>
+        <TitleText variants={item}>Digital Library</TitleText>
 
-        <div className={styles.actionContainer}>
+        <ActionContainer>
           <Link href="/register">
-            <Button>Register</Button>
+            <BaseButton size="1rem 2.5rem">Register</BaseButton>
           </Link>
           <Link href="/login">
-            <Button style={{ background: "transparent", color: "black" }} >Log In</Button>
+            <BaseButton variant="transparent" size="1rem 2.5rem">Log In</BaseButton>
           </Link>
-        </div>
+        </ActionContainer>
 
       </Container>
     </>
   )
 }
+
+const TitleText = styled(motion.h1)({
+  margin: "1.5rem",
+  fontSize: "clamp(2rem, 1rem + 6.5vw, 4.5rem)",
+  fontWeight: 500,
+  textAlign: "center"
+})
+
+const ActionContainer = styled(motion.div)({
+  marginTop: "clamp(1rem, 1vw + 1.25rem, 3.5rem)",
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-around",
+  flexWrap: "wrap",
+  width: "100%",
+  maxWidth: " 22.5rem",
+})
 export default Home;

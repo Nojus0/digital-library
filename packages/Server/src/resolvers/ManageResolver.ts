@@ -25,7 +25,7 @@ export class ManageResolver {
     @Mutation(type => [User], { nullable: true })
     async manageUsers(@Arg('users', type => [IManageUser]) manage: IManageUser[]) {
 
-        let NewUsers: IUser[] = []
+        let NewUsers: User[] = []
         for (const { username, add, remove } of manage) {
             const db_user = await User.findOneOrFail({ where: { username }, relations: ["borowing"] });
 
@@ -39,14 +39,9 @@ export class ManageResolver {
             }
 
             await db_user.save();
-            NewUsers.push(db_user);
+            NewUsers = [...NewUsers, db_user];
         }
 
         return NewUsers;
-    }
-
-    @Query(type => String)
-    test() {
-        return "";
     }
 }

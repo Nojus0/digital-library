@@ -12,7 +12,6 @@ import { debounce } from "lodash"
 import opacity from "src/framer/opacity"
 function ManageUser() {
 
-
     function onBodyClick(e: React.MouseEvent) {
         if (e.target === e.currentTarget) manageStore.close();
     }
@@ -32,8 +31,6 @@ function ManageUser() {
         fetchBooks();
     }, [manageStore.searchBooks])
 
-
-    console.log(`render`);
     return (
         <AnimatePresence>
             <Backdrop on={manageStore.isOpen} onClick={onBodyClick}>
@@ -99,14 +96,9 @@ const ConfirmButton = styled(BaseButton)({
     margin: "1rem 0px 0"
 })
 
-const BookResults = styled.div({
-    borderRadius: ".4rem",
-    backgroundColor: "white"
-})
-
 const UserBooksPaper = styled(motion.div)({
     backgroundColor: "#FFFFFF",
-    overflowY: "auto",
+    overflow: "auto",
     display: "flex",
     flexDirection: "column",
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
@@ -120,7 +112,7 @@ const SearchSide = styled.div({
     display: "flex",
     flexDirection: "column",
     flex: '1 0 45%',
-    padding: "1rem"
+    // padding: "1rem"
 })
 
 const BookSide = styled.div({
@@ -129,7 +121,8 @@ const BookSide = styled.div({
     flex: '1 0 45%',
     maxHeight: "75vh",
     minHeight: "75vh",
-    padding: "1rem"
+    width: "100%"
+    // padding: "1rem"
 })
 
 
@@ -139,6 +132,8 @@ const ManageForm = styled.div({
     boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
     display: "flex",
     // height: "clamp(1px, 100%, 40rem)",
-    width: "clamp(1px, 100%, 80rem)",
+    width: "clamp(1px, 100%, 65rem)",
     flexWrap: "wrap",
+    gap: "1rem",
+    padding: "1rem"
 })

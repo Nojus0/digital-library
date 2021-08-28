@@ -30,8 +30,8 @@ class UserStore {
         const { data, error } = await client.query<ICurrentUser>(currentUserQuery).toPromise();
 
         if (error || data?.currentUser == null) {
-            this.fetching = false;
-            this.user.signedIn = false;
+            this.setFetching(false);
+            this.setSignedIn(false);
             return;
         }
 
@@ -50,6 +50,10 @@ class UserStore {
         this.fetching = val;
     }
 
+    setSignedIn(signedIn: boolean) {
+        this.user = { ...this.user, signedIn };
+    }
+
     setUser(user: IUser) {
         this.user = { ...user };
     }
@@ -63,16 +67,16 @@ class UserStore {
 
         const { role, username } = data.login.user
 
-        this.user = {
+        this.setUser({
             signedIn: true,
             role: Role[role],
             username: username
-        }
+        })
     }
 
     async signOut() {
         await client.mutation<ISignout>(signoutMutation).toPromise();
-        this.user.signedIn = false;
+        this.setSignedIn(false);
     }
 
     async register({ username, email, password, confirmPassword }: IRegisterDetails) {

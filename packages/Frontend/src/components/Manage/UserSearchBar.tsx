@@ -1,4 +1,4 @@
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { manageStore } from "src/state/ManageBookStore";
 import { Search, SearchInput } from "src/styled/SearchBar";

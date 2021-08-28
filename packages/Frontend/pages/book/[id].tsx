@@ -3,19 +3,19 @@ import React, { useState } from "react";
 import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/utils/Seperator";
-import { Button } from "src/styled/Components";
 import Head from "next/head";
 import { client } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
 import { motion } from "framer-motion";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { userStore } from "src/state/UserStore";
 import { GetServerSideProps } from "next";
 import BookImage from "src/components/BookParts/BookImage"
 import opacity from "src/framer/opacity";
 import { manageStore } from "src/state/ManageBookStore";
 import ManageUser from "src/components/Manage/ManageUser";
+import { BaseButton } from "src/styled/Buttons";
 
 function id({ name, imageUrl, description }: IBook) {
     const [imgError, setImgError] = useState(false);
@@ -44,17 +44,14 @@ function id({ name, imageUrl, description }: IBook) {
                         <Seperator margin="0" />
                         <CardDescription>{description}</CardDescription>
                         <ButtonWrapper>
-                            <Button
-                                style={{
-                                    visibility:
-                                        userStore.user.role == Role.Administrator
-                                            ? "visible"
-                                            : "hidden",
-                                }}
+                            <ManageButton
+                                variant="light"
+                                size="1rem 2rem"
+                                shown={userStore.user.role == Role.Administrator}
                                 onClick={e => manageStore.open()}
                             >
                                 Manage
-                            </Button>
+                            </ManageButton>
                         </ButtonWrapper>
                     </InfoContainer>
                 </Card>
@@ -78,6 +75,15 @@ export const getServerSideProps: GetServerSideProps<IBook> = async ({ params }) 
     };
 };
 
+
+interface IManageButtonProps {
+    shown: boolean
+}
+
+const ManageButton = styled(BaseButton)(({ shown }: IManageButtonProps) => ({
+    visibility: shown ? "visible" : "hidden"
+}))
+
 const CardHeader = styled(motion.h1)({
     fontSize: "clamp(1.25rem, 5vw, 2.5rem)",
     marginBottom: "1rem",
@@ -92,40 +98,29 @@ const CardDescription = styled(motion.p)({
 const Card = styled(motion.div)({
     background: "#F3F3F3",
     borderRadius: ".4rem",
-    display: "grid",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
-    gridTemplateRows: "1fr",
-    gridTemplateColumns: "0fr 2fr",
-    img: {
+    "img, svg": {
         userSelect: "none",
         borderRadius: ".4rem 0 0 .4rem",
         width: "10rem",
         minWidth: "10rem",
         height: "100%",
         objectFit: "cover",
-    },
-    svg: {
-        paddingLeft: "1rem",
-        minWidth: "10rem",
-        height: "100%",
-    },
+    }
 });
 
 const ButtonWrapper = styled.div({
     display: "flex",
     justifyContent: "flex-end",
-    button: {
-        padding: "1rem 2rem",
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-        background: "white",
-        color: "black",
-        margin: "1rem",
-    },
 });
 
 const InfoContainer = styled.div({
     margin: "1rem 1.5rem",
     display: "flex",
     minHeight: "12.5rem",
+    width: "100%",
     flexDirection: "column"
 });

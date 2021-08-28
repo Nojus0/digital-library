@@ -8,7 +8,7 @@ import { ProfileSvg } from 'src/svg/ProfileSvg';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Role } from "@dl/shared";
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react-lite';
 import { userStore } from 'src/state/UserStore';
 import SearchBar from './SearchBar';
 function Header() {

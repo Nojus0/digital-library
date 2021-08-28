@@ -31,14 +31,14 @@ class BookStore {
             return
         }
 
-       this.addBooks(data.books);
+        this.addBooks(data.books);
     }
 
     setBook(books: IBook[]) {
         this.books = [...books]
     }
 
-    addBooks(books: IBook[]){
+    addBooks(books: IBook[]) {
         this.books = [...this.books, ...books];
     }
 }

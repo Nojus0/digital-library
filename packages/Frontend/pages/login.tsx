@@ -5,11 +5,12 @@ import React, { useState } from "react";
 import AttentionCard from "src/components/AttentionCard";
 import { Container } from "src/components/utils/Container";
 import Seperator from "src/components/utils/Seperator";
-import { Button, TextBox } from "src/styled/Components";
+import { TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { userStore } from "src/state/UserStore";
+import { BaseButton } from "src/styled/Buttons";
 
 function login(props) {
   const Router = useRouter();
@@ -64,7 +65,7 @@ function login(props) {
           <form action="">
             <TextBox type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
             <TextBox type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
-            <Button onClick={loginSubmit} type="submit">Log In</Button>
+            <BaseButton onClick={loginSubmit} type="submit">Log In</BaseButton>
           </form>
 
           <Seperator />

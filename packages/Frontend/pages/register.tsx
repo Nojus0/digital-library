@@ -1,4 +1,4 @@
-import { IRegisterVariables, useRegisterMutation } from "src/graphql/user/register";
+import { IRegisterVariables } from "src/graphql/user/register";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,12 +6,12 @@ import React, { useState } from "react";
 import AttentionCard from "src/components/AttentionCard";
 import { Container } from "src/components/utils/Container";
 import Seperator from "src/components/utils/Seperator";
-import { Button, TextBox } from "src/styled/Components";
+import { TextBox } from "src/styled/Components";
 import SvgLogo from "src/svg/Logo";
 import { Form } from "src/components/Form";
-import { AnimatePresence } from "framer-motion";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import { userStore } from "src/state/UserStore";
+import { BaseButton } from "src/styled/Buttons";
 
 const variants = {
     normal: {
@@ -84,7 +84,7 @@ function register() {
                         value={confirmPassword}
                         onChange={(e) => setConfirm(e.target.value)}
                     />
-                    <Button type="submit" onClick={SubmitRegister}>Register</Button>
+                    <BaseButton type="submit" onClick={SubmitRegister}>Register</BaseButton>
                     <Seperator />
 
                     <p>

@@ -2,6 +2,8 @@ import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange 
 
 export const isServerSide = typeof window === "undefined";
 
+export const isClientSide = typeof window !== "undefined";
+
 export const ssrCache = ssrExchange({ isClient: !isServerSide })
 
 export const client = createClient({

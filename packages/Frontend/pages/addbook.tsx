@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Header from 'src/components/Header'
 import { Container } from "src/components/utils/Container"
 import styled from '@emotion/styled'
@@ -8,20 +8,68 @@ import { AddPhotoButton } from 'src/svg/AddPhotoSvg'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { BaseButton } from 'src/styled/Buttons'
-
+import Compressor from 'compressorjs'
+import { client } from 'src/graphql/client'
+import { IUploadMutation, IUploadVariables, uploadMutation } from 'src/graphql/books/upload'
+import { MAX_BOOK_TITLE_LENGTH, MAX_DESCRIPTION_LENGTH, uploadCover } from "@dl/shared"
+import { bookStore } from 'src/state/LoadedBookStore'
 function AddBook() {
-    const [name, setName] = useState("");
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const router = useRouter();
     const fileRef = useRef<HTMLInputElement>();
-    const [previewSrc, setPreview] = useState("");
+    const [preview, setPreview] = useState<Blob>();
 
     async function submitAdd() {
-        router.push("/books");
+        const { data, error } = await client.mutation<IUploadMutation, IUploadVariables>(
+            uploadMutation,
+            { title, description, addPhoto: preview != null }
+        ).toPromise();
+
+        if (data?.upload == null || error != null) return; //
+
+        const value: uploadCover = JSON.parse(data.upload);
+
+        if (preview == null) return await finished();
+
+        const form = new FormData();
+        form.append("Content-Type", preview.type);
+        Object.keys(value.fields).forEach((key) => form.append(key, value.fields[key]))
+        form.append("file", preview);
+
+        const { ok } = await fetch(value.url, {
+            method: "POST",
+            body: form
+        });
+
+        if (ok) return await finished();
+
+        async function finished() {
+            bookStore.reset();
+            await router.push("/books");
+        }
+
     }
 
     async function fileChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setPreview(URL.createObjectURL(e.target.files[0]));
+        new Compressor(e.target.files[0], {
+            maxHeight: 400,
+            maxWidth: 300,
+            quality: 0.8,
+            success: (newFile) => {
+                setPreview(newFile);
+            }
+        })
+    }
+
+    function descriptionChanged(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        if (e.target.value.length < MAX_DESCRIPTION_LENGTH)
+            setDescription(e.target.value);
+    }
+
+    function titleChanged(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.value.length < MAX_BOOK_TITLE_LENGTH)
+            setTitle(e.target.value);
     }
 
     return (
@@ -36,7 +84,9 @@ function AddBook() {
 
                         <PreviewContainer>
                             {
-                                previewSrc != "" && <StyledImage src={previewSrc} />
+                                useMemo(() => preview != null &&
+                                    < StyledImage src={URL.createObjectURL(preview)} />,
+                                    [preview])
                             }
                         </PreviewContainer>
 
@@ -53,9 +103,9 @@ function AddBook() {
 
                     </ImgContainer>
                     <AddBookForm>
-                        <TextBox variant="Light" value={name} onChange={e => setName(e.target.value)} placeholder="Book name"></TextBox>
+                        <TextBox variant="Light" value={title} onChange={titleChanged} placeholder="Book name"></TextBox>
                         <Seperator margin="0" width="100%" />
-                        <TextArea variant="Light" value={description} onChange={e => setDescription(e.target.value)} style={{ resize: "none" }} rows={20} placeholder="Book description"></TextArea>
+                        <TextArea variant="Light" value={description} onChange={descriptionChanged} style={{ resize: "none" }} rows={20} placeholder="Book description"></TextArea>
                         <BaseButton variant="light" onClick={submitAdd}>Add</BaseButton>
                     </AddBookForm>
 

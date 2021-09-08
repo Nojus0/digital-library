@@ -38,7 +38,9 @@ function id({ name, imageUrl, description }: IBook) {
                 value="100%"
             >
                 <Card variants={opacity} animate="show" initial="hidden">
-                    <BookImage src={imageUrl} />
+                    <div>
+                        <BookImage src={imageUrl} />
+                    </div>
                     <InfoContainer>
                         <CardHeader>{name}</CardHeader>
                         <Seperator margin="0" />
@@ -99,8 +101,8 @@ const Card = styled(motion.div)({
     background: "#F3F3F3",
     borderRadius: ".4rem",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     width: "100%",
     "img, svg": {
         userSelect: "none",

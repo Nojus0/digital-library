@@ -1,18 +1,109 @@
-import { GraphQLUpload } from "apollo-server-express";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { Upload } from "../interfaces";
+import { Arg, Args, ArgsType, Ctx, Field, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { S3 } from "aws-sdk"
+import crypto, { HexBase64Latin1Encoding } from "crypto"
+import { isAuthRole } from "../middleware/isAuth";
+import { Role } from "@dl/shared";
+import { IAuthRoleContext } from "../interfaces";
+import { User } from "../entity/User";
+import { Book } from "../entity/Book";
+
+const s3 = new S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_DEFAULT_REGION
+})
+
+enum Presign {
+    url,
+    "Content-Type",
+    acl,
+    "x-amz-meta-userid",
+    "X-Amz-Signature",
+    Policy,
+    "X-Amz-Date",
+    "X-Amz-Credential",
+    "X-Amz-Algorithm",
+    bucket,
+    key,
+}
+
+@ArgsType()
+abstract class UploadRequest {
+    @Field()
+    title: string
+
+    @Field()
+    description: string
+
+    @Field(type => Boolean)
+    addPhoto: boolean
+}
 
 @Resolver()
 export class ImageResolver {
 
-    @Query(type => String)
-    async images() {
-        return "";
-    }
+    @UseMiddleware(isAuthRole(Role.Administrator, true))
+    @Mutation(type => String, { nullable: true })
+    async upload(
+        @Args() { description, title, addPhoto }: UploadRequest,
+        @Ctx() { username }: IAuthRoleContext,
+    ) {
 
-    @Mutation(type => Boolean, { nullable: true })
-    async uploadimage(@Arg("img", type => GraphQLUpload) file: Upload) {
-        console.log(file);
-        return true;
+        const USER = await User.findOneOrFail({ where: { username } });
+
+        if (!addPhoto) {
+            return createBook();
+        }
+
+        const imgName = getImageKey();
+
+        const data = s3.createPresignedPost({
+            Bucket: process.env.AWS_BUCKET,
+            Fields: {
+                key: imgName,
+            },
+            Conditions: [
+                ["content-length-range", 0, 1000000], // content length restrictions: 0-1MB
+                ["starts-with", "$Content-Type", "image/"], // content type restriction
+                ["eq", "$x-amz-meta-userid", USER.id], // tag with userid <= the user can see this!
+                ["eq", '$acl', 'public-read']
+            ],
+        });
+
+        data.fields["x-amz-meta-userid"] = USER.id.toString();
+        data.fields.acl = "public-read";
+
+
+        createBook(imgName)
+
+        async function createBook(ImageName: string = "") {
+            await Book.create({
+                name: title,
+                description,
+                imageUrl: ImageName != ""
+                    ?
+                    `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_DEFAULT_REGION}.amazonaws.com/${encodeURIComponent(ImageName)}`
+                    :
+                    null,
+                creator: USER,
+            }).save()
+        }
+
+
+
+        return JSON.stringify(data)
     }
+}
+
+function getImageKey(): string {
+
+    const val = sha256(`
+    ${crypto.randomBytes(32)}
+    `);
+
+    return val;
+}
+
+export function sha256(input: string | Buffer | DataView, encoding: HexBase64Latin1Encoding = "base64") {
+    return crypto.createHash("sha256").update(input).digest(encoding);
 }

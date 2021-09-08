@@ -17,6 +17,12 @@ class BookStore {
         this.page += this.limit;
     }
 
+    reset() {
+        this.page = 0;
+        this.hasMore = true;
+        this.setBooks([]);
+    }
+
     async loadBooks() {
         const { data, error } = await client.query<IBooksQuery, IBooksVariables>(
             booksQuery, {
@@ -34,7 +40,7 @@ class BookStore {
         this.addBooks(data.books);
     }
 
-    setBook(books: IBook[]) {
+    setBooks(books: IBook[]) {
         this.books = [...books]
     }
 

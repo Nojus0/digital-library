@@ -34,7 +34,7 @@ if (process.env.SECRET == null) throw new Error("Secret not found");
     cors({
       credentials: true,
       origin: process.env.ORIGIN || "*",
-    }),
+    })
   ]);
 
   GRAPHQL_SERVER.applyMiddleware({ app: SERVER, cors: false });

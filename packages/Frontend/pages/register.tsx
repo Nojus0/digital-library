@@ -12,6 +12,8 @@ import { Form } from "src/components/Form";
 import { observer } from "mobx-react-lite";
 import { userStore } from "src/state/UserStore";
 import { BaseButton } from "src/styled/Buttons";
+import { child, parent } from "src/framer/stagger";
+import { motion } from "framer-motion";
 
 const variants = {
     normal: {
@@ -53,9 +55,9 @@ function register() {
             </Head>
 
             <Container min="1px" value="100%" max="25em">
-                <Form>
+                <Form variants={parent} initial="hidden" animate="show">
                     <SvgLogo variants={variants} animate={error == "" ? "normal" : "collapsed"} width="7em" />
-                    <h1>Register</h1>
+                    <motion.h1 variants={child}>Register</motion.h1>
 
 
                     <AttentionCard show={error != ""} color="#FF3636">
@@ -66,33 +68,37 @@ function register() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Email"
+                        variants={child}
                     />
                     <TextBox
                         value={username}
                         onChange={(e) => setUser(e.target.value)}
                         placeholder="Username"
+                        variants={child}
                     />
                     <TextBox
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPass(e.target.value)}
+                        variants={child}
                     />
                     <TextBox
                         type="password"
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={(e) => setConfirm(e.target.value)}
+                        variants={child}
                     />
-                    <BaseButton type="submit" onClick={SubmitRegister}>Register</BaseButton>
-                    <Seperator />
+                    <BaseButton variants={child} type="submit" onClick={SubmitRegister}>Register</BaseButton>
+                    <Seperator variants={child} />
 
-                    <p>
+                    <motion.p variants={child}>
                         Already have an account?
                         <Link href="/login">
                             <span>Log In</span>
                         </Link>
-                    </p>
+                    </motion.p>
                 </Form>
             </Container>
         </>

@@ -13,6 +13,7 @@ import { client } from 'src/graphql/client'
 import { IUploadMutation, IUploadVariables, uploadMutation } from 'src/graphql/books/upload'
 import { MAX_BOOK_TITLE_LENGTH, MAX_DESCRIPTION_LENGTH, uploadCover } from "@dl/shared"
 import { bookStore } from 'src/state/LoadedBookStore'
+import opacity from 'src/framer/opacity'
 function AddBook() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -21,12 +22,14 @@ function AddBook() {
     const [preview, setPreview] = useState<Blob>();
 
     async function submitAdd() {
+        if (title.length < 3 || description.length < 3) return;
+
         const { data, error } = await client.mutation<IUploadMutation, IUploadVariables>(
             uploadMutation,
             { title, description, addPhoto: preview != null }
         ).toPromise();
 
-        if (data?.upload == null || error != null) return; //
+        if (data?.upload == null || error != null) return await finished();
 
         const value: uploadCover = JSON.parse(data.upload);
 
@@ -78,7 +81,7 @@ function AddBook() {
                 <title>Add a Book - Digital Library</title>
             </Head>
             <Header />
-            <Container style={{ marginTop: "1rem" }} value="100%" min="1rem" max="45rem">
+            <Container variants={opacity} animate="show" initial="hidden" style={{ marginTop: "1rem" }} value="100%" min="1rem" max="45rem">
                 <AddBookPaper>
                     <ImgContainer>
 

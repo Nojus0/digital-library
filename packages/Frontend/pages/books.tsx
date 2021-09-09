@@ -70,13 +70,6 @@ const item = {
     show: { opacity: 1 },
 };
 
-
-// function BookListBook(book: IBook) {
-//     return (
-
-//     )
-// }
-
 const BookListItem = styled(Book)({ // Extend
     marginBottom: "1.25rem"
 })

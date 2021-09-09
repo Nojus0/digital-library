@@ -11,6 +11,9 @@ import { Form } from "src/components/Form";
 import { observer } from "mobx-react-lite";
 import { userStore } from "src/state/UserStore";
 import { BaseButton } from "src/styled/Buttons";
+import { motion } from "framer-motion";
+import { child, parent } from "src/framer/stagger";
+
 
 function login(props) {
   const Router = useRouter();
@@ -53,29 +56,29 @@ function login(props) {
         <title>Digital Library - Log In</title>
       </Head>
       <Container min="1px" value="100%" max="25em" >
-        <Form>
-          <SvgLogo width="7em" />
-          <h1>Log In</h1>
+        <Form transition={{ delay: 10 }} variants={parent} initial="hidden" animate="show" >
+          <SvgLogo width="7em" variants={child} />
+          <motion.h1 variants={child} >Log In</motion.h1>
 
           <AttentionCard show={error != ""} color="#FF3636">
             <h5>{error}</h5>
           </AttentionCard>
 
 
-          <form action="">
-            <TextBox type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
-            <TextBox type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
-            <BaseButton onClick={loginSubmit} type="submit">Log In</BaseButton>
-          </form>
+          <motion.form action="">
+            <TextBox variants={child} type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
+            <TextBox variants={child} type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
+            <BaseButton variants={child} onClick={loginSubmit} type="submit">Log In</BaseButton>
+          </motion.form>
 
-          <Seperator />
+          <Seperator variants={child} />
 
-          <p>
+          <motion.p variants={child} >
             Don't have an account?
             <Link href="/register">
               <span>Register</span>
             </Link>
-          </p>
+          </motion.p>
         </Form>
       </Container>
     </>

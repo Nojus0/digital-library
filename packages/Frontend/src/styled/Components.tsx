@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 
-export const TextBox = styled.input(({ variant = "Dark" }: ITextInputProps) => ({
+export const TextBox = styled(motion.input)(({ variant = "Dark" }: ITextInputProps) => ({
     background: "white",
     transition: "100ms box-shadow ease",
     "&::placeholder": {

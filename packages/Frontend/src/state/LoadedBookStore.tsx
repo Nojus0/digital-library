@@ -28,7 +28,7 @@ class BookStore {
             booksQuery, {
             limit: this.limit,
             page: this.page
-        }).toPromise();
+        }, { requestPolicy: "cache-and-network" }).toPromise();
 
         if (error != null) return; // TODO add popup
 

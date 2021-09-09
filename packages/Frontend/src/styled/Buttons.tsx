@@ -1,4 +1,5 @@
 import styled from "@emotion/styled"
+import { motion } from "framer-motion"
 
 interface IButton {
     variant?: "light" | "dark" | "transparent"
@@ -7,7 +8,7 @@ interface IButton {
     shadow?: boolean
 }
 
-export const BaseButton = styled.button(({ size = "1rem", variant = "dark", margin = "0", shadow }: IButton) => {
+export const BaseButton = styled(motion.button)(({ size = "1rem", variant = "dark", margin = "0", shadow }: IButton) => {
 
     function getBackground() {
         switch (variant) {

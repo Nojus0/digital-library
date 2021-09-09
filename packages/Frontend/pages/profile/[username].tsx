@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
     const { data, error } = await client.query<IUserProfileQuery, IUserProfileVariables>(
         userProfileQuery,
-        { username: params.username as string }
+        { username: params.username as string },
     ).toPromise();
 
     if (!data?.userProfile || error) return { notFound: true }

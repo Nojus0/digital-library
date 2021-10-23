@@ -3,7 +3,7 @@ export const MAX_DESCRIPTION_LENGTH = 4096;
 
 export interface IBook {
     id?: number
-    name: string
+    title: string
     imageUrl: string
     description?: string
 }

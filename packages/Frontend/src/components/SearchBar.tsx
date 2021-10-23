@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { searchStore } from "src/state/SearchBarStore";
 import SearchSvg from "src/svg/SearchSvg";
@@ -12,7 +12,7 @@ import { Search, SearchInput } from "src/styled/SearchBar";
 function SearchBar() {
     const outsideRef = useOnclickOutside(() => searchStore.setShow(false));
 
-    const throttledFetch = debounce(() => searchStore.fetchSuggestions(), 1000);
+    const throttledFetch = useCallback(debounce(() => searchStore.fetchSuggestions(), 1000), []);
 
     useEffect(() => {
         if (searchStore.value.length < 3) return searchStore.clearResults();

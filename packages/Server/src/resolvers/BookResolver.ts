@@ -5,6 +5,8 @@ import { Role } from "@dl/shared"
 import { IAuthContext, IAuthRoleContext } from "../interfaces";
 import { isAuthRole, NextJsRoute } from "../middleware/isAuth";
 import { Like } from "typeorm";
+import { s3 } from "./ImageResolver";
+import { URL } from "url";
 
 @ArgsType()
 export class BooksPaginationArgs {
@@ -25,6 +27,18 @@ export class CreateBookArgs {
 
     @Field()
     description: string
+}
+
+@ArgsType()
+export class EditBookArgs {
+    @Field()
+    newTitle: string
+
+    @Field()
+    newDescription: string
+
+    @Field(type => Int)
+    bookId: number
 }
 
 @ArgsType()
@@ -56,6 +70,38 @@ export class BookResolver {
 
     }
 
+    @Mutation(type => Boolean)
+    @UseMiddleware(isAuthRole(Role.Administrator, true))
+    async deleteBook(@Arg("id", type => Int) id: number) {
+        try {
+            const book = await Book.findOneOrFail({ where: { id } });
+            const Key = new URL(book.imageUrl).pathname.replace(/\//gm, "");
+            
+            s3.deleteObject({
+                Bucket: process.env.AWS_BUCKET,
+                Key,
+            }, (err, data) => {});
+
+            await book.remove();
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    @Mutation(type => Book, { nullable: true })
+    @UseMiddleware(isAuthRole(Role.Administrator, true))
+    async editBook(@Args() { bookId, newDescription, newTitle }: EditBookArgs) {
+        try {
+            const target = await Book.findOneOrFail({ where: { id: bookId } });
+            target.title = newTitle;
+            target.description = newDescription;
+            return target.save();
+        } catch (error) {
+            return null;
+        }
+    }
+
     @Query(type => Book, { nullable: true })
     async book(@Args() { id }: IntArg) {
         return Book.findOne({ where: { id } });
@@ -66,7 +112,7 @@ export class BookResolver {
     async bookSuggestion(@Arg("search") search: string) {
 
         // TODO CACHE WITH REDIS? 
-        return Book.createQueryBuilder().where(`LOWER(name) LIKE LOWER('%' || :search || '%')`, { search }).orderBy("id", "DESC").take(5).getMany();
+        return Book.createQueryBuilder().where(`LOWER(title) LIKE LOWER('%' || :search || '%')`, { search }).orderBy("id", "DESC").take(5).getMany();
 
         // return Book.find({
         //     where: {

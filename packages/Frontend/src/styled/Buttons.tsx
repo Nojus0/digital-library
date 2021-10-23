@@ -6,9 +6,12 @@ interface IButton {
     size?: string
     margin?: string
     shadow?: boolean
+    useTransition?: boolean
 }
 
-export const BaseButton = styled(motion.button)(({ size = "1rem", variant = "dark", margin = "0", shadow }: IButton) => {
+export const BaseButton = styled(motion.button)((
+    { size = "1rem", variant = "dark", margin = "0", shadow, useTransition = true }: IButton
+) => {
 
     function getBackground() {
         switch (variant) {
@@ -36,7 +39,7 @@ export const BaseButton = styled(motion.button)(({ size = "1rem", variant = "dar
         background: getBackground(),
         color: getForeColor(),
         borderRadius: ".4rem",
-        transition: "100ms box-shadow ease, 250ms background ease, 250ms color ease",
+        transition: useTransition ? "100ms box-shadow ease, 250ms background ease, 250ms color ease" : "unset",
         boxShadow: (variant == "light" || shadow) && "0px 4px 4px rgba(0, 0, 0, 0.25)",
         "&:focus-visible": {
             boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.25)",

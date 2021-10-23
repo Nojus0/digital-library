@@ -7,25 +7,11 @@ import { IAuthRoleContext } from "../interfaces";
 import { User } from "../entity/User";
 import { Book } from "../entity/Book";
 
-const s3 = new S3({
+export const s3 = new S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_DEFAULT_REGION
 })
-
-enum Presign {
-    url,
-    "Content-Type",
-    acl,
-    "x-amz-meta-userid",
-    "X-Amz-Signature",
-    Policy,
-    "X-Amz-Date",
-    "X-Amz-Credential",
-    "X-Amz-Algorithm",
-    bucket,
-    key,
-}
 
 @ArgsType()
 abstract class UploadRequest {
@@ -78,7 +64,7 @@ export class ImageResolver {
 
         async function createBook(ImageName: string = "") {
             await Book.create({
-                name: title,
+                title,
                 description,
                 imageUrl: ImageName != ""
                     ?
@@ -99,7 +85,7 @@ function getImageKey(): string {
 
     const val = sha256(`
     ${crypto.randomBytes(32)}
-    `);
+    `, "hex");
 
     return val;
 }

@@ -5,7 +5,7 @@ import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/utils/Seperator";
-import { client } from "src/graphql/client"
+import { client, server_client } from "src/graphql/client"
 import { IUserProfileQuery, IUserProfileVariables, userProfileQuery } from "src/graphql/user/userProfile";
 import { IBook, IUser, Role } from "@dl/shared"
 import { motion } from "framer-motion";
@@ -17,7 +17,6 @@ interface ProfileProps {
     role: string;
     borowing: IBook[];
 }
-
 const variants = {
     hidden: {
         opacity: 0,
@@ -26,7 +25,6 @@ const variants = {
         opacity: 1,
     }
 }
-
 const container = {
     show: {
         transition: {
@@ -34,7 +32,6 @@ const container = {
         }
     }
 }
-
 const bookVariant = {
     hidden: {
         opacity: 0,
@@ -79,7 +76,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
-    const { data, error } = await client.query<IUserProfileQuery, IUserProfileVariables>(
+    const { data, error } = await server_client.query<IUserProfileQuery, IUserProfileVariables>(
         userProfileQuery,
         { username: params.username as string },
     ).toPromise();

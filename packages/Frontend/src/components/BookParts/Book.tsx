@@ -9,12 +9,12 @@ import BookTitle from './BookTitle'
 
 type IBookProps = IBook & Omit<HTMLMotionProps<"div">, 'id'>
 
-function Book({ id, imageUrl, name, ...props }: IBookProps, ref: React.Ref<HTMLDivElement>) {
+function Book({ id, imageUrl, title, ...props }: IBookProps, ref: React.Ref<HTMLDivElement>) {
 
     return (
         <BookBase {...props} ref={ref}>
             <BookImage src={imageUrl != null ? imageUrl : ""} />
-            <BookTitle>{name}</BookTitle>
+            <BookTitle>{title}</BookTitle>
 
             <Link href={`/book/${id}`} passHref>
                 <a>

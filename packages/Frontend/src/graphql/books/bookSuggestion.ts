@@ -14,7 +14,7 @@ export const bookSuggestionQuery = gql`
   query bookSuggestion($search: String!) {
     bookSuggestion(search: $search) {
       id
-      name
+      title
       imageUrl
       description
     }

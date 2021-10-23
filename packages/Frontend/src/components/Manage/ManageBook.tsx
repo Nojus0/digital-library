@@ -12,17 +12,17 @@ export interface IManageBook extends IBook {
     isBorowing: boolean,
 }
 
-interface IManageBookProps extends Omit<HTMLMotionProps<"div">, "id">, IManageBook {
+interface IManageBookProps extends Omit<Omit<HTMLMotionProps<"div">, "id">, "title">, IManageBook {
     onRemove?: (e: React.MouseEvent) => void
     onAdd?: (e: React.MouseEvent) => void
 }
 //
-export function ManageBook({ imageUrl, name, isBorowing, id, onAdd, onRemove, ...props }: IManageBookProps) {
+export function ManageBook({ imageUrl, title, isBorowing, id, onAdd, onRemove, ...props }: IManageBookProps) {
 
     return (
         <BookBase variants={opacity} exit="hidden" initial="hidden" animate="show" style={{ margin: ".5rem 0" }} {...props}>
             <BookImage src={imageUrl} />
-            <BookTitle>{name}</BookTitle>
+            <BookTitle>{title}</BookTitle>
             {
                 isBorowing ?
                     <RemoveButton onClick={onRemove} variant="dark" margin="0rem 1rem 0 0" size=".75rem 1.5rem">Remove</RemoveButton>

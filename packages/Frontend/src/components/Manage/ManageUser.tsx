@@ -26,10 +26,11 @@ function ManageUser() {
     }, [manageStore.searchUser]);
 
     useEffect(() => {
-        // if (manageStore.searchBooks.length < 3) return manageStore.clearBookResults();
+        if (!manageStore.isOpen) return;
+
 
         fetchBooks();
-    }, [manageStore.searchBooks])
+    }, [manageStore.searchBooks, manageStore.isOpen])
 
     return (
         <AnimatePresence>

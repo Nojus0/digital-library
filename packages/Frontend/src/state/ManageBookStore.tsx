@@ -2,9 +2,9 @@ import { makeAutoObservable, toJS } from "mobx";
 import { IBook, Role } from "@dl/shared";
 import { client } from "src/graphql/client";
 import { IUserProfileQuery, IUserProfileVariables, userProfileQuery } from "src/graphql/user/userProfile";
-import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/addBook";
 import { IManageBook } from "src/components/Manage/ManageBook";
 import { IManageUsers, IManageUsersVars, manageUser, ManageUsersMutation } from "src/graphql/user/manageUsers";
+import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/bookSuggestion";
 
 interface IManageUser {
     username: string
@@ -41,6 +41,7 @@ class ManageBookStore {
     }
 
     async loadResults() {
+
         const { data, error } = await client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.searchBooks }).toPromise()
 
         if (data.bookSuggestion == null || error)

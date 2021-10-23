@@ -17,7 +17,7 @@ export const userProfileQuery = gql`
       role
       borowing {
         id
-        name
+        title
         imageUrl
         description
       }

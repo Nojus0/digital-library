@@ -94,7 +94,8 @@ function AddBook() {
                             {
                                 useMemo(() => preview != null &&
                                     < StyledImage src={URL.createObjectURL(preview)} />,
-                                    [preview])
+                                    [preview]
+                                )
                             }
                         </PreviewContainer>
 

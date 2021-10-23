@@ -13,7 +13,7 @@ export const bookQuery = gql`
   query book($id: Int!) {
     book(id: $id) {
       id
-      name
+      title
       imageUrl
       description
     }

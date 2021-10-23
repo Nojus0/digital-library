@@ -12,7 +12,7 @@ export class Book extends BaseEntity {
 
     @Field()
     @Column({ length: MAX_BOOK_TITLE_LENGTH })
-    name: string
+    title: string
 
     @Field({ nullable: true })
     @Column({ nullable: true })

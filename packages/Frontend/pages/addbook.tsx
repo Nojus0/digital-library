@@ -11,15 +11,20 @@ import { BaseButton } from 'src/styled/Buttons'
 import Compressor from 'compressorjs'
 import { client } from 'src/graphql/client'
 import { IUploadMutation, IUploadVariables, uploadMutation } from 'src/graphql/books/upload'
-import { MAX_BOOK_TITLE_LENGTH, MAX_DESCRIPTION_LENGTH, uploadCover } from "@dl/shared"
+import { MAX_BOOK_TITLE_LENGTH, MAX_DESCRIPTION_LENGTH, Role, uploadCover } from "@dl/shared"
 import { bookStore } from 'src/state/LoadedBookStore'
 import opacity from 'src/framer/opacity'
+import { useAuthedRoute } from 'src/hooks/useAuthedRoute'
+import { observable } from 'mobx'
+import { observer } from 'mobx-react-lite'
 function AddBook() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const router = useRouter();
     const fileRef = useRef<HTMLInputElement>();
     const [preview, setPreview] = useState<Blob>();
+
+    useAuthedRoute(Role.Administrator);
 
     async function submitAdd() {
         if (title.length < 3 || description.length < 3) return;
@@ -119,8 +124,7 @@ function AddBook() {
 }
 
 
-
-export default AddBook;
+export default observer(AddBook);
 
 export const AbsoluteDiv = styled.div({
     position: "absolute"

@@ -19,7 +19,7 @@ class UserStore {
         signedIn: false,
         username: null
     }
-    fetching: boolean = true;
+    fetching = true;
 
     constructor() {
         makeAutoObservable(this);
@@ -27,7 +27,9 @@ class UserStore {
     }
 
     async fetchCurrentUser() {
-        const { data, error } = await client.query<ICurrentUser>(currentUserQuery).toPromise();
+        const { data, error } = await client.query<ICurrentUser>(
+            currentUserQuery
+        ).toPromise();
 
         if (error || data?.currentUser == null) {
             this.setFetching(false);
@@ -36,7 +38,6 @@ class UserStore {
         }
 
         const { username, role } = data.currentUser
-
         this.setFetching(false);
         this.setUser({
             username,

@@ -12,7 +12,7 @@ export const config: ConnectionOptions = {
     database: process.env.DATABASE,
     synchronize: IsDev,
     logging: IsDev,
-    // dropSchema: IsDev,
+    dropSchema: IsDev,
     // ssl: true,
     // extra: {
     //     ssl: {

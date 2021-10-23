@@ -100,6 +100,8 @@ class ManageBookStore {
                 username, add: add.map(add => (add.id)),
                 remove: remove.map(remove => (remove.id))
             }));
+        
+        if(users.length < 1) return this.close();
 
         const { data, error } = await client.mutation<IManageUsers, IManageUsersVars>(ManageUsersMutation, { users }).toPromise()
 

@@ -16,7 +16,7 @@ function Header() {
     const [isDrop, setDrop] = useState(false);
     const Router = useRouter();
     const dropdownRef = useOnclickOutside(() => setDrop(false));
-    
+
     useEffect(() => {
         document.body.style.overflowY = "scroll";
 
@@ -41,9 +41,14 @@ function Header() {
             <SearchBar />
 
             <ProfileContainer ref={dropdownRef}>
-                <div onClick={e => setDrop(prev => !prev)}>
-                    <h1>{userStore.user?.username?.substring(0, 1).toUpperCase()}</h1>
-                </div>
+                {
+                    userStore.user.signedIn && (
+                        <div onClick={e => setDrop(prev => !prev)}>
+                            <h1>{userStore.user?.username?.substring(0, 1).toUpperCase()}</h1>
+                        </div>
+                    )
+                }
+
 
                 <Dropdown on={isDrop}>
 

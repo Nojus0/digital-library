@@ -13,7 +13,7 @@ function Book({ id, imageUrl, name, ...props }: IBookProps, ref: React.Ref<HTMLD
 
     return (
         <BookBase {...props} ref={ref}>
-            <BookImage src={imageUrl} />
+            <BookImage src={imageUrl != null ? imageUrl : ""} />
             <BookTitle>{name}</BookTitle>
 
             <Link href={`/book/${id}`} passHref>

@@ -25,7 +25,7 @@ function BookImage(
 
 
 
-    if (!loaded) return <StyledError onClick={e => setLoaded(true)} />
+    if (!loaded) return <StyledError {...props as any} onClick={e => setLoaded(true)} />
 
     return (
         <StyledImage

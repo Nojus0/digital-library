@@ -303,9 +303,8 @@ const Card = styled(motion.div)({
 const FormImageOrSvg = styled(BookImage)({
   userSelect: "none",
   borderRadius: ".4rem 0 0 .4rem",
-  width: "10rem",
   minWidth: "10rem",
-  height: "100%",
+  minHeight: "100%",
   objectFit: "cover",
 });
 

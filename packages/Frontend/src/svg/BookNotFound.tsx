@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
+import { HTMLMotionProps, motion, MotionProps, SVGMotionProps } from "framer-motion";
 import React from "react";
 
-export function BookNotFound(props: React.SVGProps<SVGSVGElement>) {
+export function BookNotFound(props: SVGMotionProps<SVGElement>) {
     return (
-        <svg
+        <motion.svg
             width="50"
             height="36"
             viewBox="0 0 50 36"
@@ -16,6 +17,6 @@ export function BookNotFound(props: React.SVGProps<SVGSVGElement>) {
                 stroke="black"
                 strokeLinecap="round"
             />
-        </svg>
+        </motion.svg>
     );
 }

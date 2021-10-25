@@ -25,7 +25,7 @@ export function ManageBook({ imageUrl, title, isBorowing, id, onAdd, onRemove, .
             <BookTitle>{title}</BookTitle>
             {
                 isBorowing ?
-                    <RemoveButton onClick={onRemove} variant="dark" margin="0rem 1rem 0 0" size=".75rem 1.5rem">Remove</RemoveButton>
+                    <RemoveButton onClick={onRemove} shadow variant="dark" margin="0rem 1rem 0 0" size=".75rem 1.5rem">Remove</RemoveButton>
                     :
                     <AddButton onClick={onAdd} shadow variant="dark" margin="0rem 1rem 0 0" size=".75rem 1.5rem">Add</AddButton>
 
@@ -36,10 +36,16 @@ export function ManageBook({ imageUrl, title, isBorowing, id, onAdd, onRemove, .
 
 const AddButton = styled(BaseButton)({
     backgroundColor: "#00D455",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    padding: 0,
+    height: "2.5rem",
+    width: "5rem"
 })
 
 const RemoveButton = styled(BaseButton)({
     backgroundColor: "#FF4242",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    padding: 0,
+    height: "2.5rem",
+    width: "5rem"
 })

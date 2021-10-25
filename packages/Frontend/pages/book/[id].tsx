@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/utils/Seperator";
@@ -19,7 +19,12 @@ import { BaseButton } from "src/styled/Buttons";
 import { Backdrop } from "src/components/utils/Backdrop";
 import CloseIcon from "src/svg/CloseIcon";
 import EditIcon from "src/svg/EditIcon";
-import { editBookMutation, editBookMutationCompact, IEditBook, IEditBookVars } from "src/graphql/books/editBook";
+import {
+  editBookMutation,
+  editBookMutationCompact,
+  IEditBook,
+  IEditBookVars,
+} from "src/graphql/books/editBook";
 import { deleteBook } from "src/graphql/books/deleteBook";
 import { CombinedError } from "@urql/core";
 import { useRouter } from "next/router";
@@ -54,16 +59,16 @@ function id({ title, imageUrl, description, id }: IBook) {
   }
 
   async function onEditClick(e: React.MouseEvent) {
-
     // * Confirm *
-    if (isEditing && title != stateTitle || desc != description) {
-      const { data } = await client.mutation<IEditBook, IEditBookVars>(editBookMutationCompact, {
-        bookId: id,
-        newDescription: desc,
-        newTitle: stateTitle
-      }).toPromise();
+    if ((isEditing && title != stateTitle) || desc != description) {
+      const { data } = await client
+        .mutation<IEditBook, IEditBookVars>(editBookMutationCompact, {
+          bookId: id,
+          newDescription: desc,
+          newTitle: stateTitle,
+        })
+        .toPromise();
     }
-
 
     setEditing((prev) => !prev);
   }
@@ -113,20 +118,23 @@ function id({ title, imageUrl, description, id }: IBook) {
             <FormImageOrSvg src={imageUrl} />
           </div>
           <InfoContainer>
-            {
-              isEditing ?
-                <EditTitle value={stateTitle} onChange={e => setTitle(e.target.value)} />
-                :
-                <CardHeaderText>{stateTitle}</CardHeaderText>
-
-            }
+            {isEditing ? (
+              <EditTitle
+                value={stateTitle}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            ) : (
+              <CardHeaderText>{stateTitle}</CardHeaderText>
+            )}
             <Seperator margin="0" />
-            {
-              isEditing ?
-                <EditDescription onChange={e => setDesc(e.target.value)} value={desc} />
-                :
-                <CardDescription >{desc}</CardDescription>
-            }
+            {isEditing ? (
+              <EditDescription
+                onChange={(e) => setDesc(e.target.value)}
+                value={desc}
+              />
+            ) : (
+              <CardDescription>{desc}</CardDescription>
+            )}
             <ButtonWrapper>
               {canEdit && (
                 <>
@@ -207,21 +215,21 @@ const EditDescription = styled.textarea({
   flexGrow: 1,
   margin: "1rem 0",
   fontSize: "1rem",
+  height: "15rem",
   background: "transparent",
   border: "none",
   padding: "0px",
   outline: "1px solid black",
   wordBreak: "break-all",
-
-})
+});
 const EditTitle = styled.input({
   fontSize: "clamp(1.25rem, 5vw, 2.5rem)",
   marginBottom: "1rem",
   background: "transparent",
   border: "none",
   padding: "0px",
-  outline: "1px solid black"
-})
+  outline: "1px solid black",
+});
 
 const CloseDeletePopupIcon = styled(CloseIcon)({
   alignSelf: "flex-end",
@@ -276,11 +284,12 @@ const CardHeaderText = styled(motion.h1)({
   fontSize: "clamp(1.25rem, 5vw, 2.5rem)",
   marginBottom: "1rem",
   wordBreak: "break-all",
-  padding: "0px"
+  padding: "0px",
 });
 
 const CardDescription = styled(motion.p)({
   flexGrow: 1,
+  fontSize: "1rem",
   wordBreak: "break-all",
 });
 

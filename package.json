@@ -8,8 +8,8 @@
     "frontend": "cd packages/Frontend/ && npm run dev",
     "shared": "cd packages/Shared/ && npm run dev",
     "dev": "yarn server & yarn frontend & yarn shared",
-    "build:shared": "cd ./packages/Shared & tsc",
-    "build:server": "cd ./packages/Server & tsc",
-    "start:server": "cd packages/Server/build & node index.js"
+    "build:shared": "cd ./packages/Shared && tsc",
+    "build:server": "cd ./packages/Server && tsc",
+    "start:server": "cd packages/Server/build && node index.js"
   }
 }

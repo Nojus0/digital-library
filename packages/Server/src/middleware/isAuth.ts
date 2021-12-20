@@ -48,11 +48,3 @@ export const isAuthRole: (ROLES: Role[] | Role, andAbove: boolean) => Middleware
 
     return next(); // Proccess next request
 };
-
-export const NextJsRoute: MiddlewareFn<IApolloContext> = async ({ context }, next) => {
-    if (context.req.header("secret") != process.env.DB_NOPAGINATION_SECRET)
-        throw new Error("Forbidden");
-
-
-    return next(); // Proccess next request
-};

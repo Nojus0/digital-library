@@ -14,7 +14,6 @@ import { BaseButton } from "src/styled/Buttons";
 import { motion } from "framer-motion";
 import { child, parent } from "src/framer/stagger";
 
-
 function login(props) {
   const Router = useRouter();
   const [error, setError] = useState("");
@@ -22,8 +21,9 @@ function login(props) {
   const [password, setPass] = useState("");
 
   function findErrors() {
-    if (email.length < 3 || !email.includes("@")) return "Invalid email address."
-    if (password.length < 3) return "Password too short."
+    if (email.length < 3 || !email.includes("@"))
+      return "Invalid email address.";
+    if (password.length < 3) return "Password too short.";
 
     return null;
   }
@@ -55,25 +55,45 @@ function login(props) {
       <Head>
         <title>Digital Library - Log In</title>
       </Head>
-      <Container min="1px" value="100%" max="25em" >
-        <Form transition={{ delay: 10 }} variants={parent} initial="hidden" animate="show" >
-          <SvgLogo width="7em" variants={child} />
-          <motion.h1 variants={child} >Log In</motion.h1>
+      <Container min="1px" value="100%" max="25em">
+        <Form
+          transition={{ delay: 10 }}
+          variants={parent}
+          initial="hidden"
+          animate="show"
+        >
+          <Link href="/">
+            <SvgLogo width="7em" variants={child} />
+          </Link>
+          <motion.h1 variants={child}>Log In</motion.h1>
 
           <AttentionCard show={error != ""} color="#FF3636">
             <h5>{error}</h5>
           </AttentionCard>
 
-
           <motion.form action="">
-            <TextBox variants={child} type="email" onChange={e => setEmail(e.target.value)} value={email} placeholder="Email" />
-            <TextBox variants={child} type="password" onChange={e => setPass(e.target.value)} value={password} placeholder="Password" />
-            <BaseButton variants={child} onClick={loginSubmit} type="submit">Log In</BaseButton>
+            <TextBox
+              variants={child}
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              placeholder="Email"
+            />
+            <TextBox
+              variants={child}
+              type="password"
+              onChange={(e) => setPass(e.target.value)}
+              value={password}
+              placeholder="Password"
+            />
+            <BaseButton variants={child} onClick={loginSubmit} type="submit">
+              Log In
+            </BaseButton>
           </motion.form>
 
           <Seperator variants={child} />
 
-          <motion.p variants={child} >
+          <motion.p variants={child}>
             Don't have an account?
             <Link href="/register">
               <span>Register</span>
@@ -84,8 +104,5 @@ function login(props) {
     </>
   );
 }
-
-
-
 
 export default observer(login);

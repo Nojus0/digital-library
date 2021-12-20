@@ -3,8 +3,7 @@ import { Book } from "../entity/Book";
 import { User } from "../entity/User";
 import { Role } from "@dl/shared"
 import { IAuthContext, IAuthRoleContext } from "../interfaces";
-import { isAuthRole, NextJsRoute } from "../middleware/isAuth";
-import { Like } from "typeorm";
+import { isAuthRole} from "../middleware/isAuth";
 import { s3 } from "./ImageResolver";
 import { URL } from "url";
 
@@ -78,7 +77,7 @@ export class BookResolver {
             const Key = new URL(book.imageUrl).pathname.replace(/\//gm, "");
             
             s3.deleteObject({
-                Bucket: process.env.AWS_BUCKET,
+                Bucket: process.env.S3_BUCKET,
                 Key,
             }, (err, data) => {});
 

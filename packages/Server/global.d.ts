@@ -9,9 +9,7 @@ declare namespace NodeJS {
         DATABASE: string
         SECRET: string
         ORIGIN: string
-        AWS_BUCKET: string
-        AWS_ACCESS_KEY_ID: string
-        AWS_SECRET_ACCESS_KEY: string
-        AWS_DEFAULT_REGION: string
+        S3_BUCKET: string
+        S3_REGION: string
     }
 }

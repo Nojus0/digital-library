@@ -7,7 +7,7 @@ export const isClientSide = typeof window !== "undefined";
 export const ssrCache = ssrExchange({ isClient: !isServerSide })
 
 export const client = createClient({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+    url: `${process.env.NEXT_PUBLIC_API_URL}`,
     exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
     fetchOptions: {
         credentials: "include"
@@ -15,7 +15,7 @@ export const client = createClient({
 });
 
 export const server_client = createClient({
-    url: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
+    url: `${process.env.NEXT_PUBLIC_API_URL}`,
     exchanges: [fetchExchange],
     fetchOptions: {
         credentials: "include"

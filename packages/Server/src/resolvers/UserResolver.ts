@@ -48,6 +48,7 @@ export class UserResolver {
     @Arg("email") email: string,
     @Arg("password") password: string
   ) {
+    email = email.toLowerCase();
     if (!ValidateInputRegister(email, password, username))
       return { error: "Invalid format details." };
 
@@ -91,6 +92,7 @@ export class UserResolver {
     @Arg("password") password: string,
     @Ctx() { req, res }: IApolloContext
   ) {
+    email = email.toLowerCase();
     if (!ValidateInputLogIn(email, password))
       return { error: "Invalid credentials format." };
 
@@ -103,8 +105,7 @@ export class UserResolver {
     res.cookie("auth", CreateJwtToken(user), {
       httpOnly: true,
       secure: IsProd,
-      // - maxAge: 1 * 86400, else session cookie
-      // - on browser close delete cookie
+      sameSite: "none",
     });
     return {
       user,
@@ -118,7 +119,7 @@ export function SignUsername(username: string): string {
   };
 
   return jwt.sign(Token, process.env.SECRET, {
-    expiresIn: 30 * 86400,
+    expiresIn: "1d",
   });
 }
 

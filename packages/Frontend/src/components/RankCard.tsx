@@ -6,7 +6,7 @@ import React from 'react'
 export function RankCard(props: IRankCardProps) {
     return (
         <RankPaper {...props}>
-            <RankCardName>{Role[props.rank]}</RankCardName>
+            <RankCardName>{props.rank}</RankCardName>
         </RankPaper>
     )
 }
@@ -26,5 +26,5 @@ const RankCardName = styled(motion.h1)({
 })
 
 interface IRankCardProps extends HTMLMotionProps<"div"> {
-    rank: Role
+    rank: string
 }

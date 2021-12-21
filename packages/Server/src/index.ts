@@ -1,24 +1,23 @@
 import "dotenv/config";
 import "reflect-metadata";
 import "./graphql/enums";
-import { createConnection } from "typeorm";
+import { createConnection, Connection } from "typeorm";
 import { ApolloServer } from "apollo-server-lambda";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/UserResolver";
 import cookieParser from "cookie-parser";
 import { BookResolver } from "./resolvers/BookResolver";
 import { config } from "./typeorm.config";
-import { Connection } from "typeorm";
 import { ImageResolver } from "./resolvers/ImageResolver";
 import { ManageResolver } from "./resolvers/ManageResolver";
 import express from "express";
 
 if (process.env.SECRET == null) throw new Error("Secret not found");
 
-let connection: Connection | null = null;
+var connection: Connection | null = null;
 
 export const handler = async (event, context, callback) => {
-  if (!connection) {
+  if (!connection || !connection?.isConnected) {
     console.log(`Connecting to database...`);
     connection = await createConnection(config);
     console.log(`Connected to database`);
@@ -28,6 +27,7 @@ export const handler = async (event, context, callback) => {
     schema: await buildSchema({
       resolvers: [UserResolver, BookResolver, ImageResolver, ManageResolver],
     }),
+    introspection: true,
     context: ({ express: { req, res } }) => ({ req, res }),
   });
 

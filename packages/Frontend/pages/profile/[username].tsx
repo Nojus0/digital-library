@@ -59,7 +59,7 @@ function id({ username = "", borowing = [], role = "" }: ProfileProps) {
                     <h1>{username}</h1>
                 </NameLogo>
 
-                <RankCard variants={variants} rank={Role[role]} />
+                <RankCard variants={variants} rank={role} />
 
                 <Seperator margin="1rem 0" variants={variants} />
                 <BorowedBrowser transition={{ delay: 10 }} variants={container} animate="show" initial="hidden">

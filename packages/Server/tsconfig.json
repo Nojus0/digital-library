@@ -10,7 +10,5 @@
     "sourceMap": false,
     "esModuleInterop": true
   },
-  "exclude": [
-    "**/index_server.ts"
-  ]
+  "exclude": ["**/index_server.ts"],
 }

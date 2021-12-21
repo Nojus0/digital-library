@@ -16,7 +16,9 @@ import { IAuthRoleContext } from "../interfaces";
 import { User } from "../entity/User";
 import { Book } from "../entity/Book";
 
-export const s3 = new S3();
+export const s3 = new S3({
+  region: process.env.S3_REGION,
+});
 
 @ArgsType()
 abstract class UploadRequest {

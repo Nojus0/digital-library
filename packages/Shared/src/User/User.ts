@@ -9,7 +9,7 @@ export interface IUser {
 
     email: string
 
-    role: Role
+    role: string
 
     createdBooks: IBook[]
 

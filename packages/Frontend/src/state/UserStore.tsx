@@ -4,96 +4,111 @@ import { client } from "src/graphql/client";
 import { makeAutoObservable } from "mobx";
 import { ISignout, signoutMutation } from "src/graphql/user/signout";
 import { ILogin, ILoginVariables, loginMutation } from "src/graphql/user/login";
-import { IRegister, IRegisterVariables, registerMutation } from "src/graphql/user/register";
+import {
+  IRegister,
+  IRegisterVariables,
+  registerMutation,
+} from "src/graphql/user/register";
 import { IRegisterDetails } from "pages/register";
 
 interface IUser {
-    username: string
-    role: Role
-    signedIn: boolean
+  username: string;
+  role: Role;
+  signedIn: boolean;
 }
 
 class UserStore {
-    user: IUser = {
-        role: null,
-        signedIn: false,
-        username: null
-    }
-    fetching = true;
+  user: IUser = {
+    role: null,
+    signedIn: false,
+    username: null,
+  };
+  fetching = true;
 
-    constructor() {
-        makeAutoObservable(this);
-        this.fetchCurrentUser();
-    }
+  constructor() {
+    makeAutoObservable(this);
+    this.fetchCurrentUser();
+  }
 
-    async fetchCurrentUser() {
-        const { data, error } = await client.query<ICurrentUser>(
-            currentUserQuery
-        ).toPromise();
+  async fetchCurrentUser() {
+    const { data, error } = await client
+      .query<ICurrentUser>(currentUserQuery)
+      .toPromise();
 
-        if (error || data?.currentUser == null) {
-            this.setFetching(false);
-            this.setSignedIn(false);
-            return;
-        }
-
-        const { username, role } = data.currentUser
-        this.setFetching(false);
-        this.setUser({
-            username,
-            role: Role[role],
-            signedIn: true
-        })
-
+    if (error || data?.currentUser == null) {
+      this.setFetching(false);
+      this.setSignedIn(false);
+      return;
     }
 
-    setFetching(val: boolean) {
-        this.fetching = val;
-    }
+    const { username, role } = data.currentUser;
+    this.setFetching(false);
+    this.setUser({
+      username,
+      role: Role[role],
+      signedIn: true,
+    });
+  }
 
-    setSignedIn(signedIn: boolean) {
-        this.user = { ...this.user, signedIn };
-    }
+  setFetching(val: boolean) {
+    this.fetching = val;
+  }
 
-    setUser(user: IUser) {
-        this.user = { ...user };
-    }
+  setSignedIn(signedIn: boolean) {
+    this.user = { ...this.user, signedIn };
+  }
 
-    async changeUser(user: ILoginVariables) {
-        const { data, error } = await client.mutation<ILogin, ILoginVariables>(loginMutation, user).toPromise();
+  setUser(user: IUser) {
+    this.user = { ...user };
+  }
 
-        if (error) return "Cannot connect to server.";
+  async changeUser(user: ILoginVariables) {
+    const { data, error } = await client
+      .mutation<ILogin, ILoginVariables>(loginMutation, user)
+      .toPromise();
 
-        if (data.login.user == null) return data.login.error;
+    if (error) return "Cannot connect to server.";
 
-        const { role, username } = data.login.user
+    if (data.login.user == null) return data.login.error;
 
-        this.setUser({
-            signedIn: true,
-            role: Role[role],
-            username: username
-        })
-    }
+    const { role, username } = data.login.user;
 
-    async signOut() {
-        await client.mutation<ISignout>(signoutMutation).toPromise();
-        this.setSignedIn(false);
-    }
+    this.setUser({
+      signedIn: true,
+      role: Role[role],
+      username: username,
+    });
+  }
 
-    async register({ username, email, password, confirmPassword }: IRegisterDetails) {
-        if (email.length < 3) return "Email too short."
-        if (username.length < 3) return "Username too short."
-        if (password.length < 3) return "Password too short."
-        if (email.length < 3 || !email.includes("@") || !email.includes(".")) return "Invalid email address."
-        if (password != confirmPassword) return "Passwords do not match."
+  async signOut() {
+    await client.mutation<ISignout>(signoutMutation).toPromise();
+    this.setSignedIn(false);
+  }
 
-        const { data, error } = await client.mutation<IRegister, IRegisterVariables>(
-            registerMutation,
-            { email, password, username }
-        ).toPromise()
+  async register({
+    username,
+    email,
+    password,
+    confirmPassword,
+  }: IRegisterDetails) {
+    if (email.length < 3) return "Email too short.";
+    if (username.length < 3) return "Username too short.";
+    if (password.length < 3) return "Password too short.";
+    if (email.length < 3 || !email.includes("@") || !email.includes("."))
+      return "Invalid email address.";
+    if (password != confirmPassword) return "Passwords do not match.";
 
-        if (error || data.register.error) return data.register.error || "Cannot connect to server."
+    const { data, error } = await client
+      .mutation<IRegister, IRegisterVariables>(registerMutation, {
+        email,
+        password,
+        username,
+      })
+      .toPromise();
 
-    }
+    if (data?.register?.error) return data.register.error;
+
+    if (error) return "Cannot connect to server.";
+  }
 }
 export const userStore = new UserStore();

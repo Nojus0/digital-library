@@ -5,6 +5,7 @@ import { Arg, Args, ArgsType, Field, InputType, Int, Mutation, ObjectType, Query
 import { Book } from "../entity/Book";
 
 
+@ObjectType()
 @InputType()
 @ArgsType()
 class IManageUser {

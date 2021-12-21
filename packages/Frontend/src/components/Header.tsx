@@ -43,9 +43,9 @@ function Header() {
             <ProfileContainer ref={dropdownRef}>
                 {
                     userStore.user.signedIn && (
-                        <div onClick={e => setDrop(prev => !prev)}>
-                            <h1>{userStore.user?.username?.substring(0, 1).toUpperCase()}</h1>
-                        </div>
+                        <ProfileIcon onClick={e => setDrop(prev => !prev)}>
+                            <ProfileIconText>{userStore.user?.username?.substring(0, 1).toUpperCase()}</ProfileIconText>
+                        </ProfileIcon>
                     )
                 }
 
@@ -105,25 +105,26 @@ const SideInfo = styled.div({
     }
 })
 
+const ProfileIcon = styled.div({
+    position: "relative",
+    cursor: "pointer",
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "50%",
+    background: "#EFEFEF",
+    width: "3rem",
+    height: "3rem",
+})
+
+const ProfileIconText = styled.h1({
+    color: "black",
+    fontSize: "1.20rem"
+})
+
 const ProfileContainer = styled.div({
     display: "flex",
     justifyContent: "center",
     userSelect: "none",
-    "& > div:first-of-type": {
-        position: "relative",
-        cursor: "pointer",
-        display: 'flex',
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: "50%",
-        background: "#EFEFEF",
-        width: "3rem",
-        height: "3rem",
-        "h1": {
-            color: "black",
-            fontSize: "1.20rem"
-        }
-    }
-
 })
 

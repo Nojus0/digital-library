@@ -1,39 +1,62 @@
 import { makeAutoObservable } from "mobx";
-import { IBook } from "@dl/shared";
+import { IBook, IUser} from "@dl/shared";
 import { client } from "src/graphql/client";
-import { bookSuggestionQuery, IBookSuggestionQuery, IBookSuggestionVars } from "src/graphql/books/bookSuggestion";
+import {
+  bookSuggestionQuery,
+  IBookSuggestionQuery,
+  IBookSuggestionVars,
+} from "src/graphql/books/bookSuggestion";
+import {
+  ISearchBarQuery,
+  ISearchBarVars,
+  searchBarQuery,
+} from "src/graphql/user/searchBar";
 
 class SearchBarStore {
-    value: string = ""
-    show: boolean = false;
-    results: Array<IBook> = []
+  value: string = "";
+  show: boolean = false;
+  bookResults: Array<IBook> = [];
+  userResult: { username: string; role: string } = null;
 
-    constructor() {
-        makeAutoObservable(this);
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  clearResults() {
+    this.bookResults = [];
+  }
+
+  setValue(val: string) {
+    this.setShow(true);
+    this.value = val;
+  }
+
+  async fetchSuggestions() {
+    try {
+      const resp = await client
+        .query<ISearchBarQuery, ISearchBarVars>(searchBarQuery, {
+          search: this.value,
+        })
+        .toPromise();
+
+      if (!resp || !resp.data) {
+        this.clearResults();
+        return;
+      }
+
+      this.setResults(resp.data.bookSuggestion, resp.data.userProfile);
+    } catch (err) {
+      this.clearResults();
     }
+  }
 
-    clearResults() {
-        this.results = [];
-    }
+  setResults(bookResults: IBook[], userResult: IUser) {
+    this.bookResults = bookResults;
+    this.userResult = userResult;
+  }
 
-    setValue(val: string) {
-        this.setShow(true);
-        this.value = val;
-    }
-
-    fetchSuggestions() {
-        client.query<IBookSuggestionQuery, IBookSuggestionVars>(bookSuggestionQuery, { search: this.value }).toPromise()
-            .then(e => this.setResults(e.data.bookSuggestion || []))
-            .catch(err => this.clearResults());
-    }
-
-    setResults(val: IBook[]) {
-        this.results = val;
-    }
-
-    setShow(val: boolean) {
-        this.show = val;
-    }
-
+  setShow(val: boolean) {
+    this.show = val;
+  }
 }
 export const searchStore = new SearchBarStore();

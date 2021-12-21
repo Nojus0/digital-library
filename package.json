@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "0.1.0",
   "workspaces": [
     "packages/*"
   ],
@@ -7,9 +8,14 @@
     "server": "cd packages/Server/ && npm run dev",
     "frontend": "cd packages/Frontend/ && npm run dev",
     "shared": "cd packages/Shared/ && npm run dev",
-    "dev": "yarn server & yarn frontend & yarn shared",
     "build:shared": "cd ./packages/Shared && tsc",
     "build:server": "cd ./packages/Server && tsc",
-    "start:server": "cd packages/Server/build && node index.js"
+    "start:server": "cd packages/Server/build && node index.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^12.0.7"
   }
 }

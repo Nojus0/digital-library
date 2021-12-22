@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/utils/Seperator";
 import Head from "next/head";
-import { client, server_client } from "src/graphql/client";
+import { client } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
 import { motion } from "framer-motion";
@@ -20,25 +20,45 @@ import { Backdrop } from "src/components/utils/Backdrop";
 import CloseIcon from "src/svg/CloseIcon";
 import EditIcon from "src/svg/EditIcon";
 import {
-  editBookMutation,
   editBookMutationCompact,
   IEditBook,
   IEditBookVars,
 } from "src/graphql/books/editBook";
 import { deleteBook } from "src/graphql/books/deleteBook";
-import { CombinedError } from "@urql/core";
 import { useRouter } from "next/router";
 import { bookStore } from "src/state/LoadedBookStore";
 
-function id({ title, imageUrl, description, id }: IBook) {
+function id(props) {
   const router = useRouter();
   const [showDrop, setDrop] = useState(false);
   const [isEditing, setEditing] = useState(false);
-  const [stateTitle, setTitle] = useState(title);
-  const [desc, setDesc] = useState(description);
+  const [book, setBook] = useState<IBook>();
+
+  const [stateTitle, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+
+  async function getBook() {
+    if (!router.query.id) return;
+
+    const { data, error } = await client
+      .query<{ book: IBook }>(bookQuery, {
+        id: parseInt(router.query.id as string),
+      })
+      .toPromise();
+
+    if (!data || !data.book || error) return router.push("/books");
+
+    setBook(data.book);
+    setTitle(data.book.title);
+    setDesc(data.book.description);
+  }
+
+  useEffect(() => {
+    getBook();
+  }, [router.query.id]);
 
   async function deleteBookSubmit() {
-    const [success, error] = await deleteBook(id);
+    const [success, error] = await deleteBook(book.id);
 
     if (success) {
       bookStore.reset();
@@ -60,10 +80,10 @@ function id({ title, imageUrl, description, id }: IBook) {
 
   async function onEditClick(e: React.MouseEvent) {
     // * Confirm *
-    if ((isEditing && title != stateTitle) || desc != description) {
+    if ((isEditing && book.title != stateTitle) || desc != book.description) {
       const { data } = await client
         .mutation<IEditBook, IEditBookVars>(editBookMutationCompact, {
-          bookId: id,
+          bookId: book.id,
           newDescription: desc,
           newTitle: stateTitle,
         })
@@ -104,7 +124,7 @@ function id({ title, imageUrl, description, id }: IBook) {
         </ConfirmDeletePaper>
       </Backdrop>
       <Head>
-        <title>Digital Library - {title}</title>
+        <title>Book - Digital Library</title>
       </Head>
       <Header />
       <Container
@@ -113,81 +133,70 @@ function id({ title, imageUrl, description, id }: IBook) {
         min="1px"
         value="100%"
       >
-        <Card variants={opacity} animate="show" initial="hidden">
-          <div>
-            <FormImageOrSvg src={imageUrl} />
-          </div>
-          <InfoContainer>
-            {isEditing ? (
-              <EditTitle
-                value={stateTitle}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            ) : (
-              <CardHeaderText>{stateTitle}</CardHeaderText>
-            )}
-            <Seperator margin="0" />
-            {isEditing ? (
-              <EditDescription
-                onChange={(e) => setDesc(e.target.value)}
-                value={desc}
-              />
-            ) : (
-              <CardDescription>{desc}</CardDescription>
-            )}
-            <ButtonWrapper>
-              {canEdit && (
-                <>
-                  <DeleteButton onClick={(e) => setDrop(true)} size="1rem 2rem">
-                    Delete
-                  </DeleteButton>
-                  <EditButton
-                    shadow
-                    useTransition={false}
-                    isEditing={isEditing}
-                    onClick={onEditClick}
-                    size="1rem 2rem"
-                    margin="0 0 0 1rem"
-                  >
-                    {isEditing ? "Confirm" : "Edit"}
-                  </EditButton>
-                </>
+        {book && (
+          <Card variants={opacity} animate="show" initial="hidden">
+            <div>
+              <FormImageOrSvg src={book.imageUrl} />
+            </div>
+            <InfoContainer>
+              {isEditing ? (
+                <EditTitle
+                  value={stateTitle}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              ) : (
+                <CardHeaderText>{stateTitle}</CardHeaderText>
               )}
+              <Seperator margin="0" />
+              {isEditing ? (
+                <EditDescription
+                  onChange={(e) => setDesc(e.target.value)}
+                  value={desc}
+                />
+              ) : (
+                <CardDescription>{desc}</CardDescription>
+              )}
+              <ButtonWrapper>
+                {canEdit && (
+                  <>
+                    <DeleteButton
+                      onClick={(e) => setDrop(true)}
+                      size="1rem 2rem"
+                    >
+                      Delete
+                    </DeleteButton>
+                    <EditButton
+                      shadow
+                      useTransition={false}
+                      isEditing={isEditing}
+                      onClick={onEditClick}
+                      size="1rem 2rem"
+                      margin="0 0 0 1rem"
+                    >
+                      {isEditing ? "Confirm" : "Edit"}
+                    </EditButton>
+                  </>
+                )}
 
-              <ManageButton
-                margin="0 0 0 1rem"
-                variant="light"
-                size="1rem 2rem"
-                shown={canEdit}
-                onClick={(e) => manageStore.open()}
-              >
-                Manage
-              </ManageButton>
-            </ButtonWrapper>
-          </InfoContainer>
-        </Card>
+                <ManageButton
+                  margin="0 0 0 1rem"
+                  variant="light"
+                  size="1rem 2rem"
+                  shown={canEdit}
+                  onClick={(e) => manageStore.open()}
+                >
+                  Manage
+                </ManageButton>
+              </ButtonWrapper>
+            </InfoContainer>
+          </Card>
+        )}
       </Container>
     </>
   );
 }
 
 export default observer(id);
-
-export const getServerSideProps: GetServerSideProps<IBook> = async ({
-  params,
-}) => {
-  const { data, error } = await server_client
-    .query<{ book: IBook }>(bookQuery, {
-      id: parseInt(params.id as string),
-    })
-    .toPromise();
-
-  if (data?.book == null || error != null) return { notFound: true };
-
-  return {
-    props: data.book,
-  };
-};
 
 export const EditIconCustom = styled(EditIcon)({
   cursor: "pointer",

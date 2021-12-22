@@ -13,11 +13,3 @@ export const client = createClient({
         credentials: "include"
     }
 });
-
-export const server_client = createClient({
-    url: `${process.env.NEXT_PUBLIC_API_URL}`,
-    exchanges: [fetchExchange],
-    fetchOptions: {
-        credentials: "include"
-    }
-});

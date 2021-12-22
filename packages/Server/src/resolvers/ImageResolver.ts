@@ -43,15 +43,20 @@ export class ImageResolver {
     const USER = await User.findOneOrFail({ where: { username } });
 
     if (!addPhoto) {
-      return createBook();
+      return Book.create({
+        title,
+        description,
+        imageUrl: null,
+        creator: USER,
+      }).save();
     }
 
-    const imgName = getImageKey();
+    const IMAGE_COVER = `covers/${getImageKey()}`;
 
     const data = s3.createPresignedPost({
       Bucket: process.env.S3_BUCKET,
       Fields: {
-        key: imgName,
+        key: IMAGE_COVER,
       },
       Conditions: [
         ["content-length-range", 0, 1000000], // content length restrictions: 0-1MB
@@ -64,21 +69,12 @@ export class ImageResolver {
     data.fields["x-amz-meta-userid"] = USER.id.toString();
     data.fields.acl = "public-read";
 
-    createBook(imgName);
-
-    async function createBook(ImageName: string = "") {
-      await Book.create({
-        title,
-        description,
-        imageUrl:
-          ImageName != ""
-            ? `https://${process.env.S3_BUCKET}.s3.${
-                process.env.S3_REGION
-              }.amazonaws.com/${encodeURIComponent(ImageName)}`
-            : null,
-        creator: USER,
-      }).save();
-    }
+    await Book.create({
+      title,
+      description,
+      imageUrl: `${process.env.CLOUDFRONT_URL}/${IMAGE_COVER}`,
+      creator: USER,
+    }).save();
 
     return JSON.stringify(data);
   }
@@ -87,7 +83,7 @@ export class ImageResolver {
 function getImageKey(): string {
   const val = sha256(
     `
-    ${crypto.randomBytes(32)}
+    ${crypto.randomBytes(16)}
     `,
     "hex"
   );

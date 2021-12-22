@@ -1,0 +1,31 @@
+# Digital Library
+A web app meant for libraries, and it's visitors. Visitors can view all the available books, and view what thier friends are currently reading. By going to thier profile.
+Deployed [here](https://digital-library-main.vercel.app/) for testing purposes.
+
+## Images
+The images are processed and compressed on the client side using the Compressor javascript library, and then sent to a S3 presigned upload url with the size limited to 1MB. For more flexebility make a lambda function that processes images.
+
+## Hosting
+The book covers are uploaded to AWS S3 and cached using AWS Cloudfront so users all arround the world don't expierence high latency.
+
+The GraphQL API is hosted on AWS Lambda so the web app can handle high or low amount of traffic. While being cheap.
+
+The application database is a postgres database hosted on AWS RDS.
+
+The Next.JS frontend is hosted using Vercel.
+
+![Home Page](https://i.imgur.com/1kfQoUK.jpg)
+![Login Page](https://i.imgur.com/W6EkkPH.jpg)
+![Register Page](https://i.imgur.com/qYpvjZW.jpg)
+![Books List Page](https://i.imgur.com/XMmLsKi.jpg)
+![Search Bar Books](https://i.imgur.com/7PDjRWm.jpg)
+![Search Bar User](https://i.imgur.com/bLpzu3A.jpg)
+![Book Page](https://i.imgur.com/MrIzuqK.jpg)
+![Administrator Profile Page](https://i.imgur.com/s53pqCR.jpg)
+![Consumer Profile Page](https://i.imgur.com/exysv31.jpg)
+![Manage Profile](https://i.imgur.com/EE1Kqdj.jpg)
+![Add Book Page](https://i.imgur.com/qr94DdZ.jpg)
+![Edit Book](https://i.imgur.com/bzd4u1T.jpg)
+![Delete Book](https://i.imgur.com/0iYMAe1.jpg)
+
+

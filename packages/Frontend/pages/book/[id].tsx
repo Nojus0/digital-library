@@ -162,6 +162,7 @@ function id(props) {
                     <DeleteButton
                       onClick={(e) => setDrop(true)}
                       size="1rem 2rem"
+                      margin=".5rem 1rem"
                     >
                       Delete
                     </DeleteButton>
@@ -171,7 +172,7 @@ function id(props) {
                       isEditing={isEditing}
                       onClick={onEditClick}
                       size="1rem 2rem"
-                      margin="0 0 0 1rem"
+                      margin=".5rem 1rem"
                     >
                       {isEditing ? "Confirm" : "Edit"}
                     </EditButton>
@@ -179,7 +180,7 @@ function id(props) {
                 )}
 
                 <ManageButton
-                  margin="0 0 0 1rem"
+                  margin=".5rem 1rem"
                   variant="light"
                   size="1rem 2rem"
                   shown={canEdit}
@@ -328,6 +329,7 @@ const FormImageOrSvg = styled(BookImage)({
 
 const ButtonWrapper = styled.div({
   display: "flex",
+  flexWrap: "wrap",
   alignItems: "center",
   justifyContent: "flex-end",
 });

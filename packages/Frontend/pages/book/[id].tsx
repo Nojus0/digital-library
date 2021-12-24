@@ -4,7 +4,7 @@ import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import Seperator from "src/components/utils/Seperator";
 import Head from "next/head";
-import { client } from "src/graphql/client";
+import { client, client_server } from "src/graphql/client";
 import { bookQuery } from "src/graphql/books/book";
 import { IBook, Role } from "@dl/shared";
 import { motion } from "framer-motion";
@@ -28,34 +28,13 @@ import { deleteBook } from "src/graphql/books/deleteBook";
 import { useRouter } from "next/router";
 import { bookStore } from "src/state/LoadedBookStore";
 
-function id(props) {
+function id(book: IBook) {
   const router = useRouter();
   const [showDrop, setDrop] = useState(false);
   const [isEditing, setEditing] = useState(false);
-  const [book, setBook] = useState<IBook>();
 
-  const [stateTitle, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-
-  async function getBook() {
-    if (!router.query.id) return;
-
-    const { data, error } = await client
-      .query<{ book: IBook }>(bookQuery, {
-        id: parseInt(router.query.id as string),
-      })
-      .toPromise();
-
-    if (!data || !data.book || error) return router.push("/books");
-
-    setBook(data.book);
-    setTitle(data.book.title);
-    setDesc(data.book.description);
-  }
-
-  useEffect(() => {
-    getBook();
-  }, [router.query.id]);
+  const [stateTitle, setTitle] = useState(book.title);
+  const [desc, setDesc] = useState(book.description);
 
   async function deleteBookSubmit() {
     const [success, error] = await deleteBook(book.id);
@@ -198,6 +177,19 @@ function id(props) {
 }
 
 export default observer(id);
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { data, error } = await client_server
+    .query<{ book: IBook }>(bookQuery, {
+      id: parseInt(params.id as string),
+    })
+    .toPromise();
+  if (!data || !data.book || error) return { notFound: true };
+
+  return {
+    props: data.book,
+  };
+};
 
 interface IManageButtonProps {
   shown: boolean;

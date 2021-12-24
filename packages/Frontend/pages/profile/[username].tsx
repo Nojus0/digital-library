@@ -49,24 +49,24 @@ const bookVariant = {
   },
 };
 // TODO change motion div from wrapping book component to book having motion div attributes.
-function id(props) {
+function id(user: IUser) {
   const router = useRouter();
-  const [user, setUser] = useState<IUser>();
+  // const [user, setUser] = useState<IUser>();
 
-  useEffect(() => {
-    if (router.query.username) getUser(router.query.username as string);
-  }, [router.query.username]);
+  // useEffect(() => {
+  //   if (router.query.username) getUser(router.query.username as string);
+  // }, [router.query.username]);
 
-  async function getUser(username: string) {
-    const { data, error } = await client
-      .query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, {
-        username,
-      })
-      .toPromise();
-    setUser(data.userProfile);
+  // async function getUser(username: string) {
+  //   const { data, error } = await client
+  //     .query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, {
+  //       username,
+  //     })
+  //     .toPromise();
+  //   setUser(data.userProfile);
 
-    if (!data || !data.userProfile || error) router.push("/books");
-  }
+  //   if (!data || !data.userProfile || error) router.push("/books");
+  // }
 
   return (
     <>
@@ -117,12 +117,19 @@ function id(props) {
   );
 }
 
-// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { data, error } = await client
+    .query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, {
+      username: params.username as string,
+    })
+    .toPromise();
 
-//   return {
-//     props: data.userProfile,
-//   };
-// };
+  if (!data || !data.userProfile || error) return { notFound: true };
+
+  return {
+    props: data.userProfile,
+  };
+};
 
 export default id;
 

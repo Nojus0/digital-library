@@ -5,7 +5,7 @@ import { Container } from "src/components/utils/Container";
 import Header from "src/components/Header";
 import { RankCard } from "src/components/RankCard";
 import Seperator from "src/components/utils/Seperator";
-import { client, client_server } from "src/graphql/client";
+import { client } from "src/graphql/client";
 import {
   IUserProfileQuery,
   IUserProfileVariables,
@@ -17,6 +17,11 @@ import { GetServerSideProps } from "next";
 import Book from "src/components/BookParts/Book";
 import { useRouter } from "next/router";
 
+interface ProfileProps {
+  username: string;
+  role: string;
+  borowing: IBook[];
+}
 const variants = {
   hidden: {
     opacity: 0,
@@ -45,6 +50,24 @@ const bookVariant = {
 };
 // TODO change motion div from wrapping book component to book having motion div attributes.
 function id(user: IUser) {
+  const router = useRouter();
+  // const [user, setUser] = useState<IUser>();
+
+  // useEffect(() => {
+  //   if (router.query.username) getUser(router.query.username as string);
+  // }, [router.query.username]);
+
+  // async function getUser(username: string) {
+  //   const { data, error } = await client
+  //     .query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, {
+  //       username,
+  //     })
+  //     .toPromise();
+  //   setUser(data.userProfile);
+
+  //   if (!data || !data.userProfile || error) router.push("/books");
+  // }
+
   return (
     <>
       <Head>
@@ -95,7 +118,7 @@ function id(user: IUser) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const { data, error } = await client_server
+  const { data, error } = await client
     .query<IUserProfileQuery, IUserProfileVariables>(userProfileQuery, {
       username: params.username as string,
     })

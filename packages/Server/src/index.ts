@@ -11,22 +11,46 @@ import { config } from "./typeorm.config";
 import { ImageResolver } from "./resolvers/ImageResolver";
 import { ManageResolver } from "./resolvers/ManageResolver";
 import express from "express";
+import { GraphQLSchema } from "graphql";
+import { APIGatewayProxyHandlerV2 } from "aws-lambda";
 
 if (process.env.SECRET == null) throw new Error("Secret not found");
 
 var connection: Connection | null = null;
+var schema: GraphQLSchema | null = null;
 
-export const handler = async (event, context, callback) => {
-  if (!connection || !connection?.isConnected) {
-    console.log(`Connecting to database...`);
-    connection = await createConnection(config);
-    console.log(`Connected to database`);
-  }
+export const handler: APIGatewayProxyHandlerV2 = async (
+  event,
+  context,
+  callback
+) => {
+  await Promise.all([
+    (async () => {
+      //
+      if (!connection || !connection.isConnected) {
+        console.log(`Connecting to database...`);
+        connection = await createConnection(config);
+        console.log(`Connected to database`);
+      }
+      //
+    })(),
+    (async () => {
+      //
+      if (!schema)
+        schema = await buildSchema({
+          resolvers: [
+            UserResolver,
+            BookResolver,
+            ImageResolver,
+            ManageResolver,
+          ],
+        });
+      //
+    })(),
+  ]);
 
   const GRAPHQL_SERVER = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [UserResolver, BookResolver, ImageResolver, ManageResolver],
-    }),
+    schema,
     introspection: true,
     context: ({ express: { req, res } }) => ({ req, res }),
   });

@@ -1,29 +1,28 @@
-import Head from 'next/head'
+import Head from "next/head";
 import Logo from "src/svg/Logo";
-import { Container } from 'src/components/utils/Container';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import styled from '@emotion/styled';
-import { BaseButton } from 'src/styled/Buttons';
-
+import { Container } from "src/components/utils/Container";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import styled from "@emotion/styled";
+import { BaseButton } from "src/styled/Buttons";
 
 const variants = {
   show: {
     transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
+      staggerChildren: 0.1,
+    },
+  },
+};
 const item = {
   show: {
     y: 0,
-    opacity: 1
+    opacity: 1,
   },
   hidden: {
     y: -100,
-    opacity: 0
-  }
-}
+    opacity: 0,
+  },
+};
 // TODO removed animations for buttons maybe add fade in effect without stagger?
 function Home() {
   return (
@@ -36,9 +35,16 @@ function Home() {
         <meta name="description" content="Digital Library - Home Page" />
       </Head>
 
-      <Container variants={variants} animate="show" initial="hidden" style={{ marginTop: "1rem" }} min="1px" max="45rem" value="100%">
-
-        <Logo variants={item} height="45vh" />
+      <Container
+        variants={variants}
+        animate="show"
+        initial="hidden"
+        style={{ marginTop: "1rem" }}
+        min="1px"
+        max="45rem"
+        value="100%"
+      >
+        <Logo to="/" variants={item} height="45vh" />
         <TitleText variants={item}>Digital Library</TitleText>
 
         <ActionContainer>
@@ -46,21 +52,22 @@ function Home() {
             <BaseButton size="1rem 2.5rem">Register</BaseButton>
           </Link>
           <Link href="/login">
-            <BaseButton variant="transparent" size="1rem 2.5rem">Log In</BaseButton>
+            <BaseButton variant="transparent" size="1rem 2.5rem">
+              Log In
+            </BaseButton>
           </Link>
         </ActionContainer>
-
       </Container>
     </>
-  )
+  );
 }
 
 const TitleText = styled(motion.h1)({
   margin: "1.5rem",
   fontSize: "clamp(2rem, 1rem + 6.5vw, 4.5rem)",
   fontWeight: 500,
-  textAlign: "center"
-})
+  textAlign: "center",
+});
 
 const ActionContainer = styled(motion.div)({
   marginTop: "clamp(1rem, 1vw + 1.25rem, 3.5rem)",
@@ -71,5 +78,5 @@ const ActionContainer = styled(motion.div)({
   flexWrap: "wrap",
   width: "100%",
   maxWidth: " 22.5rem",
-})
+});
 export default Home;

@@ -37,7 +37,7 @@ function UserResultBook(
 
 const ProfileText = styled("h2")({
   fontSize: "1.5rem",
-  color: "black"
+  color: "black",
 });
 
 const Profile = styled.div({
@@ -48,8 +48,10 @@ const Profile = styled.div({
   justifyContent: "center",
   borderRadius: "50%",
   background: "white",
-  width: "5rem",
-  height: "5rem",
+  width: "3rem",
+  minWidth: "3rem",
+  height: "3rem",
+  minHeight: "3rem",
 });
 
 export default React.forwardRef<HTMLDivElement, IUserProps>(UserResultBook);

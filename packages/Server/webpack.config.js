@@ -7,7 +7,7 @@ module.exports = {
   target: "node",
   mode: "production",
   externalsPresets: { node: true },
-  externals: [nodeExternals()],
+  externals: [],
   optimization: {
     minimize: true,
     minimizer: [new Terser({ terserOptions: { keep_classnames: true } })],

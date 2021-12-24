@@ -59,13 +59,12 @@ function register() {
 
       <Container min="1px" value="100%" max="25em">
         <Form variants={parent} initial="hidden" animate="show">
-          <Link href="/">
-            <SvgLogo
-              variants={variants}
-              animate={error == "" ? "normal" : "collapsed"}
-              width="7em"
-            />
-          </Link>
+          <SvgLogo
+            to="/"
+            variants={variants}
+            animate={error == "" ? "normal" : "collapsed"}
+            width="7em"
+          />
           <motion.h1 variants={child}>Register</motion.h1>
 
           <AttentionCard show={error != ""} color="#FF3636">

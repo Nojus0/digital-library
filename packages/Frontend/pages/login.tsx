@@ -62,9 +62,7 @@ function login(props) {
           initial="hidden"
           animate="show"
         >
-          <Link href="/">
-            <SvgLogo width="7em" variants={child} />
-          </Link>
+          <SvgLogo to="/" width="7em" variants={child} />
           <motion.h1 variants={child}>Log In</motion.h1>
 
           <AttentionCard show={error != ""} color="#FF3636">

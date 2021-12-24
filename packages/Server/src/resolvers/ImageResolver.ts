@@ -5,16 +5,18 @@ import {
   Ctx,
   Field,
   Mutation,
+  Query,
   Resolver,
   UseMiddleware,
 } from "type-graphql";
-import { S3 } from "aws-sdk";
+import { AWSError, S3 } from "aws-sdk";
 import crypto, { BinaryToTextEncoding } from "crypto";
 import { isAuthRole } from "../middleware/isAuth";
 import { Role } from "@dl/shared";
 import { IAuthRoleContext } from "../interfaces";
 import { User } from "../entity/User";
 import { Book } from "../entity/Book";
+import axios from "axios";
 
 export const s3 = new S3({
   region: process.env.S3_REGION,
@@ -34,6 +36,12 @@ abstract class UploadRequest {
 
 @Resolver()
 export class ImageResolver {
+  @Query((type) => String)
+  async test() {
+    const a = await axios({ url: "https://api.myip.com/" });
+    return JSON.stringify(a.data, null, 2);
+  }
+
   @UseMiddleware(isAuthRole(Role.Administrator, true))
   @Mutation((type) => String, { nullable: true })
   async upload(
@@ -41,7 +49,6 @@ export class ImageResolver {
     @Ctx() { username }: IAuthRoleContext
   ) {
     const USER = await User.findOneOrFail({ where: { username } });
-
     if (!addPhoto) {
       return Book.create({
         title,
@@ -72,7 +79,7 @@ export class ImageResolver {
     await Book.create({
       title,
       description,
-      imageUrl: `${process.env.CLOUDFRONT_URL}/${IMAGE_COVER}`,
+      imageUrl: `${process.env.CLOUDFRONT_URL}${IMAGE_COVER}`,
       creator: USER,
     }).save();
 

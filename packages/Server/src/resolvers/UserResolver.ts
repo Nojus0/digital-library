@@ -105,7 +105,7 @@ export class UserResolver {
     res.cookie("auth", CreateJwtToken(user), {
       httpOnly: true,
       secure: IsProd,
-      sameSite: "none",
+      sameSite: IsProd ? "none" : "lax",
     });
     return {
       user,

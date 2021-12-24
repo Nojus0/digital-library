@@ -199,16 +199,6 @@ function id(props) {
 
 export default observer(id);
 
-export const EditIconCustom = styled(EditIcon)({
-  cursor: "pointer",
-  display: "inline",
-  marginLeft: ".5rem",
-  verticalAlign: "middle",
-  "#Pen": {
-    // color: "red!important"
-  },
-});
-
 interface IManageButtonProps {
   shown: boolean;
 }
@@ -224,6 +214,7 @@ const EditDescription = styled.textarea({
   resize: "none",
   flexGrow: 1,
   margin: "1rem 0",
+  width: "100%",
   fontSize: "1rem",
   height: "15rem",
   background: "transparent",
@@ -237,6 +228,7 @@ const EditTitle = styled.input({
   marginBottom: "1rem",
   background: "transparent",
   border: "none",
+  width: "100%",
   padding: "0px",
   outline: "1px solid black",
 });
@@ -307,16 +299,7 @@ const Card = styled(motion.div)({
   background: "#F3F3F3",
   borderRadius: ".4rem",
   display: "flex",
-  // flexWrap: "wrap",
   width: "100%",
-  // "img, svg": {
-  //     userSelect: "none",
-  //     borderRadius: ".4rem 0 0 .4rem",
-  //     width: "10rem",
-  //     minWidth: "10rem",
-  //     height: "100%",
-  //     objectFit: "cover",
-  // }
 });
 
 const FormImageOrSvg = styled(BookImage)({
@@ -340,6 +323,5 @@ const InfoContainer = styled.div({
   flexWrap: "wrap",
   minHeight: "12.5rem",
   flexGrow: 1,
-  // width: "100%",
   flexDirection: "column",
 });

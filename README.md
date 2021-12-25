@@ -15,7 +15,7 @@ The application database is a PostgreSQL database hosted on AWS RDS.
 The Next.JS frontend is hosted using Vercel.
 
 ## Notes
-To make the web app even more scalable, switch the database to AWS DynamoDB. Though in order to achieve you would need to make major changes to the backend. 
+To make the web app even more scalable, switch the database to AWS DynamoDB. Though in order to achieve this you would need to make major changes to the backend. 
 
 The user authentication is achieved by using a single JWT token, if you need more control add a refresh token or switch the authentication method to *express session*. 
 

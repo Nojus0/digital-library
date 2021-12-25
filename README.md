@@ -6,7 +6,7 @@ Demo deployed [here](https://digital-library-main.vercel.app/) for testing purpo
 The images are processed and compressed on the client-side using the Compressor javascript library, and then sent to a S3 presigned upload URL with the size limited to 1MB. For more flexibility, you can easily add a GraphQL Mutation that processes the images server-side using the *sharp* npm package.
 
 ## Hosting
-The book covers are uploaded to AWS S3 and cached using AWS Cloudfront so users all around the world don't experience high latency.
+The book covers are uploaded to AWS S3 and cached using AWS Cloudfront so users all around the world experience low latency.
 
 The GraphQL API is hosted on AWS Lambda so the web app can handle a high or low amount of traffic. While being cheap.
 

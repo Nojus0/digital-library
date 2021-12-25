@@ -107,6 +107,7 @@ const ProfileIcon = styled.div({
   position: "relative",
   cursor: "pointer",
   display: "flex",
+  userSelect: "none",
   alignItems: "center",
   justifyContent: "center",
   borderRadius: "50%",
@@ -119,6 +120,7 @@ const ProfileIcon = styled.div({
 
 const ProfileIconText = styled.h1({
   color: "black",
+  userSelect: "none",
   fontSize: "1.20rem",
 });
 

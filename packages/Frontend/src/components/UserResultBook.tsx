@@ -25,15 +25,19 @@ function UserResultBook(
       </Profile>
       <BookTitle>{username}</BookTitle>
       <Link href={`/profile/${username}`} passHref>
-        <a>
-          <BaseButton variant="light" size=".75rem 1.5rem" margin="0 2rem 0 0">
+        <CustomA>
+          <BaseButton variant="light" size=".75rem 1.5rem">
             View Profile
           </BaseButton>
-        </a>
+        </CustomA>
       </Link>
     </BookBase>
   );
 }
+
+const CustomA = styled.a({
+  margin: "0 2rem 0 0",
+});
 
 const ProfileText = styled("h2")({
   fontSize: "1.5rem",

@@ -124,8 +124,8 @@ export function SignUsername(username: string): string {
 }
 
 function ValidateInputLogIn(email: string, password: string): boolean {
-  if (email.length < 4 || !email.includes("@")) return false;
-  if (password.length < 4) return false;
+  if (email.length < 3 || !email.includes("@")) return false;
+  if (password.length < 3) return false;
 
   return true;
 }
@@ -136,7 +136,7 @@ function ValidateInputRegister(
   username: string
 ): boolean {
   if (!ValidateInputLogIn(email, password)) return false;
-  if (username.length < 4) return false;
+  if (username.length < 3) return false;
 
   return true;
 }

@@ -131,9 +131,13 @@ const NameLogo = styled(motion.div)({
   flexWrap: "wrap",
   justifyContent: "center",
   alignItems: "center",
+  width: "100%",
   margin: ".75rem 0",
   h1: {
     fontSize: "2.85rem",
+    textAlign: "center",
+    margin: "0 .25rem",
+    wordBreak: "break-all",
     fontWeight: 500,
   },
 });
@@ -153,6 +157,7 @@ const ProfileLogo = styled(motion.div)({
     fontWeight: 500,
     fontSize: "1.65rem",
     color: "white",
+    // width
   },
 });
 

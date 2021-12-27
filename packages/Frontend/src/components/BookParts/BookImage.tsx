@@ -24,7 +24,7 @@ function BookImage(
 
   if (!loaded) return <StyledError {...(props as any)} />;
 
-  return <StyledImage onClick={(e) => setLoaded(false)} {...props} ref={ref} />;
+  return <StyledImage {...props} ref={ref} />;
 }
 
 export default React.forwardRef<

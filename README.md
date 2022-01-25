@@ -17,7 +17,7 @@ The Next.JS frontend is hosted using Vercel.
 ## Notes
 To make the web app even more scalable, switch the database to AWS DynamoDB. Though in order to achieve this you would need to make major changes to the backend. 
 
-The user authentication is achieved by using a single JWT token, if you need more control add a refresh token or switch the authentication method to *express session*. 
+The user authentication is achieved by using a single JWT token, if you need more control add an additional refresh token or instead of using jwt tokens use session tokens stored in *Redis*. 
 
 ![Home Page](https://i.imgur.com/1kfQoUK.jpg)
 ![Login Page](https://i.imgur.com/W6EkkPH.jpg)

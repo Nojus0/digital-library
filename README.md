@@ -19,6 +19,9 @@ To make the web app even more scalable, switch the database to AWS DynamoDB. Tho
 
 The user authentication is achieved by using a single JWT token, if you need more control add an additional refresh token or instead of using jwt tokens use session tokens stored in *Redis*. 
 
+## Designed in Figma
+https://www.figma.com/file/wDSMG2wQ2OrdMRpvtCkeyw/Digital-Library?node-id=323%3A90
+
 ![Home Page](https://i.imgur.com/1kfQoUK.jpg)
 ![Login Page](https://i.imgur.com/W6EkkPH.jpg)
 ![Register Page](https://i.imgur.com/qYpvjZW.jpg)

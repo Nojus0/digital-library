@@ -1,5 +1,5 @@
 import { IBook } from "@dl/shared";
-import { gql } from "@urql/core";
+import { gql } from "urql";
 
 export interface IEditBookVars {
     bookId: number,

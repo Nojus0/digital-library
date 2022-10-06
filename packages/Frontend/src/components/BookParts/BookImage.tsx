@@ -10,7 +10,7 @@ function BookImage(
 ) {
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  const myImg = useRef(isClientSide && new Image());
+  const myImg: any = useRef(isClientSide && new Image());
 
   // * Next.Js sucks something wrong with mounting
   // * and unmounting doesn't get unmounted properly

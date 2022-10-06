@@ -13,7 +13,7 @@ export const config: ConnectionOptions = {
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
   synchronize: true,
-  logging: IsDev,
+  logging: true,
   dropSchema: false,
   // ssl: true,
   // extra: {
@@ -23,10 +23,10 @@ export const config: ConnectionOptions = {
   // },
   entities: [Book, User],
   migrations: [path.join(__dirname, "./migration/**/*.*")],
-  //   subscribers: [path.join(__dirname, "./subscriber/**/*.*")],
+  subscribers: [path.join(__dirname, "./subscriber/**/*.*")],
   cli: {
-    // entitiesDir: path.join(__dirname, "./entity"),
+    entitiesDir: path.join(__dirname, "./entity"),
     migrationsDir: path.join(__dirname, "./migration"),
-    // subscribersDir: path.join(__dirname, "./subscriber"),
+    subscribersDir: path.join(__dirname, "./subscriber"),
   },
 };

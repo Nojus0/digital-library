@@ -1,7 +1,7 @@
-import { Role } from "@dl/shared";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { userStore } from "src/state/UserStore";
+import {Role} from "@dl/shared";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
+import {userStore} from "src/state/UserStore";
 
 /**
  * The component that uses this hook must be encapsulated in an observer();

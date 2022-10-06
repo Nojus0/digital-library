@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { HTMLMotionProps } from "framer-motion";
-import { IBook, IUser, Role } from "@dl/shared";
 import { BaseButton } from "src/styled/Buttons";
 import BookBase from "./BookParts/BookBase";
-import BookImage from "./BookParts/BookImage";
 import BookTitle from "./BookParts/BookTitle";
-import { RankCard } from "./RankCard";
 import styled from "@emotion/styled";
 
 type IUserProps = { username: string; role: string } & Omit<

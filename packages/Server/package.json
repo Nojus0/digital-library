@@ -40,9 +40,11 @@
     "utf-8-validate": "^5.0.7"
   },
   "scripts": {
-    "dev": "nodemon --exec ts-node .\\src\\index.ts",
+    "dev": "nodemon --exec ts-node .\\src\\index_server.ts",
     "start": "node ./dist/index.js",
     "build-deps": "cd ../Shared/ && tsc",
+    "migrate": "typeorm migration:generate -n FoundChanges",
+    "webpack": "webpack --config ./webpack.config.js",
     "build": "npm run build-deps && tsc && webpack --config ./webpack.config.js && npm run upload",
     "upload": "powershell.exe Compress-Archive -Path .\\.webpack\\index.js -DestinationPath .\\.webpack\\bundle.zip -Force && aws lambda update-function-code --function-name digital-library --zip-file fileb://.webpack/bundle.zip --region eu-west-2 && echo Done"
   }

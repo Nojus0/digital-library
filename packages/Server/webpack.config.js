@@ -14,9 +14,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".css"],
-    alias: {
-      graphql$: path.resolve(__dirname, "../../node_modules/graphql/index.js"),
-    },
+  //   alias: {
+  //     graphql$: path.resolve(__dirname, "../../node_modules/.pnpm/graphql@15.8.0/index.js"),
+  //   },
   },
   plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
   output: {

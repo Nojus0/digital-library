@@ -32,7 +32,7 @@ class UserStore {
 
   async fetchCurrentUser() {
     const { data, error } = await client
-      .query<ICurrentUser>(currentUserQuery)
+      .query<ICurrentUser>(currentUserQuery, {})
       .toPromise();
 
     if (error || data?.currentUser == null) {
@@ -81,7 +81,7 @@ class UserStore {
   }
 
   async signOut() {
-    await client.mutation<ISignout>(signoutMutation).toPromise();
+    await client.mutation<ISignout>(signoutMutation, {}).toPromise();
     this.setSignedIn(false);
   }
 

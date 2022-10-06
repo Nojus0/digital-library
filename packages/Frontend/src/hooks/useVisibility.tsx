@@ -1,4 +1,4 @@
-import { createRef, useEffect, useMemo, useRef, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import throttle from "lodash/throttle";
 
 export function useVisibility<Element extends HTMLElement>(

@@ -22,8 +22,6 @@ export const isAuthRole: (ROLES: Role[] | Role, andAbove: boolean) => Middleware
         throw new Error("User does not exist.");
     }
 
-
-    // THIS IS SO SHIT!!!!!!
     if (Array.isArray(ROLES)) {
         if (andAbove) {
             console.error(`

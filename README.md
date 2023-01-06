@@ -1,4 +1,8 @@
 # Digital Library
+
+[![Contribute with Gitpod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/Nojus0/digital-library)
+[![Open in Codeflow](https://developer.stackblitz.com/img/open_in_codeflow_small.svg)](https:///pr.new/Nojus0/digital-library)
+
 A web app meant for libraries, and its visitors. Visitors can view all the available books, and view what their friends are currently reading. By going to their profile.
 Demo deployed [here](https://digital-library-main.vercel.app/) for testing purposes.
 

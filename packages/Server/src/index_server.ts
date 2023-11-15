@@ -23,6 +23,7 @@ if (process.env.SECRET == null) throw new Error("Secret not found");
     schema: await buildSchema({
       resolvers: [UserResolver, BookResolver, ImageResolver, ManageResolver],
     }),
+    introspection: true,
     context: ({ req, res }) => ({ req, res }),
   });
 

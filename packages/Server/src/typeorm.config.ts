@@ -6,7 +6,7 @@ export const IsProd = process.env.NODE_ENV == "production";
 export const IsDev = process.env.NODE_ENV != "production";
 
 export const config: ConnectionOptions = {
-  type: "postgres",
+  type: "mysql",
   host: process.env.HOST,
   port: parseInt(process.env.DB_PORT),
   username: process.env.DB_USERNAME,

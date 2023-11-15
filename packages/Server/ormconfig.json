@@ -1,9 +1,9 @@
 {
-    "type": "postgres",
+    "type": "mysql",
     "host": "127.0.0.1",
-    "port": 5432,
-    "username": "postgres",
-    "password": "mysecretpassword",
+    "port": 3306,
+    "username": "root",
+    "password": "pass",
     "database": "digital_library",
     "entities": [
         "src/entity/*"

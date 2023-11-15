@@ -5,7 +5,7 @@ import { User } from "./entity/User";
 export const IsProd = process.env.NODE_ENV == "production";
 export const IsDev = process.env.NODE_ENV != "production";
 
-export const pgConfig: ConnectionOptions = {
+export const config: ConnectionOptions = {
   type: "postgres",
   host: process.env.HOST,
   port: parseInt(process.env.DB_PORT),

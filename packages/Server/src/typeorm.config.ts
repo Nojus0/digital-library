@@ -5,14 +5,14 @@ import { User } from "./entity/User";
 export const IsProd = process.env.NODE_ENV == "production";
 export const IsDev = process.env.NODE_ENV != "production";
 
-export const config: ConnectionOptions = {
+export const pgConfig: ConnectionOptions = {
   type: "postgres",
   host: process.env.HOST,
   port: parseInt(process.env.DB_PORT),
-  username: process.env.USER,
-  password: process.env.PASSWORD,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   database: process.env.DATABASE,
-  synchronize: true,
+  synchronize: false,
   logging: true,
   dropSchema: false,
   // ssl: true,

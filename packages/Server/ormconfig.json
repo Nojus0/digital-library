@@ -10,5 +10,11 @@
     ],
     "migrations": [
         "src/migrations/*"
-    ]
+    ],
+    "ssl": true,
+    "extra": {
+      "ssl": {
+        "rejectUnauthorized": false
+      }
+    }
 }

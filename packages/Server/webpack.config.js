@@ -2,6 +2,8 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 const webpack = require("webpack");
 const Terser = require("terser-webpack-plugin");
+
+console.log(path.resolve(__dirname, "./node_modules/graphql/index.js"))
 module.exports = {
   entry: "./dist/index.js",
   target: "node",
@@ -14,9 +16,9 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".css"],
-  //   alias: {
-  //     graphql$: path.resolve(__dirname, "../../node_modules/.pnpm/graphql@15.8.0/index.js"),
-  //   },
+     alias: {
+       graphql$: path.resolve(__dirname, "./node_modules/graphql/index.js"),
+     },
   },
   plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
   output: {

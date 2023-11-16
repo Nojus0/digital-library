@@ -15,12 +15,12 @@ export const config: ConnectionOptions = {
   synchronize: false,
   logging: true,
   dropSchema: false,
-  // ssl: true,
-  // extra: {
-  //     ssl: {
-  //         rejectUnauthorized: false
-  //     }
-  // },
+  ssl: true,
+  extra: {
+      ssl: {
+          rejectUnauthorized: false
+      }
+  },
   entities: [Book, User],
   migrations: [path.join(__dirname, "./migration/**/*.*")],
   subscribers: [path.join(__dirname, "./subscriber/**/*.*")],
